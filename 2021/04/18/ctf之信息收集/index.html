@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>ctf之信息收集总结 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="web入门敏感目录泄露git泄露git常规泄露工具： https:&#x2F;&#x2F;github.com&#x2F;denny0223&#x2F;scrabble 语法： 123scrabble url  git回滚git作为一个版本控制工具，会记录每次提交(commit)的修改，存在git泄露时，flag可能在修改中被删除，可以使用git reset 先得源码，后使用git reset --hard HEAD^ 命令跳到上一个版">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ctf之信息收集总结">
+<meta property="og:url" content="http://example.com/2021/04/18/ctf%E4%B9%8B%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="web入门敏感目录泄露git泄露git常规泄露工具： https:&#x2F;&#x2F;github.com&#x2F;denny0223&#x2F;scrabble 语法： 123scrabble url  git回滚git作为一个版本控制工具，会记录每次提交(commit)的修改，存在git泄露时，flag可能在修改中被删除，可以使用git reset 先得源码，后使用git reset --hard HEAD^ 命令跳到上一个版">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-04-18T12:32:14.000Z">
+<meta property="article:modified_time" content="2021-05-23T01:34:34.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="CTF">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-ctf之信息收集" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/04/18/ctf%E4%B9%8B%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/" class="article-date">
+  <time class="dt-published" datetime="2021-04-18T12:32:14.000Z" itemprop="datePublished">2021-04-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      ctf之信息收集总结
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="web入门"><a href="#web入门" class="headerlink" title="web入门"></a>web入门</h2><h3 id="敏感目录泄露"><a href="#敏感目录泄露" class="headerlink" title="敏感目录泄露"></a>敏感目录泄露</h3><h4 id="git泄露"><a href="#git泄露" class="headerlink" title="git泄露"></a>git泄露</h4><h5 id="git常规泄露"><a href="#git常规泄露" class="headerlink" title="git常规泄露"></a>git常规泄露</h5><p>工具：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/denny0223/scrabble">https://github.com/denny0223/scrabble</a></p>
+<p>语法：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">scrabble url</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h5 id="git回滚"><a href="#git回滚" class="headerlink" title="git回滚"></a>git回滚</h5><p><em><strong>git作为一个版本控制工具，会记录每次提交(commit)的修改，存在git泄露时，flag可能在修改中被删除，可以使用<code>git reset</code></strong></em></p>
+<p><em><strong>先得源码，后使用<code>git reset --hard HEAD^</code></strong></em></p>
+<p><em><strong>命令跳到上一个版本。(HEAD表示当前版本，HEAD^表示上一个版本)</strong></em></p>
+<p><em><strong>还可以使用<code>git log -stat</code></strong></em></p>
+<p><em><strong>命令查看每一个commit修改了哪些文件，再用</strong></em></p>
+<p><em><strong><code>git diff HEAD commit-id</code></strong></em></p>
+<p><em><strong>比较在当前版本与想查看得commit之间的变化。</strong></em></p>
+<h5 id="git分支"><a href="#git分支" class="headerlink" title="git分支"></a>git分支</h5><p><em><strong>每次提交时，git都会自动把它们串成一条时间线，这条就是一个分支。git允许使用多个分支，如果没有新建分支，那么只有一条时间线，默认master分支。</strong></em></p>
+<p><em><strong>使用<code>git log</code></strong></em></p>
+<p><em><strong>只能查看当前的分支修改，所以引入之前常用的GitHacker。</strong></em></p>
+<p><em><strong>进入githack生成的文件夹，执行</strong></em></p>
+<p><em><strong><code>git log --all</code>或</strong></em></p>
+<p><em><strong><code>git branch -v</code></strong></em></p>
+<p><em><strong>只能查看master分支，需要执行</strong></em></p>
+<p><em><strong><code>git reflog</code></strong></em></p>
+<p><em><strong>就能看见一些checkout的记录。</strong></em></p>
+<p><em><strong>假如还有一个分支，我们需要手动下载这个分支的head信息，保存到</strong></em></p>
+<p> <em><strong>.git/refs/heads/其他分支名</strong></em></p>
+<p><em><strong>恢复heads信息后，我们使用GitHacker的部分代码，以实现自动恢复分支的效果。</strong></em></p>
+<p><em><strong>使用的是： <a target="_blank" rel="noopener" href="https://github.com/WangYihang/GitHacker">https://github.com/WangYihang/GitHacker</a></strong></em></p>
+<p><em><strong>在GitHacker的代码中，先下载ojbect文件，再使用git fsck检测，并继续下载缺失的文件。</strong></em></p>
+<p><em><strong>修改代码如下：</strong></em></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> __name__==<span class="string">&quot;__main__&quot;</span></span><br><span class="line">	<span class="comment"># main()</span></span><br><span class="line">baseurl=complete_url(<span class="string">&#x27;http://127.0.0.1:8000/.git/&#x27;</span>)</span><br><span class="line">temppath=replace_bad_chars(get_prefix(baseurl))</span><br><span class="line">fixmissing(baseurl,temppath)</span><br></pre></td></tr></table></figure>
+
+<p><em><strong>修改后运行，再次进入文件夹，执行</strong></em></p>
+<p><em><strong><code>git log --all</code></strong></em></p>
+<p><em><strong>或<code>git branch -v </code></strong></em></p>
+<p><em><strong>即可恢复。</strong></em></p>
+<p><em><strong>其他的利用：.git/config文件夹中可能含有access_token 信息，从而通过访问这个用户的其他仓库。</strong></em></p>
+<h4 id="SVN泄露"><a href="#SVN泄露" class="headerlink" title="SVN泄露"></a>SVN泄露</h4><p><em><strong>SVN是源代码版本管理软件，造成SVN源代码漏洞主要原因是管理员操作不规范将SVN隐藏文件夹暴露于外网环境，可以利用.svn/entries或wc.db文件获得服务器源码，推荐使用两个工具：</strong></em></p>
+<p><em><strong><a target="_blank" rel="noopener" href="https://github.com/kost/dvcs-ripper">https://github.com/kost/dvcs-ripper</a></strong></em></p>
+<p><em><strong>还有 Seay-svn</strong></em></p>
+<h4 id="HG泄露"><a href="#HG泄露" class="headerlink" title="HG泄露"></a>HG泄露</h4><p><em><strong>.hg</strong></em></p>
+<p><em><strong>工具：</strong></em></p>
+<p><em><strong><a target="_blank" rel="noopener" href="https://github.com/kost/dvcs-ripper">https://github.com/kost/dvcs-ripper</a></strong></em></p>
+<p><em><strong>以上的源码泄露，可以直接使用目录扫描工具：</strong></em></p>
+<p><em><strong><a target="_blank" rel="noopener" href="https://github.com/maurosoria/dirsearch">https://github.com/maurosoria/dirsearch</a></strong></em></p>
+<p><em><strong>有可能存在重定向一类问题，访问.git返回403，访问.git/config，如果有文件返回，说明存在.git泄露。</strong></em></p>
+<p><em><strong>在SVN泄露，一般是在entries中爬取源代码，但有时为空，注意wc.db文件存在与否，便可通过其中的checksum在pristine文件夹中获取源代码。</strong></em></p>
+<h3 id="敏感备份文件"><a href="#敏感备份文件" class="headerlink" title="敏感备份文件"></a>敏感备份文件</h3><h4 id="1、gedit备份文件"><a href="#1、gedit备份文件" class="headerlink" title="1、gedit备份文件"></a>1、gedit备份文件</h4><p><em><strong>在Linux下，用gedit编辑器保存后，当前目录会生成一个后缀为“<del>”的文件，访问带有</del>的文件，得到flag。</strong></em></p>
+<h4 id="2、vim备份文件"><a href="#2、vim备份文件" class="headerlink" title="2、vim备份文件"></a>2、vim备份文件</h4><p><em><strong>vim是当前linux运行最多的linux编辑器，如果遇到卡死意外退出，会生成一个备份文件，</strong></em></p>
+<p><em><strong>.flag.swp</strong></em></p>
+<p><em><strong>使用命令 <code>vim -r</code></strong></em></p>
+<p><em><strong>恢复文件内容，要先生成flag文件，再恢复文件。</strong></em></p>
+<p><em><strong><code>vim flag</code></strong></em></p>
+<p><em><strong><code>vim -r flag</code></strong></em></p>
+<h4 id="3、常规文件"><a href="#3、常规文件" class="headerlink" title="3、常规文件"></a>3、常规文件</h4><p><em><strong>robots.txt:记录一些目录和CMS版本信息。</strong></em></p>
+<p><em><strong>readme.txt:记录CMS版本信息，甚至有Github地址。</strong></em></p>
+<p><em><strong><a target="_blank" rel="noopener" href="http://www.zip/rar/tar.gz:%E5%BE%80%E5%BE%80%E6%98%AF%E7%BD%91%E7%AB%99%E7%9A%84%E6%BA%90%E7%A0%81%E5%A4%87%E4%BB%BD">www.zip/rar/tar.gz:往往是网站的源码备份</a></strong></em></p>
+<p><em><strong>以上特殊的关键字，我们可以构造成一个字典，后续用burp进行爆破。</strong></em></p>
+<h3 id="Banner识别"><a href="#Banner识别" class="headerlink" title="Banner识别"></a>Banner识别</h3><p>Banner信息：服务器对外显示的一些基础信息</p>
+<p>1、自行收集指纹库</p>
+<p>github上有大量成型且公开的CMS指纹库，借鉴一些成型扫描器对网站进行识别。</p>
+<p>2、使用已有工具</p>
+<p><strong>Wappalyzer工具</strong></p>
+<p>除了使用工具，还可以随意输入一些参数，可能会出现404或302跳转出一些信息。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/04/18/ctf%E4%B9%8B%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/" data-id="ckr3hbgsa00184cvo0cfb2cyf" data-title="ctf之信息收集总结" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CTF/" rel="tag">CTF</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/04/19/ctf%E4%B9%8B%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96%E6%BC%8F%E6%B4%9E/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          ctf之任意文件读取漏洞总结
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/04/07/buu2/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">buu2</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CSRF/" rel="tag">CSRF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CTF/" rel="tag">CTF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DVWAsql%E6%B3%A8%E5%85%A5%E5%92%8C%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" rel="tag">DVWAsql注入和文件上传</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PHP%E4%BC%AA%E5%8D%8F%E8%AE%AE/" rel="tag">PHP伪协议</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL%E6%B3%A8%E5%85%A5/" rel="tag">SQL注入</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/XSS/" rel="tag">XSS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cs%E7%AE%80%E5%8D%95%E5%88%A9%E7%94%A8/" rel="tag">cs简单利用</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kali%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E9%97%AE%E9%A2%98/" rel="tag">kali网络配置问题</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/misc/" rel="tag">misc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/msf%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/" rel="tag">msf简单使用</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%80%E5%8F%A5%E8%AF%9D%E6%9C%A8%E9%A9%AC/" rel="tag">一句话木马</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C/" rel="tag">攻防世界</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" rel="tag">文件上传</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9A%B4%E5%8A%9B%E7%A0%B4%E8%A7%A3/" rel="tag">暴力破解</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CSRF/" style="font-size: 10px;">CSRF</a> <a href="/tags/CTF/" style="font-size: 17.5px;">CTF</a> <a href="/tags/DVWAsql%E6%B3%A8%E5%85%A5%E5%92%8C%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 10px;">DVWAsql注入和文件上传</a> <a href="/tags/PHP%E4%BC%AA%E5%8D%8F%E8%AE%AE/" style="font-size: 10px;">PHP伪协议</a> <a href="/tags/SQL%E6%B3%A8%E5%85%A5/" style="font-size: 20px;">SQL注入</a> <a href="/tags/XSS/" style="font-size: 10px;">XSS</a> <a href="/tags/cs%E7%AE%80%E5%8D%95%E5%88%A9%E7%94%A8/" style="font-size: 10px;">cs简单利用</a> <a href="/tags/kali%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E9%97%AE%E9%A2%98/" style="font-size: 10px;">kali网络配置问题</a> <a href="/tags/misc/" style="font-size: 10px;">misc</a> <a href="/tags/msf%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/" style="font-size: 10px;">msf简单使用</a> <a href="/tags/%E4%B8%80%E5%8F%A5%E8%AF%9D%E6%9C%A8%E9%A9%AC/" style="font-size: 10px;">一句话木马</a> <a href="/tags/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C/" style="font-size: 10px;">攻防世界</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 15px;">文件上传</a> <a href="/tags/%E6%9A%B4%E5%8A%9B%E7%A0%B4%E8%A7%A3/" style="font-size: 12.5px;">暴力破解</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/07/08/buu4/">buu4</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/02/CTF-SQL%E6%B3%A8%E5%85%A5%E8%BF%9B%E9%98%B6/">CTF-SQL注入进阶</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/01/CTF-%E8%84%9A%E6%9C%AC%E5%9F%BA%E7%A1%80/">CTF-脚本基础</a>
+          </li>
+        
+          <li>
+            <a href="/2021/05/30/CTF-PHP%E5%BA%8F%E5%88%97%E5%8C%96%E5%AE%89%E5%85%A8/">CTF-PHP序列化安全</a>
+          </li>
+        
+          <li>
+            <a href="/2021/05/29/CTF-XXE%E6%B3%A8%E5%85%A5/">CTF-XXE注入</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

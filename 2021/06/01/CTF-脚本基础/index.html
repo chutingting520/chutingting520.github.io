@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>CTF-脚本基础 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="python脚本基础requests库使用 12345678910import requestsurl&#x3D;&quot;http:&#x2F;&#x2F;www.baidu.com&quot;req&#x3D;requests.get(url)req.encoding&#x3D;&amp;#x27;utf-8&amp;#x27;#修改编码print(req.text)#输出字符串print(req.content)#输出字节类型把字节转化成字符串print">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CTF-脚本基础">
+<meta property="og:url" content="http://example.com/2021/06/01/CTF-%E8%84%9A%E6%9C%AC%E5%9F%BA%E7%A1%80/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="python脚本基础requests库使用 12345678910import requestsurl&#x3D;&quot;http:&#x2F;&#x2F;www.baidu.com&quot;req&#x3D;requests.get(url)req.encoding&#x3D;&amp;#x27;utf-8&amp;#x27;#修改编码print(req.text)#输出字符串print(req.content)#输出字节类型把字节转化成字符串print">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-06-01T03:06:42.000Z">
+<meta property="article:modified_time" content="2021-06-01T03:07:14.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="CTF">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-CTF-脚本基础" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/06/01/CTF-%E8%84%9A%E6%9C%AC%E5%9F%BA%E7%A1%80/" class="article-date">
+  <time class="dt-published" datetime="2021-06-01T03:06:42.000Z" itemprop="datePublished">2021-06-01</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      CTF-脚本基础
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="python脚本基础"><a href="#python脚本基础" class="headerlink" title="python脚本基础"></a>python脚本基础</h3><p><strong>requests库使用</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">import requests</span><br><span class="line"></span><br><span class="line">url=&quot;http://www.baidu.com&quot;</span><br><span class="line"></span><br><span class="line">req=requests.get(url)</span><br><span class="line">req.encoding=&#x27;utf-8&#x27;#修改编码</span><br><span class="line">print(req.text)#输出字符串</span><br><span class="line">print(req.content)#输出字节类型</span><br><span class="line">把字节转化成字符串</span><br><span class="line">print(req.content.decode(&#x27;utf-8&#x27;))</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p><strong>requests模块介绍</strong></p>
+<p>请求-响应都是对象</p>
+<p>请求：get、post方法进行http请求</p>
+<p>User-Agent为浏览器标识，网站根据User-Agent的值判断是否是浏览器的请求，前面在学习python爬虫的时候，就需要伪装浏览器进行内容的爬取。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">headers=&#123;&quot;User-Agent&quot;:&quot;xxx&quot;&#125;</span><br><span class="line">request.get(url,headers=headers)</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p><strong>响应：属性获取响应的内容。</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">响应状态码</span><br><span class="line">req.status_code</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">响应-请求头</span><br><span class="line">req.request.headers</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">响应头</span><br><span class="line">req.headers</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">响应-请求cookie</span><br><span class="line">req.request._cookies</span><br><span class="line"></span><br><span class="line">响应cookie</span><br><span class="line">req.cookies</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<p><strong>python与burp联动代理</strong></p>
+<p>python设置代理：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">import requests</span><br><span class="line"></span><br><span class="line">url=&quot;http://www.baidu.com&quot;</span><br><span class="line">proxies=&#123;</span><br><span class="line">	&quot;http&quot;:&quot;http://127.0.0.1:8080&quot;,</span><br><span class="line">	&quot;https&quot;:&quot;https://127.0.0.1:8080&quot;</span><br><span class="line">&#125;</span><br><span class="line">req=requests.get(url,proxies=proxies)</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<p><strong>带参数的HTTP GET请求</strong></p>
+<p>1、url直接设置提交参数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">import requests</span><br><span class="line"></span><br><span class="line">url=&quot;http://www.baidu.com?wd=helloworld&quot;</span><br><span class="line">proxies=&#123;</span><br><span class="line">	&quot;http&quot;:&quot;http://127.0.0.1:8080&quot;,</span><br><span class="line">	&quot;https&quot;:&quot;https://127.0.0.1:8080&quot;</span><br><span class="line">&#125;</span><br><span class="line">req=requests.get(url,proxies=proxies)</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p>2、通过params字典提交参数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">import requests</span><br><span class="line">params=&#123;&quot;wd&quot;:&quot;helloworld&quot;&#125;</span><br><span class="line">url=&quot;http://www.baidu.com&quot;</span><br><span class="line">proxies=&#123;</span><br><span class="line">	&quot;http&quot;:&quot;http://127.0.0.1:8080&quot;,</span><br><span class="line">	&quot;https&quot;:&quot;https://127.0.0.1:8080&quot;</span><br><span class="line">&#125;</span><br><span class="line">req=requests.get(url,proxies=proxies,params=params)</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p><strong>带参数的 HTTP POST请求</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">import requests</span><br><span class="line">data = &#123;&quot;username&quot;:&quot;admin&quot;,&quot;password&quot;:&quot;123456&quot;,&quot;Login&quot;:&quot;Login&quot;&#125;</span><br><span class="line">url=&quot;.../login.php&quot;</span><br><span class="line">proxies=&#123;</span><br><span class="line">	&quot;http&quot;:&quot;http://127.0.0.1:8080&quot;,</span><br><span class="line">	&quot;https&quot;:&quot;https://127.0.0.1:8080&quot;</span><br><span class="line">&#125;</span><br><span class="line">req=requests.post(url,proxies=proxies,data=data)</span><br></pre></td></tr></table></figure>
+
+
+
+<p>对比python post提交和页面post请求的内容区别</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python提交少了cookie信息</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p><strong>Cookie作用与使用</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">保存用户状态信息</span><br></pre></td></tr></table></figure>
+
+
+
+<p>利用http请求头中的cookie头携带</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">import requests</span><br><span class="line">data = &#123;&quot;username&quot;:&quot;admin&quot;,&quot;password&quot;:&quot;123456&quot;,&quot;Login&quot;:&quot;Login&quot;&#125;</span><br><span class="line">url=&quot;.../login.php&quot;</span><br><span class="line">proxies=&#123;</span><br><span class="line">	&quot;http&quot;:&quot;http://127.0.0.1:8080&quot;,</span><br><span class="line">	&quot;https&quot;:&quot;https://127.0.0.1:8080&quot;</span><br><span class="line">&#125;</span><br><span class="line">headers=&#123;&quot;Cookie&quot;:&quot;xxx&quot;&#125;</span><br><span class="line">req=requests.post(url,proxies=proxies,data=data,headers=headers)</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p><strong>为了更方便在python中使用cookie，requests模块中提供了保持会话的方法session()</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">import requests</span><br><span class="line">url=&quot;.../login.php&quot;</span><br><span class="line">proxies=&#123;</span><br><span class="line">	&quot;http&quot;:&quot;http://127.0.0.1:8080&quot;,</span><br><span class="line">	&quot;https&quot;:&quot;https://127.0.0.1:8080&quot;</span><br><span class="line">&#125;</span><br><span class="line">s=request.session()</span><br><span class="line">req1=s.get(url,proxies=proxies)#保存cookie</span><br><span class="line">print(req1.headers)</span><br><span class="line">data=&#123;&quot;username&quot;:&quot;admin&quot;,&quot;password&quot;:&quot;123456&quot;,&quot;Login&quot;:&quot;Login&quot;&#125;</span><br><span class="line">req2=s.post(url,proxies=proxies,data=data)</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p><strong>默认requests超时比较长，此时可缩短超时限制</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">import requests</span><br><span class="line">url=&quot;.../login.php&quot;</span><br><span class="line">proxies=&#123;</span><br><span class="line">	&quot;http&quot;:&quot;http://127.0.0.1:8080&quot;,</span><br><span class="line">	&quot;https&quot;:&quot;https://127.0.0.1:8080&quot;</span><br><span class="line">&#125;</span><br><span class="line">s=request.session()</span><br><span class="line">req1=s.get(url,proxies=proxies)#保存cookie</span><br><span class="line">print(req1.headers)</span><br><span class="line">data=&#123;&quot;username&quot;:&quot;admin&quot;,&quot;password&quot;:&quot;123456&quot;,&quot;Login&quot;:&quot;Login&quot;&#125;</span><br><span class="line">req2=s.post(url,proxies=proxies,data=data,timeout=3)</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+<h4 id="Python-SQL注入自动化检测"><a href="#Python-SQL注入自动化检测" class="headerlink" title="Python SQL注入自动化检测"></a>Python SQL注入自动化检测</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">发送可能构造错误的SQL语句，若发生错误，存在SQL注入漏洞。</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p><strong>关键词 SQL syntax</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">import requests</span><br><span class="line"></span><br><span class="line">url=&quot;&quot;</span><br><span class="line">params=&#123;&quot;id&quot;:&quot;&#x27;&quot;&#125;</span><br><span class="line">req=requests.get(url,params=params)</span><br><span class="line">if req.text.find(&quot;SQL syntax&quot;) !=-1:</span><br><span class="line">	print(&quot;find sql inject&quot;)</span><br><span class="line">else:</span><br><span class="line">	print(&#x27;no&#x27;)</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h4 id="Python-XSS自动化检查"><a href="#Python-XSS自动化检查" class="headerlink" title="Python XSS自动化检查"></a>Python XSS自动化检查</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">检测思路：</span><br><span class="line">发送XSS Payload，筛选是否具有payload，那么存在XSS。</span><br></pre></td></tr></table></figure>
+
+
+
+<p>Python XSS检测代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">import requests</span><br><span class="line"></span><br><span class="line">url=&quot;&quot;</span><br><span class="line">payload=&quot;&lt;script&gt;alert(&#x27;xss&#x27;)&lt;/script&gt;&quot;</span><br><span class="line"></span><br><span class="line">params=&#123;&quot;a&quot;:payload&#125;</span><br><span class="line">req=requests.get(url,params=params)</span><br><span class="line">if req.text.find(payload)!=-1:</span><br><span class="line">	print(&quot;xss found&quot;)</span><br><span class="line">else:</span><br><span class="line">	print(&quot;no xss&quot;)</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p><a target="_blank" rel="noopener" href="https://github.com/payloadbox/xss-payload-list">https://github.com/payloadbox/xss-payload-list</a></p>
+<p>下载XSS Payload List，新建文件，替换payload：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line">url=<span class="string">&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;xss_payload.txt&#x27;</span>,<span class="string">&#x27;r&#x27;</span>,encoding=<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">	payload_list=f.readlines()</span><br><span class="line">	<span class="keyword">for</span> payload <span class="keyword">in</span> payload_list:</span><br><span class="line">		payload.strip()<span class="comment">#去除空格</span></span><br><span class="line">		params=&#123;<span class="string">&quot;a&quot;</span>:payload&#125;</span><br><span class="line">		req=requests.get(url,params=params)</span><br><span class="line">		<span class="keyword">if</span> req.text.find(payload)!=-<span class="number">1</span>:</span><br><span class="line">			<span class="built_in">print</span>(<span class="string">&quot;xss found&quot;</span>)</span><br><span class="line">			sys.exit()<span class="comment">#找到退出</span></span><br><span class="line">		<span class="keyword">else</span>:</span><br><span class="line">			<span class="built_in">print</span>(<span class="string">&quot;no xss&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h4 id="Python源码泄漏自动化挖掘"><a href="#Python源码泄漏自动化挖掘" class="headerlink" title="Python源码泄漏自动化挖掘"></a>Python源码泄漏自动化挖掘</h4><p>常见源码泄漏</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.git、.svn、.DS_Store以及backup.zip等目录或文件</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">import requests</span><br><span class="line"></span><br><span class="line">payloads=[&#x27;.git&#x27;,&#x27;.svn&#x27;,&#x27;.DS_Store&#x27;,&#x27;backup.zip&#x27;]</span><br><span class="line">url=&quot;&quot;</span><br><span class="line">for payload in payloads:</span><br><span class="line">	req=requests.get(url+ &quot;/&quot;+payload)</span><br><span class="line">	if req.status_code==200 : </span><br><span class="line">		print(&quot;yes:&quot;+req.request.url )</span><br><span class="line">		break</span><br><span class="line">	else:</span><br><span class="line">		continue</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<p>添加txt字典遍历</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">import requests</span><br><span class="line"></span><br><span class="line">payloads=[&#x27;.git&#x27;,&#x27;.svn&#x27;,&#x27;.DS_Store&#x27;,&#x27;backup.zip&#x27;]</span><br><span class="line">with open(&quot;urls.txt&quot;,&quot;r&quot;) as f :</span><br><span class="line">	url_list=f.readlines()</span><br><span class="line">	for url in url_list:</span><br><span class="line">        for payload in payloads:</span><br><span class="line">            req=requests.get(url+ &quot;/&quot;+payload)</span><br><span class="line">            if req.status_code==&#x27;200&#x27;:</span><br><span class="line">                print(&quot;yes&quot;)</span><br><span class="line">                break</span><br><span class="line">            else:</span><br><span class="line">                continue</span><br><span class="line"> </span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/06/01/CTF-%E8%84%9A%E6%9C%AC%E5%9F%BA%E7%A1%80/" data-id="ckr3hbgs2000o4cvofm2m2gfe" data-title="CTF-脚本基础" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CTF/" rel="tag">CTF</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/06/02/CTF-SQL%E6%B3%A8%E5%85%A5%E8%BF%9B%E9%98%B6/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          CTF-SQL注入进阶
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/05/30/CTF-PHP%E5%BA%8F%E5%88%97%E5%8C%96%E5%AE%89%E5%85%A8/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">CTF-PHP序列化安全</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CSRF/" rel="tag">CSRF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CTF/" rel="tag">CTF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DVWAsql%E6%B3%A8%E5%85%A5%E5%92%8C%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" rel="tag">DVWAsql注入和文件上传</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PHP%E4%BC%AA%E5%8D%8F%E8%AE%AE/" rel="tag">PHP伪协议</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL%E6%B3%A8%E5%85%A5/" rel="tag">SQL注入</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/XSS/" rel="tag">XSS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cs%E7%AE%80%E5%8D%95%E5%88%A9%E7%94%A8/" rel="tag">cs简单利用</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kali%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E9%97%AE%E9%A2%98/" rel="tag">kali网络配置问题</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/misc/" rel="tag">misc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/msf%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/" rel="tag">msf简单使用</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%80%E5%8F%A5%E8%AF%9D%E6%9C%A8%E9%A9%AC/" rel="tag">一句话木马</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C/" rel="tag">攻防世界</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" rel="tag">文件上传</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9A%B4%E5%8A%9B%E7%A0%B4%E8%A7%A3/" rel="tag">暴力破解</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CSRF/" style="font-size: 10px;">CSRF</a> <a href="/tags/CTF/" style="font-size: 17.5px;">CTF</a> <a href="/tags/DVWAsql%E6%B3%A8%E5%85%A5%E5%92%8C%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 10px;">DVWAsql注入和文件上传</a> <a href="/tags/PHP%E4%BC%AA%E5%8D%8F%E8%AE%AE/" style="font-size: 10px;">PHP伪协议</a> <a href="/tags/SQL%E6%B3%A8%E5%85%A5/" style="font-size: 20px;">SQL注入</a> <a href="/tags/XSS/" style="font-size: 10px;">XSS</a> <a href="/tags/cs%E7%AE%80%E5%8D%95%E5%88%A9%E7%94%A8/" style="font-size: 10px;">cs简单利用</a> <a href="/tags/kali%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E9%97%AE%E9%A2%98/" style="font-size: 10px;">kali网络配置问题</a> <a href="/tags/misc/" style="font-size: 10px;">misc</a> <a href="/tags/msf%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/" style="font-size: 10px;">msf简单使用</a> <a href="/tags/%E4%B8%80%E5%8F%A5%E8%AF%9D%E6%9C%A8%E9%A9%AC/" style="font-size: 10px;">一句话木马</a> <a href="/tags/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C/" style="font-size: 10px;">攻防世界</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 15px;">文件上传</a> <a href="/tags/%E6%9A%B4%E5%8A%9B%E7%A0%B4%E8%A7%A3/" style="font-size: 12.5px;">暴力破解</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/07/08/buu4/">buu4</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/02/CTF-SQL%E6%B3%A8%E5%85%A5%E8%BF%9B%E9%98%B6/">CTF-SQL注入进阶</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/01/CTF-%E8%84%9A%E6%9C%AC%E5%9F%BA%E7%A1%80/">CTF-脚本基础</a>
+          </li>
+        
+          <li>
+            <a href="/2021/05/30/CTF-PHP%E5%BA%8F%E5%88%97%E5%8C%96%E5%AE%89%E5%85%A8/">CTF-PHP序列化安全</a>
+          </li>
+        
+          <li>
+            <a href="/2021/05/29/CTF-XXE%E6%B3%A8%E5%85%A5/">CTF-XXE注入</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
