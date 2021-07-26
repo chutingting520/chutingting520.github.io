@@ -129,7 +129,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">62</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">61</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -182,113 +182,6 @@
 
           <div class="content index posts-expand">
             
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/03/22/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat.jpg">
-      <meta itemprop="name" content="WJW">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="WJW's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/03/22/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C/" class="post-title-link" itemprop="url">攻防学习</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-03-22 20:58:34" itemprop="dateCreated datePublished" datetime="2021-03-22T20:58:34+08:00">2021-03-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-05-23 09:35:10" itemprop="dateModified" datetime="2021-05-23T09:35:10+08:00">2021-05-23</time>
-              </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>1.7k</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="view-source"><a href="#view-source" class="headerlink" title="view_source"></a>view_source</h3><p>f12查看源码就有flag。</p>
-<h2 id="robots"><a href="#robots" class="headerlink" title="robots"></a>robots</h2><p>robots.txt是搜索引擎中访问网站的时候要查看的第一个文件。<br>当一个搜索蜘蛛访问一个站点时，它会首先检查该站点根目录下是否存在robots.txt，如果存在，搜索机器人就会按照该文件中的内容来确定访问的范围；<br>如果该文件不存在，所有的搜索蜘蛛将能够访问网站上所有没有被口令保护的页面。<br>扫目录脚本dirsearch(项目地址：<a target="_blank" rel="noopener" href="https://github.com/maurosoria/dirsearch">https://github.com/maurosoria/dirsearch</a>)<br>还有要用python3以上的版本。</p>
-<p><img src="%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C.md/1.png"></p>
-<p>不用一分钟，就发现了一个robot.txt文件，访问，获得flag路径，再次访问，获得flag。</p>
-<h2 id="backup"><a href="#backup" class="headerlink" title="backup"></a>backup</h2><p>常见的备份文件后缀名有: .git .svn .swp .svn .~ .bak .bash_history<br>用扫目录脚本(同robots题目)，发现有备份文件即可找回。</p>
-<h3 id="cookie"><a href="#cookie" class="headerlink" title="cookie"></a>cookie</h3><p>刷新页面，发现有一个cookie.php，访问，查看http 响应就有flag。</p>
-<h2 id="disabled-button"><a href="#disabled-button" class="headerlink" title="disabled_button"></a>disabled_button</h2><p>初步了解前端知识，f12审查元素，删除字段disabled=””即可，绕过前端验证和upload第一关的方法类似。</p>
-<h3 id="weak-auth"><a href="#weak-auth" class="headerlink" title="weak_auth"></a>weak_auth</h3><p>弱口令密码爆破，使用burp进行爆破即可。</p>
-<h3 id="simple-php"><a href="#simple-php" class="headerlink" title="simple_php"></a>simple_php</h3><p>原理—php弱类型比较</p>
-<p>审计代码，发现flag由flag1和flag2组成，先对第一个if语句分析，</p>
-<p><img src="%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C.md/2.png"></p>
-<p>a==0 并且$a的值要存在，才能返回true 执行echo $flag1</p>
-<p>由于php弱类型比较，所以令a=a时,a==0返回true，且$a返回true，如果令a=0，则会导致$a返回false。</p>
-<p>第二个if语句，is_numeric检测变量是否为数字或数字字符串，是返回true，不是返回false</p>
-<p>在字符串与数字进行比较时，会转化成同类型再比较(php弱类型比较，较不严格)，会使b=1235a转化成1235再与1234进行比较。</p>
-<p>可以参考文章<a target="_blank" rel="noopener" href="https://www.php.net/manual/zh/types.comparisons.php">https://www.php.net/manual/zh/types.comparisons.php</a></p>
-<h3 id="get-post"><a href="#get-post" class="headerlink" title="get post"></a>get post</h3><p>使用hackbar进行post方式提交参数，在url进行get方式提交参数。</p>
-<h3 id="xff-referer"><a href="#xff-referer" class="headerlink" title="xff_referer"></a>xff_referer</h3><p>必须要知道消息报头的一些知识。</p>
-<h4 id="HTTP请求报文–消息报头"><a href="#HTTP请求报文–消息报头" class="headerlink" title="HTTP请求报文–消息报头"></a>HTTP请求报文–消息报头</h4><p><strong>Accept-Language:浏览器可接受的语言。</strong><br><strong>Cookie(小饼干):HTTP请求发送时，会把在该请求域名下的所有cookie值一起发送给web服务器。就像我们在网页登陆时，账户已经存在。</strong><br><strong>Content-Length:请求的内容长度。</strong><br><strong>Content-TyPe:请求的内容对应的MIME信息，也叫互联网媒体类型</strong><br><strong>Host:指定请求的服务器的域名和端口号。</strong><br><strong>User-Agent:User-Agent的内容包含发出请求的用户信息。</strong><br><strong>Referer:表示当前是从哪个页面上的链接触发的。</strong><br><strong>X-Forwarded-For:简称XFF头，它代表客户端，也就是HTTP的请求端真实的IP，只有在通过了HTTP 代理或者负载均衡服务器时才会添加该项<br>HTTP Referer是header的一部分，当浏览器向web服务器发送请求的时候，一般会带上Referer，告诉服务器我是从哪个页面链接过来的。</strong></p>
-<p>使用burp先添加ip地址，再添加refer值。</p>
-<h3 id="webshell"><a href="#webshell" class="headerlink" title="webshell"></a>webshell</h3><p>使用蚁剑连接一句话木马即可。</p>
-<h3 id="command-execution"><a href="#command-execution" class="headerlink" title="command_execution"></a>command_execution</h3><p>这是一道简单有关ping命令执行恶意代码题，没有任何过滤机制。</p>
-<p>直接ip地址接命令执行语句。</p>
-<p>随便使用一个拼接符执行命令即可，这里有关命令执行的语句可以回看dvwa靶场的命令执行。</p>
-<p><code>127.0.0.1|find -name &quot;flag.txt&quot;</code></p>
-<p>这里找不到文件的时候，需要一级一级访问目录寻找flag。</p>
-<h3 id="simple-js"><a href="#simple-js" class="headerlink" title="simple_js"></a>simple_js</h3><p>这是一题有关javascript的代码审计。</p>
-<p><img src="%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C.md/3.png"></p>
-<p>看到最后一句不管输入什么密码，都会跳出假密码，真密码位于fromCharCode。</p>
-<p>编码为base16，先使用python处理获得数组，再将数组分别进行ascii处理。</p>
-<p><img src="%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C.md/4.png"></p>
-<p><img src="%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C.md/5.png"></p>
-<p>获得的为flag的内容。</p>
-
-      
-    </div>
-
-    
-    
-    
-<div>
-  
-</div>
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
       
   
   
@@ -1368,6 +1261,86 @@
   
   
 
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/01/10/Force/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat.jpg">
+      <meta itemprop="name" content="WJW">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="WJW's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/01/10/Force/" class="post-title-link" itemprop="url">Brute Force</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-01-10 16:34:23" itemprop="dateCreated datePublished" datetime="2021-01-10T16:34:23+08:00">2021-01-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-05-23 09:34:42" itemprop="dateModified" datetime="2021-05-23T09:34:42+08:00">2021-05-23</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>791</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="Brute-Force"><a href="#Brute-Force" class="headerlink" title="Brute Force"></a>Brute Force</h3><p>即暴力（破解），是指黑客利用密码字典，使用穷举法猜解出用户口令，是现在最为广泛使用的攻击手法之一。</p>
+<ul>
+<li>low<br>查看源码，可以发现，服务器只是验证参数login是否设置，<br>isset函数在服务器中检测变量是否被设置，返回true/false，没有任何防爆机制，且存在sql注入。<br>方法一(sql注入)：在username框输入admin’# 或者 admin’ or ‘1’=’1即可成功登陆。<br>原理为 and的优先级高于or。<br>方法二(burp爆破)抓包下来，放到intruder爆破，只对参数password进行爆破，<br><img src="Force.md/1.png"><br>换到payload，再添加字典，最后开始attack。<br><img src="Force.md/2.png"><br>成功爆破，返回页面长度和其他不一样的。<br><img src="Force.md/3.png"></li>
+<li>medium<br>可以看到，medium级别的代码对用户输入的参数进行了简单的过滤，对一些预定义字符进行了转义，基本上防止了SQL注入。<br>还有一个措施就是如果密码输错了，则延时两秒之后才能再次提交。<br>用burp爆破与low操作一样，只是少了sql注入。</li>
+<li>high<br>使用了Anti-CSRF token来抵御CSRF攻击，使用了函数stripslashes和mysqli_real_esacpe_string来抵御sql注入和xss攻击。<br>由于使用了Anti-CSRF token，每次服务器返回登陆页面都会包含一个随机的user_token值，每次用户登陆要一起提交，<br>所以服务器接到请求，会先检查user_token值，再进行sql查询，所以使用不再使用burp的无脑爆破。<br>这里有两种方法：<br>方法一：写python脚本，先模拟服务器发出请求获得一个token值，再利用获得的token值进行爆破。(脚本后续补上)<br>方法二：还是可以使用burp爆破，需要修改一些设置。<br><img src="Force.md/4.png">参加两个爆破参数。<br>这里攻击类型也要相应修改，为pitchfock，线程设为1。<br>找到Grep-Extract模块进行相应设置，add：</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+<div>
+  
+</div>
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
 
   
   <nav class="pagination">
@@ -1439,7 +1412,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">62</span>
+          <span class="site-state-item-count">61</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
