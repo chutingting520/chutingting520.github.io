@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="sql注入SQL Injection，即SQL注入，是指攻击者通过注入恶意的SQL命令，破坏SQL查询语句的结构，从而达到执行恶意SQL语句的目的。 low级别：判断注入类型输入1 or ‘1’&#x3D;’1 ,语句执行，返回结果，为单引号字符型注入。 猜语句中字段数输入3时报错，说明存在两个字段，即这里的First name和Surname。 爆库用联合查询注入爆出数据库。 爆表爆出两个表，guestb">
+<meta property="og:type" content="article">
+<meta property="og:title" content="dvwa">
+<meta property="og:url" content="http://example.com/2021/01/06/dvwa/index.html">
+<meta property="og:site_name" content="WJW&#39;s Blog">
+<meta property="og:description" content="sql注入SQL Injection，即SQL注入，是指攻击者通过注入恶意的SQL命令，破坏SQL查询语句的结构，从而达到执行恶意SQL语句的目的。 low级别：判断注入类型输入1 or ‘1’&#x3D;’1 ,语句执行，返回结果，为单引号字符型注入。 猜语句中字段数输入3时报错，说明存在两个字段，即这里的First name和Surname。 爆库用联合查询注入爆出数据库。 爆表爆出两个表，guestb">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2021/01/06/dvwa/dvwa.md/1.png">
+<meta property="og:image" content="http://example.com/2021/01/06/dvwa/dvwa.md/2.png">
+<meta property="og:image" content="http://example.com/2021/01/06/dvwa/dvwa.md/3.png">
+<meta property="og:image" content="http://example.com/2021/01/06/dvwa/dvwa.md/4.png">
+<meta property="og:image" content="http://example.com/2021/01/06/dvwa/dvwa.md/5.png">
+<meta property="og:image" content="http://example.com/2021/01/06/dvwa/dvwa.md/6.png">
+<meta property="og:image" content="http://example.com/2021/01/06/dvwa/dvwa.md/7.png">
+<meta property="og:image" content="http://example.com/2021/01/06/dvwa/dvwa.md/8.png">
+<meta property="og:image" content="http://example.com/2021/01/06/dvwa/dvwa.md/9.png">
+<meta property="og:image" content="http://example.com/2021/01/06/dvwa/dvwa.md/10.png">
+<meta property="og:image" content="http://example.com/2021/01/06/dvwa/dvwa.md/11.png">
+<meta property="og:image" content="http://example.com/2021/01/06/dvwa/dvwa.md/12.png">
+<meta property="og:image" content="http://example.com/2021/01/06/dvwa/dvwa.md/13.png">
+<meta property="og:image" content="http://example.com/2021/01/06/dvwa/dvwa.md/14.png">
+<meta property="og:image" content="http://example.com/2021/01/06/dvwa/dvwa.md/15.png">
+<meta property="article:published_time" content="2021-01-06T13:20:31.000Z">
+<meta property="article:modified_time" content="2021-05-23T01:34:44.000Z">
+<meta property="article:author" content="WJW">
+<meta property="article:tag" content="DVWAsql注入和文件上传">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2021/01/06/dvwa/dvwa.md/1.png">
+
+<link rel="canonical" href="http://example.com/2021/01/06/dvwa/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>dvwa | WJW's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="WJW's Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">WJW's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">14</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">0</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">62</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/01/06/dvwa/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat.jpg">
+      <meta itemprop="name" content="WJW">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="WJW's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          dvwa
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-01-06 21:20:31" itemprop="dateCreated datePublished" datetime="2021-01-06T21:20:31+08:00">2021-01-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-05-23 09:34:44" itemprop="dateModified" datetime="2021-05-23T09:34:44+08:00">2021-05-23</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.2k</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="sql注入"><a href="#sql注入" class="headerlink" title="sql注入"></a>sql注入</h3><p><em>SQL Injection，即SQL注入，是指攻击者通过注入恶意的SQL命令，破坏SQL查询语句的结构，从而达到执行恶意SQL语句的目的。</em></p>
+<h4 id="low级别："><a href="#low级别：" class="headerlink" title="low级别："></a>low级别：</h4><h5 id="判断注入类型"><a href="#判断注入类型" class="headerlink" title="判断注入类型"></a>判断注入类型</h5><p>输入1 or ‘1’=’1 ,语句执行，返回结果，为单引号字符型注入。<br><img src="dvwa.md/1.png"></p>
+<h5 id="猜语句中字段数"><a href="#猜语句中字段数" class="headerlink" title="猜语句中字段数"></a>猜语句中字段数</h5><p><img src="dvwa.md/2.png"><br>输入3时报错，说明存在两个字段，即这里的First name和Surname。</p>
+<h5 id="爆库"><a href="#爆库" class="headerlink" title="爆库"></a>爆库</h5><p>用联合查询注入爆出数据库。<br><img src="dvwa.md/3.png"></p>
+<h5 id="爆表"><a href="#爆表" class="headerlink" title="爆表"></a>爆表</h5><p><img src="dvwa.md/4.png"><br>爆出两个表，guestbook，users，账户和密码应该就在users里。</p>
+<h5 id="爆users表中的字段名"><a href="#爆users表中的字段名" class="headerlink" title="爆users表中的字段名"></a>爆users表中的字段名</h5><p><img src="dvwa.md/5.png">获得八个字段。</p>
+<h5 id="最后查询用户账户密码"><a href="#最后查询用户账户密码" class="headerlink" title="最后查询用户账户密码"></a>最后查询用户账户密码</h5><p><img src="dvwa.md/6.png"></p>
+<h4 id="medium级别"><a href="#medium级别" class="headerlink" title="medium级别"></a>medium级别</h4><p>只能提交数字，抓包下来进行注入。</p>
+<h5 id="判断注入类型-1"><a href="#判断注入类型-1" class="headerlink" title="判断注入类型"></a>判断注入类型</h5><p>输入1 or 1=1<br><img src="dvwa.md/7.png">返回结果，为数字型注入。<br>爆表和爆库名还是老样子，但是到了爆表名出了问题，一直报错，应该是什么被过滤了。<br>试了直接获取数据库中的表，<br><img src="dvwa.md/8.png">可以执行，说明单引号被过滤了。通过十六进制绕过即可，后面的操作跟前面一样，只需把有单引号的改成十六进制即可。</p>
+<h4 id="high级别"><a href="#high级别" class="headerlink" title="high级别"></a>high级别</h4><p>也是单引号字符型注入，和low并无太大区别，只是多了limit 1限制查询，通过#注释掉即可。<br><em>需要特别提到的是，High级别的查询提交页面与查询结果显示页面不是同一个，也没有执行302跳转，<br>这样做的目的是为了防止一般的sqlmap注入，因为sqlmap在注入过程中，无法在查询提交页面上获取查询的结果，没有了反馈，也就没办法进一步注入。</em><br><img src="dvwa.md/9.png"></p>
+<h3 id="sqlmap注入"><a href="#sqlmap注入" class="headerlink" title="sqlmap注入"></a>sqlmap注入</h3><p><code>sqlmap.py -u &quot;http://localhost/vulnerabilities/sqli/?id=1&amp;Submit=Submit#&quot; -dbs -threads 10 -batch</code><br>记得加双引号，才能指定参数提交。<br>这里还需要加cookie值，通过burp抓包，把cookie修改：<br><code>sqlmap.py -u &quot;http://localhost/vulnerabilities/sqli/?id=1&amp;Submit=Submit#&quot; -dbs -threads 10 -batch -o</code></p>
+<h3 id="upload-文件上传"><a href="#upload-文件上传" class="headerlink" title="upload(文件上传)"></a>upload(文件上传)</h3><p>File Upload，即文件上传漏洞，<br>通常是由于对上传文件的类型、内容没有进行严格的过滤、检查，使得攻击者可以通过上传木马获取服务器的webshell权限，<br>因此文件上传漏洞带来的危害常常是毁灭性的，Apache、Tomcat、Nginx等都曝出过文件上传漏洞。<br>复习一下文件上传漏洞条件：<em>第一，文件可以被上传。第二，文件能够被执行。第三，上传文件路径可知。</em></p>
+<h4 id="low"><a href="#low" class="headerlink" title="low"></a>low</h4><p>没有对上传文件类型，内容进行过滤、检查，直接上穿一句话木马即可</p>
+<h4 id="medium"><a href="#medium" class="headerlink" title="medium"></a>medium</h4><p>方法一:查看源码，对文件类型进行过滤，我们把文件改成jpg后缀后上传。<br>然后通过文件包含来解析一句话木马，文件包含要提前从low级别上传好<br><img src="dvwa.md/10.png">没解析时，是图片形式，一句话无法执行。文件包含后可以执行：<br><img src="dvwa.md/11.png"><br>方法二：抓包，修改文件类型，还有后缀改为php。<br>方法四:截断绕过。<br>在php版本小于5.3.4的服务器中，当Magic_quote_gpc选项为off时，可以在文件名中使用%00截断。</p>
+<h4 id="high"><a href="#high" class="headerlink" title="high"></a>high</h4><p>getimagesize(string filename)<br>函数会通过读取文件头，返回图片的长、宽等信息，如果没有相关的图片文件头，函数会报错。<br>strrpos(string,find,start)<br>函数返回字符串find在另一字符串string中最后一次出现的位置，如果没有找到字符串则返回false，可选参数start规定在何处开始搜索。<br>方法一：绕过文件头，可以在文件头添加GIF89a。<br>方法二：上传图片马，再进行文件包含。<br>在upload-labs做过很多了，就不在赘述了。</p>
+<h3 id="File-Inclusion"><a href="#File-Inclusion" class="headerlink" title="File Inclusion"></a>File Inclusion</h3><p>File Inclusion，意思是文件包含（漏洞），是指当服务器开启allow_url_include选项时，就可以通过php的某些特性函数（include()，require()和include_once()，require_once()）利用url去动态包含文件，此时如果没有对文件来源进行严格审查，就会导致任意文件读取或者任意命令执行。<br>文件包含漏洞分为本地文件包含漏洞与远程文件包含漏洞，远程文件包含漏洞是因为开启了php配置中的allow_url_fopen选项<br>（选项开启之后，服务器允许包含一个远程的文件）,前面在做upload靶场后面的几关都使用了文件包含来解析一句话木马。</p>
+<h4 id="low-1"><a href="#low-1" class="headerlink" title="low"></a>low</h4><p>服务器没做任何过滤<br><strong>服务器包含文件时，不管文件后缀是否是php，都会尝试当做php文件执行，如果文件内容确为php，则会正常执行并返回结果，如果不是，则会原封不动地打印文件内容，所以文件包含漏洞常常会导致任意文件读取与任意命令执行。</strong><br>后面补充：/etc/shadow<br>报错，显示没有此文件，说明不是Linux。<br><img src="dvwa.md/12.png"><br>但是知道了服务器文件的绝对路径，成功读取php.ini文件<br><img src="dvwa.md/13.png"><br>构造相对路径，加那么多..\，是为了保证能够到达服务器D盘的根目录。</p>
+<h4 id="medium-1"><a href="#medium-1" class="headerlink" title="medium"></a>medium</h4><p>源码中，过滤掉了https:// http:// ../ ..\ ，但是采用绝对路径不会被限制。<br>采用如图方式绕过，<br><img src="dvwa.md/14.png"></p>
+<h4 id="high-1"><a href="#high-1" class="headerlink" title="high"></a>high</h4><p>High级别的代码使用了fnmatch函数检查page参数，要求page参数的开头必须是file，服务器才会去包含相应的文件。<br>使用file协议，前面的难度也都可以用file协议包含相应文件。<br><img src="dvwa.md/15.png"> </p>
+
+    </div>
+
+    
+    
+    
+<div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+  
+</div>
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="WJW 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="WJW 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>WJW
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://example.com/2021/01/06/dvwa/" title="dvwa">http://example.com/2021/01/06/dvwa/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/DVWAsql%E6%B3%A8%E5%85%A5%E5%92%8C%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" rel="tag"># DVWAsql注入和文件上传</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/12/28/3/" rel="prev" title="upload-labs18~21">
+      <i class="fa fa-chevron-left"></i> upload-labs18~21
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/01/08/xss/" rel="next" title="XSS">
+      XSS <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#sql%E6%B3%A8%E5%85%A5"><span class="nav-number">1.</span> <span class="nav-text">sql注入</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#low%E7%BA%A7%E5%88%AB%EF%BC%9A"><span class="nav-number">1.1.</span> <span class="nav-text">low级别：</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%88%A4%E6%96%AD%E6%B3%A8%E5%85%A5%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.1.1.</span> <span class="nav-text">判断注入类型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%8C%9C%E8%AF%AD%E5%8F%A5%E4%B8%AD%E5%AD%97%E6%AE%B5%E6%95%B0"><span class="nav-number">1.1.2.</span> <span class="nav-text">猜语句中字段数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%88%86%E5%BA%93"><span class="nav-number">1.1.3.</span> <span class="nav-text">爆库</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%88%86%E8%A1%A8"><span class="nav-number">1.1.4.</span> <span class="nav-text">爆表</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%88%86users%E8%A1%A8%E4%B8%AD%E7%9A%84%E5%AD%97%E6%AE%B5%E5%90%8D"><span class="nav-number">1.1.5.</span> <span class="nav-text">爆users表中的字段名</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%9C%80%E5%90%8E%E6%9F%A5%E8%AF%A2%E7%94%A8%E6%88%B7%E8%B4%A6%E6%88%B7%E5%AF%86%E7%A0%81"><span class="nav-number">1.1.6.</span> <span class="nav-text">最后查询用户账户密码</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#medium%E7%BA%A7%E5%88%AB"><span class="nav-number">1.2.</span> <span class="nav-text">medium级别</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%88%A4%E6%96%AD%E6%B3%A8%E5%85%A5%E7%B1%BB%E5%9E%8B-1"><span class="nav-number">1.2.1.</span> <span class="nav-text">判断注入类型</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#high%E7%BA%A7%E5%88%AB"><span class="nav-number">1.3.</span> <span class="nav-text">high级别</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sqlmap%E6%B3%A8%E5%85%A5"><span class="nav-number">2.</span> <span class="nav-text">sqlmap注入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#upload-%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0"><span class="nav-number">3.</span> <span class="nav-text">upload(文件上传)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#low"><span class="nav-number">3.1.</span> <span class="nav-text">low</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#medium"><span class="nav-number">3.2.</span> <span class="nav-text">medium</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#high"><span class="nav-number">3.3.</span> <span class="nav-text">high</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#File-Inclusion"><span class="nav-number">4.</span> <span class="nav-text">File Inclusion</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#low-1"><span class="nav-number">4.1.</span> <span class="nav-text">low</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#medium-1"><span class="nav-number">4.2.</span> <span class="nav-text">medium</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#high-1"><span class="nav-number">4.3.</span> <span class="nav-text">high</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="WJW"
+      src="/images/cat.jpg">
+  <p class="site-author-name" itemprop="name">WJW</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">62</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">WJW</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">236k</span>
+</div>
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false});</script></body>
+</html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>

