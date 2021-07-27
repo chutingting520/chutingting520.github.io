@@ -19,7 +19,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="Redis未授权访问漏洞利用与防御Redis漏洞1Redis配置不当可导致未授权访问，被恶意利用。部分服务器上的Redis绑定在0.0.0.0：6379,并且没有开启认证(这是Redis的默认配置)，以及该端口可通过公网直接访问，如果没有采取相关的策略，比如添加防火墙规则避免其他非信任来源ip访问等，将会导致Redis服务器直接暴露在公网上，可能造成其他用户直接在非授权情况下直接访问呢Redis服">
@@ -30,7 +30,7 @@
 <meta property="og:description" content="Redis未授权访问漏洞利用与防御Redis漏洞1Redis配置不当可导致未授权访问，被恶意利用。部分服务器上的Redis绑定在0.0.0.0：6379,并且没有开启认证(这是Redis的默认配置)，以及该端口可通过公网直接访问，如果没有采取相关的策略，比如添加防火墙规则避免其他非信任来源ip访问等，将会导致Redis服务器直接暴露在公网上，可能造成其他用户直接在非授权情况下直接访问呢Redis服">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-05-27T13:13:49.000Z">
-<meta property="article:modified_time" content="2021-05-30T13:16:00.000Z">
+<meta property="article:modified_time" content="2021-07-27T01:41:52.059Z">
 <meta property="article:author" content="WJW">
 <meta property="article:tag" content="CTF">
 <meta name="twitter:card" content="summary">
@@ -134,7 +134,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">61</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">60</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -222,16 +222,30 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-05-30 21:16:00" itemprop="dateModified" datetime="2021-05-30T21:16:00+08:00">2021-05-30</time>
+                <time title="修改时间：2021-07-27 09:41:52" itemprop="dateModified" datetime="2021-07-27T09:41:52+08:00">2021-07-27</time>
               </span>
 
-          <br>
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
             <span class="post-meta-item" title="本文字数">
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
               <span>1.6k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>1 分钟</span>
             </span>
 
         </div>
@@ -245,7 +259,7 @@
       
         <h3 id="Redis未授权访问漏洞利用与防御"><a href="#Redis未授权访问漏洞利用与防御" class="headerlink" title="Redis未授权访问漏洞利用与防御"></a>Redis未授权访问漏洞利用与防御</h3><h4 id="Redis漏洞"><a href="#Redis漏洞" class="headerlink" title="Redis漏洞"></a>Redis漏洞</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Redis配置不当可导致未授权访问，被恶意利用。部分服务器上的Redis绑定在0.0.0.0：6379,并且没有开启认证(这是Redis的默认配置)，以及该端口可通过公网直接访问，如果没有采取相关的策略，比如添加防火墙规则避免其他非信任来源ip访问等，将会导致Redis服务器直接暴露在公网上，可能造成其他用户直接在非授权情况下直接访问呢Redis服务并进行相关操作。</span><br></pre></td></tr></table></figure>
 
-
+<span id="more"></span>
 
 
 
@@ -355,7 +369,7 @@
   <div id="qr" style="display: none;">
       
       <div style="display: inline-block;">
-        <img src="/images/wechatpay.jpg" alt="WJW 微信支付">
+        <img src="/images/wechatpay.png" alt="WJW 微信支付">
         <p>微信支付</p>
       </div>
       
@@ -496,7 +510,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">61</span>
+          <span class="site-state-item-count">60</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -544,8 +558,35 @@
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
     <span title="站点总字数">236k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">3:35</span>
 </div>
+
         
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
 
 
 

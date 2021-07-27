@@ -19,15 +19,15 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="导入：源码中有 print_f(mysql_error())报错注入型  输入?id&#x3D;1到17页面显示正常 大于18 页面显示异常，得出没有页面没有显示位，无法使用联合注入  尝试加单引号，出现sql语句报错，使用：报错注入。  floor?id&#x3D;1&#39; and (select 1 from (select count(*),concat(((查询语句)),floor(rand()*2))">
+  <meta name="description" content="源码中有 print_f(mysql_error())">
 <meta property="og:type" content="article">
 <meta property="og:title" content="sqli-labs5、6">
 <meta property="og:url" content="http://example.com/2020/11/19/sqli-labs/5~6/index.html">
 <meta property="og:site_name" content="WJW&#39;s Blog">
-<meta property="og:description" content="导入：源码中有 print_f(mysql_error())报错注入型  输入?id&#x3D;1到17页面显示正常 大于18 页面显示异常，得出没有页面没有显示位，无法使用联合注入  尝试加单引号，出现sql语句报错，使用：报错注入。  floor?id&#x3D;1&#39; and (select 1 from (select count(*),concat(((查询语句)),floor(rand()*2))">
+<meta property="og:description" content="源码中有 print_f(mysql_error())">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/2020/11/19/sqli-labs/5~6/5~6.md/1.png">
 <meta property="og:image" content="http://example.com/2020/11/19/sqli-labs/5~6/5~6.md/2.png">
@@ -37,7 +37,7 @@
 <meta property="og:image" content="http://example.com/2020/11/19/sqli-labs/5~6/5~6.md/5.png">
 <meta property="og:image" content="http://example.com/2020/11/19/sqli-labs/5~6/5~6.md/6.png">
 <meta property="article:published_time" content="2020-11-19T14:06:40.000Z">
-<meta property="article:modified_time" content="2021-06-15T05:39:34.000Z">
+<meta property="article:modified_time" content="2021-07-27T01:57:02.179Z">
 <meta property="article:author" content="WJW">
 <meta property="article:tag" content="SQL注入">
 <meta name="twitter:card" content="summary">
@@ -142,7 +142,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">61</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">60</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -230,16 +230,30 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-15 13:39:34" itemprop="dateModified" datetime="2021-06-15T13:39:34+08:00">2021-06-15</time>
+                <time title="修改时间：2021-07-27 09:57:02" itemprop="dateModified" datetime="2021-07-27T09:57:02+08:00">2021-07-27</time>
               </span>
 
-          <br>
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
             <span class="post-meta-item" title="本文字数">
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
               <span>1.6k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>1 分钟</span>
             </span>
 
         </div>
@@ -252,8 +266,13 @@
 
       
         <ul>
-<li>导入：源码中有 print_f(mysql_error())<h3 id="报错注入型"><a href="#报错注入型" class="headerlink" title="报错注入型"></a>报错注入型</h3>  输入?id=1到17页面显示正常 大于18 页面显示异常，得出没有页面没有显示位，无法使用联合注入<br><img src="5~6.md/1.png"><br>  尝试加单引号，出现sql语句报错，使用：报错注入。<br><img src="5~6.md/2.png"></li>
+<li>源码中有 print_f(mysql_error())</li>
 </ul>
+<span id="more"></span>
+
+<h3 id="报错注入型"><a href="#报错注入型" class="headerlink" title="报错注入型"></a>报错注入型</h3><pre><code>输入?id=1到17页面显示正常 大于18 页面显示异常，得出没有页面没有显示位，无法使用联合注入
+</code></pre>
+<p><img src="5~6.md/1.png"><br>    尝试加单引号，出现sql语句报错，使用：报错注入。<br><img src="5~6.md/2.png"></p>
 <h4 id="floor"><a href="#floor" class="headerlink" title="floor"></a>floor</h4><p><code>?id=1&#39; and (select 1 from (select count(*),concat(((查询语句)),floor(rand()*2))x from information_schema.tables group by x)a)--+</code><br>    可更改查询语句  获得其他数据,详细见双查询注入。</p>
 <h4 id="updatexml函数报错注入"><a href="#updatexml函数报错注入" class="headerlink" title="updatexml函数报错注入"></a>updatexml函数报错注入</h4><p>语法：<br><code>updatexml(文档类型,xpath路径,更新的内容)</code><br>xpath路径写入其他格式就会报错，并返回我们写入的非法格式内容。<br><code>?id=1&#39; and updatexml (1,concat(0x7c,(select database())),1)--+</code> **0x7c后面的逗号不能漏。这里id的值影响不大但是单引号不能漏，不然不会报错。<br><img src="5~6.md/3.png"></p>
 <p>补充：</p>
@@ -298,7 +317,7 @@
   <div id="qr" style="display: none;">
       
       <div style="display: inline-block;">
-        <img src="/images/wechatpay.jpg" alt="WJW 微信支付">
+        <img src="/images/wechatpay.png" alt="WJW 微信支付">
         <p>微信支付</p>
       </div>
       
@@ -439,7 +458,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">61</span>
+          <span class="site-state-item-count">60</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -487,8 +506,35 @@
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
     <span title="站点总字数">236k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">3:35</span>
 </div>
+
         
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
 
 
 

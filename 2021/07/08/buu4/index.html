@@ -19,21 +19,21 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="[EIS 2019]EzPOP—easypop没有那么easy 源代码 12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182838485868">
+  <meta name="description" content="[EIS 2019]EzPOP—easypop没有那么easy">
 <meta property="og:type" content="article">
 <meta property="og:title" content="buu4">
 <meta property="og:url" content="http://example.com/2021/07/08/buu4/index.html">
 <meta property="og:site_name" content="WJW&#39;s Blog">
-<meta property="og:description" content="[EIS 2019]EzPOP—easypop没有那么easy 源代码 12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182838485868">
+<meta property="og:description" content="[EIS 2019]EzPOP—easypop没有那么easy">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/2021/07/08/buu4/buu4.md/1.png">
 <meta property="og:image" content="http://example.com/2021/07/08/buu4/buu4.md/2.png">
 <meta property="og:image" content="http://example.com/2021/07/08/buu4/buu4.md/3.png">
 <meta property="article:published_time" content="2021-07-08T13:18:45.000Z">
-<meta property="article:modified_time" content="2021-07-22T12:02:06.255Z">
+<meta property="article:modified_time" content="2021-07-27T01:37:51.317Z">
 <meta property="article:author" content="WJW">
 <meta property="article:tag" content="CTF">
 <meta name="twitter:card" content="summary">
@@ -138,7 +138,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">61</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">60</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -226,16 +226,30 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-07-22 20:02:06" itemprop="dateModified" datetime="2021-07-22T20:02:06+08:00">2021-07-22</time>
+                <time title="修改时间：2021-07-27 09:37:51" itemprop="dateModified" datetime="2021-07-27T09:37:51+08:00">2021-07-27</time>
               </span>
 
-          <br>
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
             <span class="post-meta-item" title="本文字数">
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
               <span>46k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>41 分钟</span>
             </span>
 
         </div>
@@ -248,6 +262,8 @@
 
       
         <h2 id="EIS-2019-EzPOP"><a href="#EIS-2019-EzPOP" class="headerlink" title="[EIS 2019]EzPOP"></a>[EIS 2019]EzPOP</h2><p>—easypop没有那么easy</p>
+<span id="more"></span>
+
 <p>源代码</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">error_reporting(0);</span><br><span class="line"></span><br><span class="line">class A &#123;</span><br><span class="line"></span><br><span class="line">    protected $store;</span><br><span class="line"></span><br><span class="line">    protected $key;</span><br><span class="line"></span><br><span class="line">    protected $expire;</span><br><span class="line"></span><br><span class="line">    public function __construct($store, $key = &#x27;flysystem&#x27;, $expire = null) &#123;</span><br><span class="line">        $this-&gt;key = $key;</span><br><span class="line">        $this-&gt;store = $store;</span><br><span class="line">        $this-&gt;expire = $expire;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function cleanContents(array $contents) &#123;</span><br><span class="line">        $cachedProperties = array_flip([</span><br><span class="line">            &#x27;path&#x27;, &#x27;dirname&#x27;, &#x27;basename&#x27;, &#x27;extension&#x27;, &#x27;filename&#x27;,</span><br><span class="line">            &#x27;size&#x27;, &#x27;mimetype&#x27;, &#x27;visibility&#x27;, &#x27;timestamp&#x27;, &#x27;type&#x27;,</span><br><span class="line">        ]);</span><br><span class="line"></span><br><span class="line">        foreach ($contents as $path =&gt; $object) &#123;</span><br><span class="line">            if (is_array($object)) &#123;</span><br><span class="line">                $contents[$path] = array_intersect_key($object, $cachedProperties);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        return $contents;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function getForStorage() &#123;</span><br><span class="line">        $cleaned = $this-&gt;cleanContents($this-&gt;cache);</span><br><span class="line"></span><br><span class="line">        return json_encode([$cleaned, $this-&gt;complete]);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function save() &#123;</span><br><span class="line">        $contents = $this-&gt;getForStorage();</span><br><span class="line"></span><br><span class="line">        $this-&gt;store-&gt;set($this-&gt;key, $contents, $this-&gt;expire);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function __destruct() &#123;</span><br><span class="line">        if (!$this-&gt;autosave) &#123;</span><br><span class="line">            $this-&gt;save();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class B &#123;</span><br><span class="line"></span><br><span class="line">    protected function getExpireTime($expire): int &#123;</span><br><span class="line">        return (int) $expire;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function getCacheKey(string $name): string &#123;</span><br><span class="line">        return $this-&gt;options[&#x27;prefix&#x27;] . $name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    protected function serialize($data): string &#123;</span><br><span class="line">        if (is_numeric($data)) &#123;</span><br><span class="line">            return (string) $data;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        $serialize = $this-&gt;options[&#x27;serialize&#x27;];</span><br><span class="line"></span><br><span class="line">        return $serialize($data);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function set($name, $value, $expire = null): bool&#123;</span><br><span class="line">        $this-&gt;writeTimes++;</span><br><span class="line"></span><br><span class="line">        if (is_null($expire)) &#123;</span><br><span class="line">            $expire = $this-&gt;options[&#x27;expire&#x27;];</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        $expire = $this-&gt;getExpireTime($expire);</span><br><span class="line">        $filename = $this-&gt;getCacheKey($name);</span><br><span class="line"></span><br><span class="line">        $dir = dirname($filename);</span><br><span class="line"></span><br><span class="line">        if (!is_dir($dir)) &#123;</span><br><span class="line">            try &#123;</span><br><span class="line">                mkdir($dir, 0755, true);</span><br><span class="line">            &#125; catch (\Exception $e) &#123;</span><br><span class="line">                // 创建失败</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        $data = $this-&gt;serialize($value);</span><br><span class="line"></span><br><span class="line">        if ($this-&gt;options[&#x27;data_compress&#x27;] &amp;&amp; function_exists(&#x27;gzcompress&#x27;)) &#123;</span><br><span class="line">            //数据压缩</span><br><span class="line">            $data = gzcompress($data, 3);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        $data = &quot;&lt;?php\n//&quot; . sprintf(&#x27;%012d&#x27;, $expire) . &quot;\n exit();?&gt;\n&quot; . $data;</span><br><span class="line">        $result = file_put_contents($filename, $data);</span><br><span class="line"></span><br><span class="line">        if ($result) &#123;</span><br><span class="line">            return true;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if (isset($_GET[&#x27;src&#x27;]))</span><br><span class="line">&#123;</span><br><span class="line">    highlight_file(__FILE__);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$dir = &quot;uploads/&quot;;</span><br><span class="line"></span><br><span class="line">if (!is_dir($dir))</span><br><span class="line">&#123;</span><br><span class="line">    mkdir($dir);</span><br><span class="line">&#125;</span><br><span class="line">unserialize($_GET[&quot;data&quot;]);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
@@ -822,7 +838,7 @@
   <div id="qr" style="display: none;">
       
       <div style="display: inline-block;">
-        <img src="/images/wechatpay.jpg" alt="WJW 微信支付">
+        <img src="/images/wechatpay.png" alt="WJW 微信支付">
         <p>微信支付</p>
       </div>
       
@@ -960,7 +976,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">61</span>
+          <span class="site-state-item-count">60</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1008,8 +1024,35 @@
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
     <span title="站点总字数">236k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">3:35</span>
 </div>
+
         
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
 
 
 

@@ -19,15 +19,15 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="web1刚开始图片花里胡哨的，f12查看源码，有flag。 web2想直接修改源码为1+1，再输入2验证，发现密码有误。 再找找js代码，结果发现flag就在里面哈哈哈； 还可以修改长度限制，maxlength。 web3很简单的一个get提交。 web4很简单的一个post提交。 web5php弱类型比较，1再加一个字母即可。 web6火狐浏览器直接停止弹窗，查看源码，后面有一串编码，对编码了解">
+  <meta name="description" content="​         下面是对bugku刷题的记录:">
 <meta property="og:type" content="article">
 <meta property="og:title" content="bugku">
 <meta property="og:url" content="http://example.com/2021/03/22/bugku/index.html">
 <meta property="og:site_name" content="WJW&#39;s Blog">
-<meta property="og:description" content="web1刚开始图片花里胡哨的，f12查看源码，有flag。 web2想直接修改源码为1+1，再输入2验证，发现密码有误。 再找找js代码，结果发现flag就在里面哈哈哈； 还可以修改长度限制，maxlength。 web3很简单的一个get提交。 web4很简单的一个post提交。 web5php弱类型比较，1再加一个字母即可。 web6火狐浏览器直接停止弹窗，查看源码，后面有一串编码，对编码了解">
+<meta property="og:description" content="​         下面是对bugku刷题的记录:">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/2021/03/22/bugku/bugku/1.png">
 <meta property="og:image" content="http://example.com/2021/03/22/bugku/bugku/2.png">
@@ -61,7 +61,7 @@
 <meta property="og:image" content="http://example.com/2021/03/22/bugku/bugku/30.png">
 <meta property="og:image" content="http://example.com/2021/03/22/bugku/bugku/31.png">
 <meta property="article:published_time" content="2021-03-22T04:27:43.000Z">
-<meta property="article:modified_time" content="2021-07-17T02:59:19.528Z">
+<meta property="article:modified_time" content="2021-07-27T01:47:48.793Z">
 <meta property="article:author" content="WJW">
 <meta property="article:tag" content="CTF">
 <meta name="twitter:card" content="summary">
@@ -166,7 +166,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">61</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">60</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -254,16 +254,30 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-07-17 10:59:19" itemprop="dateModified" datetime="2021-07-17T10:59:19+08:00">2021-07-17</time>
+                <time title="修改时间：2021-07-27 09:47:48" itemprop="dateModified" datetime="2021-07-27T09:47:48+08:00">2021-07-27</time>
               </span>
 
-          <br>
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
             <span class="post-meta-item" title="本文字数">
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
               <span>15k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>14 分钟</span>
             </span>
 
         </div>
@@ -275,7 +289,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id="web1"><a href="#web1" class="headerlink" title="web1"></a>web1</h3><p>刚开始图片花里胡哨的，f12查看源码，有flag。</p>
+        <p>​         下面是对bugku刷题的记录:</p>
+<span id="more"></span>
+
+<h3 id="web1"><a href="#web1" class="headerlink" title="web1"></a>web1</h3><p>刚开始图片花里胡哨的，f12查看源码，有flag。</p>
 <h3 id="web2"><a href="#web2" class="headerlink" title="web2"></a>web2</h3><p>想直接修改源码为1+1，再输入2验证，发现密码有误。</p>
 <p>再找找js代码，结果发现flag就在里面哈哈哈；</p>
 <p>还可以修改长度限制，maxlength。</p>
@@ -521,7 +538,7 @@
   <div id="qr" style="display: none;">
       
       <div style="display: inline-block;">
-        <img src="/images/wechatpay.jpg" alt="WJW 微信支付">
+        <img src="/images/wechatpay.png" alt="WJW 微信支付">
         <p>微信支付</p>
       </div>
       
@@ -662,7 +679,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">61</span>
+          <span class="site-state-item-count">60</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -710,8 +727,35 @@
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
     <span title="站点总字数">236k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">3:35</span>
 </div>
+
         
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
 
 
 

@@ -19,15 +19,15 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="Less-25很明显，or,and,被过滤了。首先正常输入，?id&#x3D;1&#39;报错了，发现为注入点。这里要了解一个双写绕过注入：**or改成oorr，and改成anandd **思路：要先判断是一次性绕过还是非一次性过滤，如果是一次性就用双写绕过，如果是非一次性考虑其它变形。eg：大小写变形绕过OR&#x3D;oR&#x3D;Or&#x3D;or    利用运算符or&#x3D;|| ,and&#x3D;&amp;&amp;">
+  <meta name="description" content="Less-25有关双写绕过的注入，">
 <meta property="og:type" content="article">
 <meta property="og:title" content="sqli-labs25~28">
 <meta property="og:url" content="http://example.com/2020/12/10/sqli-labs/25/index.html">
 <meta property="og:site_name" content="WJW&#39;s Blog">
-<meta property="og:description" content="Less-25很明显，or,and,被过滤了。首先正常输入，?id&#x3D;1&#39;报错了，发现为注入点。这里要了解一个双写绕过注入：**or改成oorr，and改成anandd **思路：要先判断是一次性绕过还是非一次性过滤，如果是一次性就用双写绕过，如果是非一次性考虑其它变形。eg：大小写变形绕过OR&#x3D;oR&#x3D;Or&#x3D;or    利用运算符or&#x3D;|| ,and&#x3D;&amp;&amp;">
+<meta property="og:description" content="Less-25有关双写绕过的注入，">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/2020/12/10/sqli-labs/25/25.md/0.png">
 <meta property="og:image" content="http://example.com/2020/12/10/sqli-labs/25/25.md/1.png">
@@ -39,7 +39,7 @@
 <meta property="og:image" content="http://example.com/2020/12/10/sqli-labs/25/25.md/7.png">
 <meta property="og:image" content="http://example.com/2020/12/10/sqli-labs/25/25.md/8.png">
 <meta property="article:published_time" content="2020-12-10T08:31:55.000Z">
-<meta property="article:modified_time" content="2021-05-23T01:35:18.000Z">
+<meta property="article:modified_time" content="2021-07-27T01:59:57.214Z">
 <meta property="article:author" content="WJW">
 <meta property="article:tag" content="SQL注入">
 <meta name="twitter:card" content="summary">
@@ -144,7 +144,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">61</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">60</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -232,16 +232,30 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-05-23 09:35:18" itemprop="dateModified" datetime="2021-05-23T09:35:18+08:00">2021-05-23</time>
+                <time title="修改时间：2021-07-27 09:59:57" itemprop="dateModified" datetime="2021-07-27T09:59:57+08:00">2021-07-27</time>
               </span>
 
-          <br>
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
             <span class="post-meta-item" title="本文字数">
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
               <span>2.3k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>2 分钟</span>
             </span>
 
         </div>
@@ -253,7 +267,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id="Less-25"><a href="#Less-25" class="headerlink" title="Less-25"></a>Less-25</h3><p>很明显，or,and,被过滤了。<br>首先正常输入，<code>?id=1&#39;</code>报错了，发现为注入点。<br>这里要了解一个双写绕过注入：**or改成oorr，and改成anandd **<br>思路：要先判断是一次性绕过还是非一次性过滤，如果是一次性就用双写绕过，如果是非一次性考虑其它变形。<br>eg：大小写变形绕过OR=oR=Or=or<br>    利用运算符or=|| ,and=&amp;&amp;<br>            URL编码绕过:#=%23<br>    Hex编码:~=0x7e<br>    添加注释:/<em>or</em>/还有其他等等。<br>所以使用联合查询注入：<code>?id=-1&#39; union select 1,2,group_concat(username,passwoorrd)from users--+</code><br><img src="25.md/0.png"><br>还能使用报错注入，这里使用&amp;&amp;会报错。(原因？？)<br><code>?id=-1&#39; || updatexml(1,concat(0x7c,database()),1)--+</code><br><img src="25.md/1.png"><br>布尔盲注等等。。。</p>
+        <h3 id="Less-25"><a href="#Less-25" class="headerlink" title="Less-25"></a>Less-25</h3><p>有关双写绕过的注入，</p>
+<span id="more"></span>
+
+<p>很明显，or,and,被过滤了。<br>首先正常输入，<code>?id=1&#39;</code>报错了，发现为注入点。<br>这里要了解一个双写绕过注入：**or改成oorr，and改成anandd **<br>思路：要先判断是一次性绕过还是非一次性过滤，如果是一次性就用双写绕过，如果是非一次性考虑其它变形。<br>eg：大小写变形绕过OR=oR=Or=or<br>    利用运算符or=|| ,and=&amp;&amp;<br>            URL编码绕过:#=%23<br>    Hex编码:~=0x7e<br>    添加注释:/<em>or</em>/还有其他等等。<br>所以使用联合查询注入：<code>?id=-1&#39; union select 1,2,group_concat(username,passwoorrd)from users--+</code><br><img src="25.md/0.png"><br>还能使用报错注入，这里使用&amp;&amp;会报错。(原因？？)<br><code>?id=-1&#39; || updatexml(1,concat(0x7c,database()),1)--+</code><br><img src="25.md/1.png"><br>布尔盲注等等。。。</p>
 <h3 id="Less-25a"><a href="#Less-25a" class="headerlink" title="Less-25a"></a>Less-25a</h3><p>查看源码，sql语句为数字型注入，与第二关一样类型，再用和25关一样即可。<br>但是不能用报错注入，被注释了。</p>
 <h3 id="Less-26"><a href="#Less-26" class="headerlink" title="Less-26"></a>Less-26</h3><p>首先判断注入点，为?id=1’再查看源代码，这里过滤掉了很多东西。<br>过滤了# or and 多行单行注释 斜杠 空格 反斜杠。<br>所以就要找其他的来代替空格注释？？？<br>空格URL编码替代方法：%a0(空格),%0a(新建一行),%0b(TAB垂直),%0c(新的一页),%0d(return功能),%09(TAB水平)<br>尝试了联合注入，不知道为什么一直不行，尝试报错注入就可以。？？？<br>爆表<br><code>?id=0&#39;||updatexml(1,concat(0x7c,(select(group_concat(table_name))from(infoorrmation_schema.tables)where(table_schema=&#39;security&#39;))),0)||&#39;1&#39;=&#39;1</code><br>这里用updatexml可以省去空格过滤得烦恼。记得加0x7c，不然有一个表会被吃掉<br><strong>这里还通过加()方式省去了打空格。</strong>减少错误的发生<br><img src="25.md/2.png"><br>爆用户名和密码<br><code>?id=0&#39;||updatexml(1,concat(0x7c,(select(group_concat(username,passwoorrd))from(users))),0)||&#39;1&#39;=&#39;1</code><br><img src="25.md/3.png"><br>这里如果把||改成anandd也不行.?对于报错原理还是不太行。</p>
 <h4 id="PHP版本问题"><a href="#PHP版本问题" class="headerlink" title="PHP版本问题"></a>PHP版本问题</h4><p>因为版本问题，我输入的URL编码代替空格都会出现错误。这里把PHP版本换成5.2.17比较旧的版本。<br>就可以使用联合查询注入了，哈哈哈研究半天。。。不过也只有%0b、%a0可以用。</p>
@@ -288,7 +305,7 @@
   <div id="qr" style="display: none;">
       
       <div style="display: inline-block;">
-        <img src="/images/wechatpay.jpg" alt="WJW 微信支付">
+        <img src="/images/wechatpay.png" alt="WJW 微信支付">
         <p>微信支付</p>
       </div>
       
@@ -429,7 +446,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">61</span>
+          <span class="site-state-item-count">60</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -477,8 +494,35 @@
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
     <span title="站点总字数">236k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">3:35</span>
 </div>
+
         
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
 
 
 

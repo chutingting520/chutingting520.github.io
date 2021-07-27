@@ -19,18 +19,18 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="与MySQL相关知识点MySQL默认存放一个“information_schema”的数据库 记住三个表名“schemata、tables、columns” schemata表储存该用户创建所有数据库的库名，记住schema_name（数据库库名的字段名）。 tables表储存该用户创建所有数据库的库名和表名，记住table_schema(数据库库名)和table_name(表名的字段名) col">
+  <meta name="description" content="与MySQL相关知识点">
 <meta property="og:type" content="article">
 <meta property="og:title" content="MYSQL注入相关学习">
 <meta property="og:url" content="http://example.com/2020/11/17/sqli-labs/sql%E6%B3%A8%E5%85%A5%E5%AD%A6%E4%B9%A0/index.html">
 <meta property="og:site_name" content="WJW&#39;s Blog">
-<meta property="og:description" content="与MySQL相关知识点MySQL默认存放一个“information_schema”的数据库 记住三个表名“schemata、tables、columns” schemata表储存该用户创建所有数据库的库名，记住schema_name（数据库库名的字段名）。 tables表储存该用户创建所有数据库的库名和表名，记住table_schema(数据库库名)和table_name(表名的字段名) col">
+<meta property="og:description" content="与MySQL相关知识点">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-11-17T02:25:24.000Z">
-<meta property="article:modified_time" content="2021-05-23T01:29:46.000Z">
+<meta property="article:modified_time" content="2021-07-27T02:02:40.237Z">
 <meta property="article:author" content="WJW">
 <meta property="article:tag" content="SQL注入">
 <meta name="twitter:card" content="summary">
@@ -134,7 +134,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">61</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">60</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -222,16 +222,30 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-05-23 09:29:46" itemprop="dateModified" datetime="2021-05-23T09:29:46+08:00">2021-05-23</time>
+                <time title="修改时间：2021-07-27 10:02:40" itemprop="dateModified" datetime="2021-07-27T10:02:40+08:00">2021-07-27</time>
               </span>
 
-          <br>
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
             <span class="post-meta-item" title="本文字数">
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
               <span>556</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>1 分钟</span>
             </span>
 
         </div>
@@ -243,7 +257,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id="与MySQL相关知识点"><a href="#与MySQL相关知识点" class="headerlink" title="与MySQL相关知识点"></a>与MySQL相关知识点</h3><pre><code>MySQL默认存放一个“information_schema”的数据库
+        <p>与MySQL相关知识点     </p>
+<span id="more"></span>
+
+<pre><code>MySQL默认存放一个“information_schema”的数据库
 记住三个表名“schemata、tables、columns”
 schemata表储存该用户创建所有数据库的库名，记住schema_name（数据库库名的字段名）。
 tables表储存该用户创建所有数据库的库名和表名，记住table_schema(数据库库名)和table_name(表名的字段名)
@@ -285,7 +302,7 @@ user():当前MySQL用户
   <div id="qr" style="display: none;">
       
       <div style="display: inline-block;">
-        <img src="/images/wechatpay.jpg" alt="WJW 微信支付">
+        <img src="/images/wechatpay.png" alt="WJW 微信支付">
         <p>微信支付</p>
       </div>
       
@@ -410,7 +427,7 @@ user():当前MySQL用户
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8EMySQL%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86%E7%82%B9"><span class="nav-number">1.</span> <span class="nav-text">与MySQL相关知识点</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1%E3%80%81MySQL%E6%9F%A5%E8%AF%A2%E8%AF%AD%E5%8F%A5"><span class="nav-number">1.1.</span> <span class="nav-text">1、MySQL查询语句</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2%E3%80%81limit-%E7%94%A8%E6%B3%95"><span class="nav-number">1.2.</span> <span class="nav-text">2、limit 用法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3%E3%80%81%E9%9C%80%E8%A6%81%E8%AE%B0%E4%BD%8F%E5%87%A0%E4%B8%AA%E5%87%BD%E6%95%B0"><span class="nav-number">1.3.</span> <span class="nav-text">3、需要记住几个函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4%E3%80%81%E6%B3%A8%E9%87%8A%E7%AC%A6"><span class="nav-number">1.4.</span> <span class="nav-text">4、注释符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5%E3%80%81-%E5%86%85%E8%81%94%E6%B3%A8%E9%87%8A-%E4%BB%A3%E7%A0%81-%E3%80%82"><span class="nav-number">1.5.</span> <span class="nav-text">5、 内联注释&#x2F;!代码&#x2F;。</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#union-%E6%B3%A8%E5%85%A5%E6%94%BB%E5%87%BB"><span class="nav-number">2.</span> <span class="nav-text">union 注入攻击</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1%E3%80%81MySQL%E6%9F%A5%E8%AF%A2%E8%AF%AD%E5%8F%A5"><span class="nav-number">1.</span> <span class="nav-text">1、MySQL查询语句</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2%E3%80%81limit-%E7%94%A8%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">2、limit 用法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3%E3%80%81%E9%9C%80%E8%A6%81%E8%AE%B0%E4%BD%8F%E5%87%A0%E4%B8%AA%E5%87%BD%E6%95%B0"><span class="nav-number">3.</span> <span class="nav-text">3、需要记住几个函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4%E3%80%81%E6%B3%A8%E9%87%8A%E7%AC%A6"><span class="nav-number">4.</span> <span class="nav-text">4、注释符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5%E3%80%81-%E5%86%85%E8%81%94%E6%B3%A8%E9%87%8A-%E4%BB%A3%E7%A0%81-%E3%80%82"><span class="nav-number">5.</span> <span class="nav-text">5、 内联注释&#x2F;!代码&#x2F;。</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#union-%E6%B3%A8%E5%85%A5%E6%94%BB%E5%87%BB"><span class="nav-number"></span> <span class="nav-text">union 注入攻击</span></a></div>
       </div>
       <!--/noindex-->
 
@@ -426,7 +443,7 @@ user():当前MySQL用户
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">61</span>
+          <span class="site-state-item-count">60</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -474,8 +491,35 @@ user():当前MySQL用户
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
     <span title="站点总字数">236k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">3:35</span>
 </div>
+
         
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
 
 
 
