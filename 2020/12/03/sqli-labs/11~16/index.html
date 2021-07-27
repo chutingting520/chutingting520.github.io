@@ -29,16 +29,16 @@
 <meta property="og:site_name" content="WJW&#39;s Blog">
 <meta property="og:description" content="POST 型注入一般存在搜索框或登入页面位置">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/.com//0.png">
-<meta property="og:image" content="http://example.com/.com//1.png">
-<meta property="og:image" content="http://example.com/.com//1.5.png">
-<meta property="og:image" content="http://example.com/.com//2.png">
+<meta property="og:image" content="http://example.com/2020/12/03/sqli-labs/11~16/11~16.md/0.png">
+<meta property="og:image" content="http://example.com/2020/12/03/sqli-labs/11~16/11~16.md/1.png">
+<meta property="og:image" content="http://example.com/2020/12/03/sqli-labs/11~16/11~16.md/1.5.png">
+<meta property="og:image" content="http://example.com/2020/12/03/sqli-labs/11~16/11~16.md/2.png">
 <meta property="article:published_time" content="2020-12-03T14:01:43.000Z">
 <meta property="article:modified_time" content="2021-07-27T01:58:14.873Z">
 <meta property="article:author" content="WJW">
 <meta property="article:tag" content="SQL注入">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/.com//0.png">
+<meta name="twitter:image" content="http://example.com/2020/12/03/sqli-labs/11~16/11~16.md/0.png">
 
 <link rel="canonical" href="http://example.com/2020/12/03/sqli-labs/11~16/">
 
@@ -268,7 +268,7 @@
 <h4 id="Less-11"><a href="#Less-11" class="headerlink" title="Less-11"></a>Less-11</h4><pre><code>输入到框内。
 加\先判断注入类型，猜测注入点在用户名，加个单引号成功了。
 </code></pre>
-<p><img src="/.com//0.png"><br>    usename:wang’#    password:随意。<br>    有回显，后使用联合查询注入，字段数为2，即可依次爆破。<br>    还可用报错语句进行注入。<br>    <code>wang&#39; and updatexml(1,concat(0x7c,database()),1)#</code><br><img src="/.com//1.png"><br>    后面的依次爆出。</p>
+<p><img src="11~16.md/0.png"><br>    usename:wang’#    password:随意。<br>    有回显，后使用联合查询注入，字段数为2，即可依次爆破。<br>    还可用报错语句进行注入。<br>    <code>wang&#39; and updatexml(1,concat(0x7c,database()),1)#</code><br><img src="11~16.md/1.png"><br>    后面的依次爆出。</p>
 <h4 id="Less-12"><a href="#Less-12" class="headerlink" title="Less-12"></a>Less-12</h4><pre><code>改成admin&quot;)# 
 有回显，在用联合查询注入，同样跟十一关一样
 </code></pre>
@@ -287,7 +287,7 @@
 </code></pre>
 <h4 id="Less-17"><a href="#Less-17" class="headerlink" title="Less-17"></a>Less-17</h4><pre><code>这次要换个思路了，在uname无法注入，查看码源，只有uname被过滤，试一下password回显正常。
 </code></pre>
-<p><img src="/.com//1.5.png"><br>    uname要输入本来就有的用户，一般用admin。<br>    password：<code>1&#39; and updatexml(1,concat(0x7c,database()),1)#</code> 用报错注入即可，联合注入不行。<br><img src="/.com//2.png"></p>
+<p><img src="11~16.md/1.5.png"><br>    uname要输入本来就有的用户，一般用admin。<br>    password：<code>1&#39; and updatexml(1,concat(0x7c,database()),1)#</code> 用报错注入即可，联合注入不行。<br><img src="11~16.md/2.png"></p>
 
     </div>
 

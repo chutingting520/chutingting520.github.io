@@ -29,17 +29,17 @@
 <meta property="og:site_name" content="WJW&#39;s Blog">
 <meta property="og:description" content="二次注入原理:在http请求中提交恶意输入，保存到数据库中，第二次提交http请求，构造sql语句注入,虽然参数在过滤后会添加\进行转义，但是\并不会插入到数据库中，这样就可以利用这个构造一个二次注入。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/.com//3.png">
-<meta property="og:image" content="http://example.com/.com//0.png">
-<meta property="og:image" content="http://example.com/.com//4.png">
-<meta property="og:image" content="http://example.com/.com//1.png">
-<meta property="og:image" content="http://example.com/.com//2.png">
+<meta property="og:image" content="http://example.com/2020/12/10/sqli-labs/24/24.md/3.png">
+<meta property="og:image" content="http://example.com/2020/12/10/sqli-labs/24/24.md/0.png">
+<meta property="og:image" content="http://example.com/2020/12/10/sqli-labs/24/24.md/4.png">
+<meta property="og:image" content="http://example.com/2020/12/10/sqli-labs/24/24.md/1.png">
+<meta property="og:image" content="http://example.com/2020/12/10/sqli-labs/24/24.md/2.png">
 <meta property="article:published_time" content="2020-12-10T04:56:46.000Z">
 <meta property="article:modified_time" content="2021-07-27T01:59:38.723Z">
 <meta property="article:author" content="WJW">
 <meta property="article:tag" content="SQL注入">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/.com//3.png">
+<meta name="twitter:image" content="http://example.com/2020/12/10/sqli-labs/24/24.md/3.png">
 
 <link rel="canonical" href="http://example.com/2020/12/10/sqli-labs/24/">
 
@@ -266,7 +266,7 @@
         <h2 id="二次注入"><a href="#二次注入" class="headerlink" title="二次注入"></a>二次注入</h2><p>原理:<strong>在http请求中提交恶意输入，保存到数据库中，第二次提交http请求，构造sql语句注入,虽然参数在过滤后会添加\进行转义，但是\并不会插入到数据库中，这样就可以利用这个构造一个二次注入。</strong></p>
 <span id="more"></span>
 
-<p>最开始尝试了登陆，按照页面的反应进行操作，就是注册登陆，还有修改自己的原密码。<br>也不知道是要做什么，看了源代码，也是一脸懵逼，只好借鉴大佬了。<br>出现频率最高的代：<strong>session_start()函数</strong><br>session_start() 会创建新会话或者重用现有会话。 如果通过 GET 或者 POST 方式，或者使用 cookie 提交了会话 ID， 则会重用现有会话。<br>session_start的作用是开启$_SESION,需要在$_SESION使用之前调用。<br>PHP $_SESION 变量用于存储关于用户会话（session）的信息<br><strong>mysql_real_escape_string() 函数：</strong><br><strong>mysql_real_escape_string(string,connection)</strong><br><strong>string:必需，规定要转义的字符</strong><br><strong>connection:可选，规定MySQL连接</strong><br>下列字符受影响：<br>\x00<br>\n<br>\r<br><br>‘<br>“<br>\x1a<br>如果成功，则该函数返回被转义的字符串。如果失败，则返回 false。<br><img src="/.com//3.png">username,password，re_password字段所投递的字符都被转义了，重心就放在修改密码的sql语句中。<br><strong>在查看源代码时，特别注意sql语句,注入点在修改密码上。</strong><br><img src="/.com//0.png"><br><strong>重点：从session中直接获得了当前用户名，且被直接用于更新语句并未做检查。</strong><br><strong>从根本上来说，插入数据时没有过滤，只是做了转义处理。</strong><br><strong>若当前用户名中含有注释，便可以修改当前用户名中包含的另一用户的密码，例如注册用户：Dumb’# 那么他就可以修改用户Dumb的密码。</strong><br><img src="/.com//4.png"><br>思路：<strong>注意到修改密码的sql语句，我们就可以创建一个含同名含单引号注释符的用户名来修改原来用户名的密码。</strong><br><strong>原SQL语句：<br><code>UPDATE users SET PASSWORD=&#39;$pass&#39; where username=&#39;$username&#39; and password=&#39;$curr_pass&#39;</code><br>修改密码sql语句：<br><code>UPDATE users SET PASSWORD=&#39;$pass&#39; where username=&#39;admin&#39;#&#39; and password=&#39;$curr_pass&#39;</code><br>最后真正执行的sql语句：<br><code>UPDATE users SET PASSWORD=&#39;$pass&#39; where username=&#39;admin&#39;</code></strong><br>操作：<br>注册好后登陆,就能修改密码了更新成功。<br>先创建一个和admin类似的用户名(admin’#)<br><img src="/.com//1.png"><br>登陆后，进入修改密码页面修改，成功篡改其他用户的密码。<br><img src="/.com//2.png"></p>
+<p>最开始尝试了登陆，按照页面的反应进行操作，就是注册登陆，还有修改自己的原密码。<br>也不知道是要做什么，看了源代码，也是一脸懵逼，只好借鉴大佬了。<br>出现频率最高的代：<strong>session_start()函数</strong><br>session_start() 会创建新会话或者重用现有会话。 如果通过 GET 或者 POST 方式，或者使用 cookie 提交了会话 ID， 则会重用现有会话。<br>session_start的作用是开启$_SESION,需要在$_SESION使用之前调用。<br>PHP $_SESION 变量用于存储关于用户会话（session）的信息<br><strong>mysql_real_escape_string() 函数：</strong><br><strong>mysql_real_escape_string(string,connection)</strong><br><strong>string:必需，规定要转义的字符</strong><br><strong>connection:可选，规定MySQL连接</strong><br>下列字符受影响：<br>\x00<br>\n<br>\r<br><br>‘<br>“<br>\x1a<br>如果成功，则该函数返回被转义的字符串。如果失败，则返回 false。<br><img src="24.md/3.png">username,password，re_password字段所投递的字符都被转义了，重心就放在修改密码的sql语句中。<br><strong>在查看源代码时，特别注意sql语句,注入点在修改密码上。</strong><br><img src="24.md/0.png"><br><strong>重点：从session中直接获得了当前用户名，且被直接用于更新语句并未做检查。</strong><br><strong>从根本上来说，插入数据时没有过滤，只是做了转义处理。</strong><br><strong>若当前用户名中含有注释，便可以修改当前用户名中包含的另一用户的密码，例如注册用户：Dumb’# 那么他就可以修改用户Dumb的密码。</strong><br><img src="24.md/4.png"><br>思路：<strong>注意到修改密码的sql语句，我们就可以创建一个含同名含单引号注释符的用户名来修改原来用户名的密码。</strong><br><strong>原SQL语句：<br><code>UPDATE users SET PASSWORD=&#39;$pass&#39; where username=&#39;$username&#39; and password=&#39;$curr_pass&#39;</code><br>修改密码sql语句：<br><code>UPDATE users SET PASSWORD=&#39;$pass&#39; where username=&#39;admin&#39;#&#39; and password=&#39;$curr_pass&#39;</code><br>最后真正执行的sql语句：<br><code>UPDATE users SET PASSWORD=&#39;$pass&#39; where username=&#39;admin&#39;</code></strong><br>操作：<br>注册好后登陆,就能修改密码了更新成功。<br>先创建一个和admin类似的用户名(admin’#)<br><img src="24.md/1.png"><br>登陆后，进入修改密码页面修改，成功篡改其他用户的密码。<br><img src="24.md/2.png"></p>
 
     </div>
 

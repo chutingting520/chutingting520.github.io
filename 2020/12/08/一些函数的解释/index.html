@@ -29,13 +29,13 @@
 <meta property="og:site_name" content="WJW&#39;s Blog">
 <meta property="og:description" content="sql注入中部分函数的理解，有利于我们更好的利用">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/.com//1.png">
-<meta property="og:image" content="http://example.com/.com//2.png">
+<meta property="og:image" content="http://example.com/2020/12/08/%E4%B8%80%E4%BA%9B%E5%87%BD%E6%95%B0%E7%9A%84%E8%A7%A3%E9%87%8A/%E4%B8%80%E4%BA%9B%E5%87%BD%E6%95%B0%E7%9A%84%E8%A7%A3%E9%87%8A.md/1.png">
+<meta property="og:image" content="http://example.com/2020/12/08/%E4%B8%80%E4%BA%9B%E5%87%BD%E6%95%B0%E7%9A%84%E8%A7%A3%E9%87%8A/%E4%B8%80%E4%BA%9B%E5%87%BD%E6%95%B0%E7%9A%84%E8%A7%A3%E9%87%8A.md/2.png">
 <meta property="article:published_time" content="2020-12-08T12:31:52.000Z">
 <meta property="article:modified_time" content="2021-07-27T01:53:17.190Z">
 <meta property="article:author" content="WJW">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/.com//1.png">
+<meta name="twitter:image" content="http://example.com/2020/12/08/%E4%B8%80%E4%BA%9B%E5%87%BD%E6%95%B0%E7%9A%84%E8%A7%A3%E9%87%8A/%E4%B8%80%E4%BA%9B%E5%87%BD%E6%95%B0%E7%9A%84%E8%A7%A3%E9%87%8A.md/1.png">
 
 <link rel="canonical" href="http://example.com/2020/12/08/%E4%B8%80%E4%BA%9B%E5%87%BD%E6%95%B0%E7%9A%84%E8%A7%A3%E9%87%8A/">
 
@@ -266,7 +266,7 @@
 <h3 id="updatexml函数理解"><a href="#updatexml函数理解" class="headerlink" title="updatexml函数理解"></a>updatexml函数理解</h3><pre><code>直接用updatexml执行sql语句，不行。需要连接concat，应该是updatexml第二个参数必须是字符串。
 此函数可以类比extractvalue函数，同样需要连接concat。
 </code></pre>
-<h3 id="limit的用法"><a href="#limit的用法" class="headerlink" title="limit的用法"></a>limit的用法</h3><p>**limit 子句可以被用于强制select语句返回指定的记录数，limit，接受一个或两个参数。参数必须为一个整数常量，第一个参数是返回记录行的偏移量，初始记录行偏移量是0；<br>第二个参数指定返回记录行的最大数目。这里举例子说明吧。<br><img src="/.com//1.png"><br>这里limit 5，6，就是检索6到11行。<br>当然只输入一个参数的也可以，limit 5相当于limit 0,5;<br><img src="/.com//2.png"></p>
+<h3 id="limit的用法"><a href="#limit的用法" class="headerlink" title="limit的用法"></a>limit的用法</h3><p>**limit 子句可以被用于强制select语句返回指定的记录数，limit，接受一个或两个参数。参数必须为一个整数常量，第一个参数是返回记录行的偏移量，初始记录行偏移量是0；<br>第二个参数指定返回记录行的最大数目。这里举例子说明吧。<br><img src="%E4%B8%80%E4%BA%9B%E5%87%BD%E6%95%B0%E7%9A%84%E8%A7%A3%E9%87%8A.md/1.png"><br>这里limit 5，6，就是检索6到11行。<br>当然只输入一个参数的也可以，limit 5相当于limit 0,5;<br><img src="%E4%B8%80%E4%BA%9B%E5%87%BD%E6%95%B0%E7%9A%84%E8%A7%A3%E9%87%8A.md/2.png"></p>
 
     </div>
 

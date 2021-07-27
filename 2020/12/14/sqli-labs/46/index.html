@@ -29,17 +29,17 @@
 <meta property="og:site_name" content="WJW&#39;s Blog">
 <meta property="og:description" content="Less-46order by 注入">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/.com//00.png">
-<meta property="og:image" content="http://example.com/.com//0.png">
-<meta property="og:image" content="http://example.com/.com//1.png">
-<meta property="og:image" content="http://example.com/.com//2.png">
-<meta property="og:image" content="http://example.com/.com//3.png">
+<meta property="og:image" content="http://example.com/2020/12/14/sqli-labs/46/46.md/00.png">
+<meta property="og:image" content="http://example.com/2020/12/14/sqli-labs/46/46.md/0.png">
+<meta property="og:image" content="http://example.com/2020/12/14/sqli-labs/46/46.md/1.png">
+<meta property="og:image" content="http://example.com/2020/12/14/sqli-labs/46/46.md/2.png">
+<meta property="og:image" content="http://example.com/2020/12/14/sqli-labs/46/46.md/3.png">
 <meta property="article:published_time" content="2020-12-14T12:37:09.000Z">
 <meta property="article:modified_time" content="2021-07-27T02:01:42.062Z">
 <meta property="article:author" content="WJW">
 <meta property="article:tag" content="SQL注入">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/.com//00.png">
+<meta name="twitter:image" content="http://example.com/2020/12/14/sqli-labs/46/46.md/00.png">
 
 <link rel="canonical" href="http://example.com/2020/12/14/sqli-labs/46/">
 
@@ -266,12 +266,12 @@
         <h3 id="Less-46"><a href="#Less-46" class="headerlink" title="Less-46"></a>Less-46</h3><p>order by 注入</p>
 <span id="more"></span>
 
-<p><img src="/.com//00.png"><br>从题目看出与order by有关。<br>而且参数也换成了sort。<br>输入后，出现一个表格。<br>尝试sort=1 asc和sort=1 desc，分别显示升序和降序的表格，说明此处是注入点，即注入点在order by后的参数中，<br><img src="/.com//0.png"></p>
-<p><img src="/.com//1.png"><br>了解一下order by怎么注入？<br>order by 后面的数字可以作为一个注入点，我们尝试报错注入成功。<br><img src="/.com//2.png"></p>
+<p><img src="46.md/00.png"><br>从题目看出与order by有关。<br>而且参数也换成了sort。<br>输入后，出现一个表格。<br>尝试sort=1 asc和sort=1 desc，分别显示升序和降序的表格，说明此处是注入点，即注入点在order by后的参数中，<br><img src="46.md/0.png"></p>
+<p><img src="46.md/1.png"><br>了解一下order by怎么注入？<br>order by 后面的数字可以作为一个注入点，我们尝试报错注入成功。<br><img src="46.md/2.png"></p>
 <h3 id="Less-47"><a href="#Less-47" class="headerlink" title="Less-47"></a>Less-47</h3><p>加单引号即可。</p>
 <h3 id="Less-48"><a href="#Less-48" class="headerlink" title="Less-48"></a>Less-48</h3><p>没有报错的，采用时间盲注成功。</p>
 <h3 id="Less-49"><a href="#Less-49" class="headerlink" title="Less-49"></a>Less-49</h3><p>加单引号即可。</p>
-<h3 id="Less-51-53"><a href="#Less-51-53" class="headerlink" title="Less-51~53"></a>Less-51~53</h3><p>排序堆叠注入。<br>eg:<br><img src="/.com//3.png"></p>
+<h3 id="Less-51-53"><a href="#Less-51-53" class="headerlink" title="Less-51~53"></a>Less-51~53</h3><p>排序堆叠注入。<br>eg:<br><img src="46.md/3.png"></p>
 <h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>靶场到这边就刷完了，来小小总结一下。</p>
 <h4 id="漏洞类型"><a href="#漏洞类型" class="headerlink" title="漏洞类型"></a>漏洞类型</h4><p>漏洞类型分为两种：<strong>字符型，数字型。</strong></p>
 <h4 id="判断是否存在sql注入"><a href="#判断是否存在sql注入" class="headerlink" title="判断是否存在sql注入"></a>判断是否存在sql注入</h4><p>最经典的：<strong>加单引号</strong>，无论是字符型还是数字型都会报错，页面显示异常。<br>字符型：通过and’1’=’1 和and’1’=’2<br>如果第一个页面显示正常，第二个无正常显示，则存在字符型sql注入，因为sql语句可以被执行，程序没有对敏感字符过滤。<br>数字型：1=1 和1=2进行判断，同上。</p>

