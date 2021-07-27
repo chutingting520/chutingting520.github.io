@@ -29,20 +29,20 @@
 <meta property="og:site_name" content="WJW&#39;s Blog">
 <meta property="og:description" content="双查询注入">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/2020/11/19/sqli-labs/%E5%8F%8C%E6%9F%A5%E8%AF%A2%E6%B3%A8%E5%85%A5/%E5%8F%8C%E6%9F%A5%E8%AF%A2%E6%B3%A8%E5%85%A5.md/1.png">
-<meta property="og:image" content="http://example.com/2020/11/19/sqli-labs/%E5%8F%8C%E6%9F%A5%E8%AF%A2%E6%B3%A8%E5%85%A5/%E5%8F%8C%E6%9F%A5%E8%AF%A2%E6%B3%A8%E5%85%A5.md/2.png">
-<meta property="og:image" content="http://example.com/2020/11/19/sqli-labs/%E5%8F%8C%E6%9F%A5%E8%AF%A2%E6%B3%A8%E5%85%A5/%E5%8F%8C%E6%9F%A5%E8%AF%A2%E6%B3%A8%E5%85%A5.md/3.png">
-<meta property="og:image" content="http://example.com/2020/11/19/sqli-labs/%E5%8F%8C%E6%9F%A5%E8%AF%A2%E6%B3%A8%E5%85%A5/%E5%8F%8C%E6%9F%A5%E8%AF%A2%E6%B3%A8%E5%85%A5.md/4.png">
-<meta property="og:image" content="http://example.com/2020/11/19/sqli-labs/%E5%8F%8C%E6%9F%A5%E8%AF%A2%E6%B3%A8%E5%85%A5/%E5%8F%8C%E6%9F%A5%E8%AF%A2%E6%B3%A8%E5%85%A5.md/5.png">
-<meta property="og:image" content="http://example.com/2020/11/19/sqli-labs/%E5%8F%8C%E6%9F%A5%E8%AF%A2%E6%B3%A8%E5%85%A5/%E5%8F%8C%E6%9F%A5%E8%AF%A2%E6%B3%A8%E5%85%A5.md/6.png">
-<meta property="og:image" content="http://example.com/2020/11/19/sqli-labs/%E5%8F%8C%E6%9F%A5%E8%AF%A2%E6%B3%A8%E5%85%A5/%E5%8F%8C%E6%9F%A5%E8%AF%A2%E6%B3%A8%E5%85%A5.md/7.png">
-<meta property="og:image" content="http://example.com/2020/11/19/sqli-labs/%E5%8F%8C%E6%9F%A5%E8%AF%A2%E6%B3%A8%E5%85%A5/%E5%8F%8C%E6%9F%A5%E8%AF%A2%E6%B3%A8%E5%85%A5.md/8.png">
+<meta property="og:image" content="http://example.com/.com//1.png">
+<meta property="og:image" content="http://example.com/.com//2.png">
+<meta property="og:image" content="http://example.com/.com//3.png">
+<meta property="og:image" content="http://example.com/.com//4.png">
+<meta property="og:image" content="http://example.com/.com//5.png">
+<meta property="og:image" content="http://example.com/.com//6.png">
+<meta property="og:image" content="http://example.com/.com//7.png">
+<meta property="og:image" content="http://example.com/.com//8.png">
 <meta property="article:published_time" content="2020-11-19T11:12:55.000Z">
 <meta property="article:modified_time" content="2021-07-27T02:02:48.158Z">
 <meta property="article:author" content="WJW">
 <meta property="article:tag" content="SQL注入">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/2020/11/19/sqli-labs/%E5%8F%8C%E6%9F%A5%E8%AF%A2%E6%B3%A8%E5%85%A5/%E5%8F%8C%E6%9F%A5%E8%AF%A2%E6%B3%A8%E5%85%A5.md/1.png">
+<meta name="twitter:image" content="http://example.com/.com//1.png">
 
 <link rel="canonical" href="http://example.com/2020/11/19/sqli-labs/%E5%8F%8C%E6%9F%A5%E8%AF%A2%E6%B3%A8%E5%85%A5/">
 
@@ -271,26 +271,26 @@
 
 <h4 id="了解floor，rand语句"><a href="#了解floor，rand语句" class="headerlink" title="了解floor，rand语句"></a>了解floor，rand语句</h4><pre><code> select concat(&#39;x&#39;,&#39;y&#39;);`可用于连接x，y得xy
 </code></pre>
-<p><strong>字符记得加单引号或者双引号闭合</strong><br><img src="%E5%8F%8C%E6%9F%A5%E8%AF%A2%E6%B3%A8%E5%85%A5.md/1.png"></p>
+<p><strong>字符记得加单引号或者双引号闭合</strong><br><img src="/.com//1.png"></p>
 <pre><code>测试 `select rand()`多测试几次，可以看到，这个函数就是返回大于0，小于1之间的数。
 </code></pre>
-<p><img src="%E5%8F%8C%E6%9F%A5%E8%AF%A2%E6%B3%A8%E5%85%A5.md/2.png"><br>    <code>select floor(小数)</code>取整(不会进行四舍五入)<br><img src="%E5%8F%8C%E6%9F%A5%E8%AF%A2%E6%B3%A8%E5%85%A5.md/3.png"><br>    联合两者 <code>select floor(rand()*2);</code>我们从里向外看。rand() 返回大于0小于1的小数，*2为&gt;0&amp;&amp;&lt;2。然后对结果进行取整，这个查询的结果不是1，就是0。<br><img src="%E5%8F%8C%E6%9F%A5%E8%AF%A2%E6%B3%A8%E5%85%A5.md/4.png"></p>
+<p><img src="/.com//2.png"><br>    <code>select floor(小数)</code>取整(不会进行四舍五入)<br><img src="/.com//3.png"><br>    联合两者 <code>select floor(rand()*2);</code>我们从里向外看。rand() 返回大于0小于1的小数，*2为&gt;0&amp;&amp;&lt;2。然后对结果进行取整，这个查询的结果不是1，就是0。<br><img src="/.com//4.png"></p>
 <h4 id="加大难度-复合"><a href="#加大难度-复合" class="headerlink" title="加大难度(复合)"></a>加大难度(复合)</h4><pre><code>`select concat((select database()),floor(rand()*2));`结果不是数据名1就是数据库名2；
 </code></pre>
-<p><img src="%E5%8F%8C%E6%9F%A5%E8%AF%A2%E6%B3%A8%E5%85%A5.md/5.png"><br>    再其后面加<code>from 表名</code>可得此表用户；<br>    如果是<code>from information_schema.schemata</code>可查询有几个数据库。</p>
+<p><img src="/.com//5.png"><br>    再其后面加<code>from 表名</code>可得此表用户；<br>    如果是<code>from information_schema.schemata</code>可查询有几个数据库。</p>
 <h4 id="加上group-by语句"><a href="#加上group-by语句" class="headerlink" title="加上group by语句"></a>加上group by语句</h4><pre><code>可使用information_schema.tables或information_schema.columns两个表查询
 `select concat((select database()),floor(rand()*2)) as a from information_schema.tables group by a`，//对concat((select database()),floor(rand()*2))取名为a 并分组。
 这里的database，可换成其它的查询
 </code></pre>
-<p><img src="%E5%8F%8C%E6%9F%A5%E8%AF%A2%E6%B3%A8%E5%85%A5.md/6.png"></p>
+<p><img src="/.com//6.png"></p>
 <h4 id="报错"><a href="#报错" class="headerlink" title="报错"></a>报错</h4><pre><code>多了一个聚合函数 count(*)    
 select count(*),concat((select database()),floor(rand()*2))as a from information_schema.tables group by a;结果报错，重复得结果。
 </code></pre>
-<p><img src="%E5%8F%8C%E6%9F%A5%E8%AF%A2%E6%B3%A8%E5%85%A5.md/7.png"></p>
+<p><img src="/.com//7.png"></p>
 <h4 id="派生表"><a href="#派生表" class="headerlink" title="派生表"></a>派生表</h4><pre><code>`select 1 from (table name);`这样的语句报错 具体就是：
 `(select 1 from (select count(*),concat((select database()),floor(rand()*2))x from information_schema.tables group by x)a);`
 </code></pre>
-<p><img src="%E5%8F%8C%E6%9F%A5%E8%AF%A2%E6%B3%A8%E5%85%A5.md/8.png">        </p>
+<p><img src="/.com//8.png">        </p>
 
     </div>
 

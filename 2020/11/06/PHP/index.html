@@ -283,10 +283,10 @@ echo $z;
 </code></pre>
 <p>eg：<br><?php
 echo <<<EOF
-               <h1>我的第一个标题</h1>
-            <p>我的第一个段落。</p>
+               <h1>我的第一个标题
+            </p><p>我的第一个段落。</p>
 EOF;
-?></p>
+?><p></p>
 <p>***开始标记和结束标记相同，比如常用大写的 EOT、EOD、EOF 来表示，但是不只限于那几个(也可以用：JSON、HTML等)，只要保证开始标记和结束标记不在正文中出现即可。<br>***变量不需要用连接符 . 或 , 来拼接<br>*例echo txt1”.“txt2;</p>
 <h4 id="PHP字符串"><a href="#PHP字符串" class="headerlink" title="PHP字符串"></a>PHP字符串</h4><pre><code>  你可以将任何文本放在单引号和双引号中
 </code></pre>

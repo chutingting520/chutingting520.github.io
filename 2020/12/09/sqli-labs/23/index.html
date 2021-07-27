@@ -29,23 +29,23 @@
 <meta property="og:site_name" content="WJW&#39;s Blog">
 <meta property="og:description" content="又回到get类型了，输入?id&#x3D;1&#39;只有加单引号的报错，尝试以前的方法都行不通，肯定有了新花样，查看源码。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/2020/12/09/sqli-labs/23/23.md/0.png">
-<meta property="og:image" content="http://example.com/2020/12/09/sqli-labs/23/23.md/1.png">
-<meta property="og:image" content="http://example.com/2020/12/09/sqli-labs/23/23.md/2.png">
-<meta property="og:image" content="http://example.com/2020/12/09/sqli-labs/23/23.md/3.png">
-<meta property="og:image" content="http://example.com/2020/12/09/sqli-labs/23/23.md/4.png">
-<meta property="og:image" content="http://example.com/2020/12/09/sqli-labs/23/23.md/5.png">
-<meta property="og:image" content="http://example.com/2020/12/09/sqli-labs/23/23.md/6.png">
-<meta property="og:image" content="http://example.com/2020/12/09/sqli-labs/23/23.md/7.png">
-<meta property="og:image" content="http://example.com/2020/12/09/sqli-labs/23/23.md/8.png">
-<meta property="og:image" content="http://example.com/2020/12/09/sqli-labs/23/23.md/9.png">
-<meta property="og:image" content="http://example.com/2020/12/09/sqli-labs/23/23.md/10.png">
+<meta property="og:image" content="http://example.com/.com//0.png">
+<meta property="og:image" content="http://example.com/.com//1.png">
+<meta property="og:image" content="http://example.com/.com//2.png">
+<meta property="og:image" content="http://example.com/.com//3.png">
+<meta property="og:image" content="http://example.com/.com//4.png">
+<meta property="og:image" content="http://example.com/.com//5.png">
+<meta property="og:image" content="http://example.com/.com//6.png">
+<meta property="og:image" content="http://example.com/.com//7.png">
+<meta property="og:image" content="http://example.com/.com//8.png">
+<meta property="og:image" content="http://example.com/.com//9.png">
+<meta property="og:image" content="http://example.com/.com//10.png">
 <meta property="article:published_time" content="2020-12-09T12:20:25.000Z">
 <meta property="article:modified_time" content="2021-07-27T01:59:31.361Z">
 <meta property="article:author" content="WJW">
 <meta property="article:tag" content="SQL注入">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/2020/12/09/sqli-labs/23/23.md/0.png">
+<meta name="twitter:image" content="http://example.com/.com//0.png">
 
 <link rel="canonical" href="http://example.com/2020/12/09/sqli-labs/23/">
 
@@ -272,22 +272,22 @@
         <p>又回到get类型了，输入<code>?id=1&#39;</code>只有加单引号的报错，尝试以前的方法都行不通，肯定有了新花样，查看源码。</p>
 <span id="more"></span>
 
-<p><img src="23.md/0.png"></p>
-<h4 id="了解一下preg-replace-函数"><a href="#了解一下preg-replace-函数" class="headerlink" title="了解一下preg_replace()函数"></a>了解一下preg_replace()函数</h4><p><strong>preg_replace(pattern,replacement,subject)</strong><br><strong>pattern:要搜索的模式，可以是字符串或字符数组。</strong><br><strong>replacement:用于替换的字符串或字符数组。</strong><br><strong>subject:要搜索替换的目标字符串或字符数组。</strong><br>在这关中，也只是将#和–替换成了空字符，相当于#和–被过滤了。<br>尝试注入点，单引号报错<br><img src="23.md/1.png"></p>
-<h4 id="开始尝试用单引号闭合注入"><a href="#开始尝试用单引号闭合注入" class="headerlink" title="开始尝试用单引号闭合注入"></a>开始尝试用单引号闭合注入</h4><p><code>?id=1&#39; order by 4 and &#39;1&#39;=&#39;1</code><br><img src="23.md/2.png"><br><strong>语句没有报错，在后台数据库查询寻找原因。</strong><br><code>select * from users where id=1 order by &#39;4&#39;;</code><br>没有报错，因为加了引号，数据库不会执行该语句，因为order by 后面的字段不能加引号。<br><img src="23.md/3.png"><br>再输入<br><code>select * from users where id=1 order by 4 and &#39;1&#39;=&#39;1&#39;;</code>也没有报错<br><img src="23.md/4.png"><br>order by 在where条件中，在where执行时被忽略了，所以没有报错。<br>再输入<code>select *from users where id=&#39;1&#39; and &#39;1&#39;=&#39;1&#39; order by 4; </code>报错，<br><img src="23.md/5.png"><br>在MySQL执行顺序中，where远在order by前。最后一句报错，因为and ‘1’=’1’是where的条件，先执行，得到结果集，然后执行order by 报错。<br><strong>因为where和order by 都是子句，and是操作符，用于where子句。</strong></p>
+<p><img src="/.com//0.png"></p>
+<h4 id="了解一下preg-replace-函数"><a href="#了解一下preg-replace-函数" class="headerlink" title="了解一下preg_replace()函数"></a>了解一下preg_replace()函数</h4><p><strong>preg_replace(pattern,replacement,subject)</strong><br><strong>pattern:要搜索的模式，可以是字符串或字符数组。</strong><br><strong>replacement:用于替换的字符串或字符数组。</strong><br><strong>subject:要搜索替换的目标字符串或字符数组。</strong><br>在这关中，也只是将#和–替换成了空字符，相当于#和–被过滤了。<br>尝试注入点，单引号报错<br><img src="/.com//1.png"></p>
+<h4 id="开始尝试用单引号闭合注入"><a href="#开始尝试用单引号闭合注入" class="headerlink" title="开始尝试用单引号闭合注入"></a>开始尝试用单引号闭合注入</h4><p><code>?id=1&#39; order by 4 and &#39;1&#39;=&#39;1</code><br><img src="/.com//2.png"><br><strong>语句没有报错，在后台数据库查询寻找原因。</strong><br><code>select * from users where id=1 order by &#39;4&#39;;</code><br>没有报错，因为加了引号，数据库不会执行该语句，因为order by 后面的字段不能加引号。<br><img src="/.com//3.png"><br>再输入<br><code>select * from users where id=1 order by 4 and &#39;1&#39;=&#39;1&#39;;</code>也没有报错<br><img src="/.com//4.png"><br>order by 在where条件中，在where执行时被忽略了，所以没有报错。<br>再输入<code>select *from users where id=&#39;1&#39; and &#39;1&#39;=&#39;1&#39; order by 4; </code>报错，<br><img src="/.com//5.png"><br>在MySQL执行顺序中，where远在order by前。最后一句报错，因为and ‘1’=’1’是where的条件，先执行，得到结果集，然后执行order by 报错。<br><strong>因为where和order by 都是子句，and是操作符，用于where子句。</strong></p>
 <h4 id="所以这关不能用order-by-判断字段数。直接用联合注入："><a href="#所以这关不能用order-by-判断字段数。直接用联合注入：" class="headerlink" title="所以这关不能用order by 判断字段数。直接用联合注入："></a>所以这关不能用order by 判断字段数。直接用联合注入：</h4><pre><code>`?id=1&#39; union select 1,2,3 and &#39;1&#39;=&#39;1`这里用and 或or是一样的，它作为第二个select语句条件，sql1 union sql2 union查询必须保证查询字段数量一致，否则报错。
 当union select 1，2，3为真时，得到数据，为假时报错。
 把1改成-1，使原查询左边为空，使我们定义的查询结果返回。
 </code></pre>
-<p><img src="23.md/6.png"><br>    在字段3注入会出现问题,返回值为0<br><img src="23.md/7.png"><br>    页面的1不是select1，2，3中的1，原因是or ‘1’=’1是作为字段3逻辑操作符，为永真条件，返回1，and则为错误，所以返回为0，故不能在字段3注入。<br><img src="23.md/8.png"><br>    侧面说明or优先级别高于select<br>    2为唯一注入点了，接下来都差不多了。<br><strong>爆数据的时候记得，不能直接from users ，因为from 和 and 是不能连在一起的</strong><br>    添加在from后面加where 1即可</p>
+<p><img src="/.com//6.png"><br>    在字段3注入会出现问题,返回值为0<br><img src="/.com//7.png"><br>    页面的1不是select1，2，3中的1，原因是or ‘1’=’1是作为字段3逻辑操作符，为永真条件，返回1，and则为错误，所以返回为0，故不能在字段3注入。<br><img src="/.com//8.png"><br>    侧面说明or优先级别高于select<br>    2为唯一注入点了，接下来都差不多了。<br><strong>爆数据的时候记得，不能直接from users ，因为from 和 and 是不能连在一起的</strong><br>    添加在from后面加where 1即可</p>
 <h3 id="补充另外一种方法"><a href="#补充另外一种方法" class="headerlink" title="补充另外一种方法"></a>补充另外一种方法</h3><pre><code>因为select 1=select &#39;1&#39;
 所以可以直接在字段3后单引号闭合。
 `?id=-1&#39; union select 1,(select group_concat(concat(username,password))from users),&#39;3`
 </code></pre>
-<p><img src="23.md/9.png"></p>
+<p><img src="/.com//9.png"></p>
 <h3 id="还有，联合查询中还能加报错语句。"><a href="#还有，联合查询中还能加报错语句。" class="headerlink" title="还有，联合查询中还能加报错语句。"></a>还有，联合查询中还能加报错语句。</h3><pre><code>`?id=1&#39; union select 1 ,(updatexml(1,concat(0x7c,(select concat(username,password) from users limit 0,1)),1)),&#39;3`
 </code></pre>
-<p><img src="23.md/10.png"><br>一般不会这样，有时候不知道哪个字段有回显，而且回报的数据还会被限制长度，还不如直接联合查询注入。</p>
+<p><img src="/.com//10.png"><br>一般不会这样，有时候不知道哪个字段有回显，而且回报的数据还会被限制长度，还不如直接联合查询注入。</p>
 
     </div>
 

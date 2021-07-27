@@ -29,15 +29,15 @@
 <meta property="og:site_name" content="WJW&#39;s Blog">
 <meta property="og:description" content="misc入门的简要知识">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/2021/02/02/misc/misc.md/1.png">
-<meta property="og:image" content="http://example.com/2021/02/02/misc/misc.md/2.png">
-<meta property="og:image" content="http://example.com/2021/02/02/misc/misc.md/3.png">
+<meta property="og:image" content="http://example.com/.com//1.png">
+<meta property="og:image" content="http://example.com/.com//2.png">
+<meta property="og:image" content="http://example.com/.com//3.png">
 <meta property="article:published_time" content="2021-02-02T11:02:35.000Z">
 <meta property="article:modified_time" content="2021-07-27T01:53:41.208Z">
 <meta property="article:author" content="WJW">
 <meta property="article:tag" content="misc">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/2021/02/02/misc/misc.md/1.png">
+<meta name="twitter:image" content="http://example.com/.com//1.png">
 
 <link rel="canonical" href="http://example.com/2021/02/02/misc/">
 
@@ -285,10 +285,10 @@
 <h5 id="brainfuck"><a href="#brainfuck" class="headerlink" title="brainfuck"></a>brainfuck</h5><h5 id="Ook"><a href="#Ook" class="headerlink" title="Ook!"></a>Ook!</h5><h5 id="short-Ook-隐藏在图片里"><a href="#short-Ook-隐藏在图片里" class="headerlink" title="short Ook 隐藏在图片里"></a>short Ook 隐藏在图片里</h5><h5 id="敲击码"><a href="#敲击码" class="headerlink" title="敲击码"></a>敲击码</h5><h5 id="二维码"><a href="#二维码" class="headerlink" title="二维码"></a>二维码</h5><h5 id="社会主义核心价值观"><a href="#社会主义核心价值观" class="headerlink" title="社会主义核心价值观"></a>社会主义核心价值观</h5><h5 id="与佛论禅"><a href="#与佛论禅" class="headerlink" title="与佛论禅"></a>与佛论禅</h5><h5 id="与熊论道"><a href="#与熊论道" class="headerlink" title="与熊论道"></a>与熊论道</h5><h3 id="流量分析"><a href="#流量分析" class="headerlink" title="流量分析"></a>流量分析</h3><h4 id="互联网五层模型"><a href="#互联网五层模型" class="headerlink" title="互联网五层模型"></a>互联网五层模型</h4><p>物理层-&gt;数据链路层-&gt;网络层-&gt;传输层-&gt;应用层。<br>wireshark抓的包工作在数据链路层，而burp抓的工作在应用层。</p>
 <h4 id="wireshark基本使用："><a href="#wireshark基本使用：" class="headerlink" title="wireshark基本使用："></a>wireshark基本使用：</h4><p>功能：能获取http,https但不能解密https，所以处理http使用wireshark，处理https使用Fiddler。</p>
 <h4 id="选择网卡"><a href="#选择网卡" class="headerlink" title="选择网卡"></a>选择网卡</h4><p>连接WiFi的选择WLAN</p>
-<h4 id="窗口介绍"><a href="#窗口介绍" class="headerlink" title="窗口介绍"></a>窗口介绍</h4><p><img src="misc.md/1.png"></p>
-<h4 id="获取数据包操作"><a href="#获取数据包操作" class="headerlink" title="获取数据包操作"></a>获取数据包操作</h4><p><img src="misc.md/2.png"></p>
+<h4 id="窗口介绍"><a href="#窗口介绍" class="headerlink" title="窗口介绍"></a>窗口介绍</h4><p><img src="/.com//1.png"></p>
+<h4 id="获取数据包操作"><a href="#获取数据包操作" class="headerlink" title="获取数据包操作"></a>获取数据包操作</h4><p><img src="/.com//2.png"></p>
 <h4 id="过滤器"><a href="#过滤器" class="headerlink" title="过滤器"></a>过滤器</h4><p>过滤器分为显示过滤器和捕获过滤器(在Capture-&gt;Capture Filters 中设置)<br>1、协议过滤<br>如tcp协议过滤<br>2、IP过滤<br>如比如 ip.src xxx 显示源地址为xxx，<br>ip.dst yyy, 目标地址为yyy<br>3、端口过滤<br>如tcp.port 80 端口为80<br>4、http模式过滤<br>http.request.method “GET” 只显示http的get方法<br>5、逻辑运算符and/or</p>
-<h4 id="数据包结构"><a href="#数据包结构" class="headerlink" title="数据包结构"></a>数据包结构</h4><p>第一行：数据包整体概述，<br>第二行：链路层详细信息，主要的是双方的mac地址<br>第三行：网络层详细信息，主要的是双方的IP地址<br>第四行：传输层的详细信息，主要的是双方的端口号。<br><img src="misc.md/3.png"></p>
+<h4 id="数据包结构"><a href="#数据包结构" class="headerlink" title="数据包结构"></a>数据包结构</h4><p>第一行：数据包整体概述，<br>第二行：链路层详细信息，主要的是双方的mac地址<br>第三行：网络层详细信息，主要的是双方的IP地址<br>第四行：传输层的详细信息，主要的是双方的端口号。<br><img src="/.com//3.png"></p>
 <h3 id="古典密码学"><a href="#古典密码学" class="headerlink" title="古典密码学"></a>古典密码学</h3><p>古典密码学：关注信息的保密以及对应的破译方法。<br>现代密码学：不仅关注信息保密问题，还同时涉及信息完整性等等。</p>
 <h4 id="凯撒加密"><a href="#凯撒加密" class="headerlink" title="凯撒加密"></a>凯撒加密</h4><p>替代加密，明文中的所有字母都在字母表上向后（或向前）按照一个固定的数目进行偏移后被替换的密文。</p>
 <h4 id="关键词加密"><a href="#关键词加密" class="headerlink" title="关键词加密"></a>关键词加密</h4><p>选择一个关键词，去除第一次出现外的所有相同字母。</p>

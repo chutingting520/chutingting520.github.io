@@ -29,14 +29,14 @@
 <meta property="og:site_name" content="WJW&#39;s Blog">
 <meta property="og:description" content="盲注的学习，附加脚本">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/2020/11/28/sqli-labs/8~10/8~9.md/1.png">
-<meta property="og:image" content="http://example.com/2020/11/28/sqli-labs/8~10/8~9.md/2.png">
+<meta property="og:image" content="http://example.com/.com//1.png">
+<meta property="og:image" content="http://example.com/.com//2.png">
 <meta property="article:published_time" content="2020-11-28T12:34:59.000Z">
 <meta property="article:modified_time" content="2021-07-27T01:58:05.348Z">
 <meta property="article:author" content="WJW">
 <meta property="article:tag" content="SQL注入">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/2020/11/28/sqli-labs/8~10/8~9.md/1.png">
+<meta name="twitter:image" content="http://example.com/.com//1.png">
 
 <link rel="canonical" href="http://example.com/2020/11/28/sqli-labs/8~10/">
 
@@ -265,7 +265,7 @@
 
 <h3 id="Less-8"><a href="#Less-8" class="headerlink" title="Less-8"></a>Less-8</h3><pre><code>尝试报错注入，失败，查看码源，报错被注释了。
 </code></pre>
-<p><img src="8~9.md/1.png"><br>    加’回显消失，再加–+，回显正常，使用and语句判断使用布尔盲注。<br>    <code>?id=1&#39; and left(database(),1)=&#39;s&#39;--+</code>you are in 又出现了，说明猜对了，依次爆出相应的数据。<br><img src="8~9.md/2.png"></p>
+<p><img src="/.com//1.png"><br>    加’回显消失，再加–+，回显正常，使用and语句判断使用布尔盲注。<br>    <code>?id=1&#39; and left(database(),1)=&#39;s&#39;--+</code>you are in 又出现了，说明猜对了，依次爆出相应的数据。<br><img src="/.com//2.png"></p>
 <h3 id="Less-9"><a href="#Less-9" class="headerlink" title="Less-9"></a>Less-9</h3><pre><code>尝试所有方法失效，考虑用时间注入
 `?id=1&#39; and if(left(database(),1)=&#39;s&#39;,sleep(5),1)`这像是时间注入与布尔注入的组合。
 接下来都可以爆出

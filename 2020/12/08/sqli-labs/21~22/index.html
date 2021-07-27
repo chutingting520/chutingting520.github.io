@@ -29,16 +29,16 @@
 <meta property="og:site_name" content="WJW&#39;s Blog">
 <meta property="og:description" content="有关 base64的sql注入">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/2020/12/08/sqli-labs/21~22/21~22.md/1.png">
-<meta property="og:image" content="http://example.com/2020/12/08/sqli-labs/21~22/21~22.md/2.png">
-<meta property="og:image" content="http://example.com/2020/12/08/sqli-labs/21~22/21~22.md/3.png">
-<meta property="og:image" content="http://example.com/2020/12/08/sqli-labs/21~22/21~22.md/4.png">
+<meta property="og:image" content="http://example.com/.com//1.png">
+<meta property="og:image" content="http://example.com/.com//2.png">
+<meta property="og:image" content="http://example.com/.com//3.png">
+<meta property="og:image" content="http://example.com/.com//4.png">
 <meta property="article:published_time" content="2020-12-08T07:08:20.000Z">
 <meta property="article:modified_time" content="2021-07-27T01:59:16.669Z">
 <meta property="article:author" content="WJW">
 <meta property="article:tag" content="SQL注入">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/2020/12/08/sqli-labs/21~22/21~22.md/1.png">
+<meta name="twitter:image" content="http://example.com/.com//1.png">
 
 <link rel="canonical" href="http://example.com/2020/12/08/sqli-labs/21~22/">
 
@@ -265,7 +265,7 @@
         <p>   有关 base64的sql注入</p>
 <span id="more"></span>
 
-<h3 id="sqli-labs21"><a href="#sqli-labs21" class="headerlink" title="sqli-labs21"></a>sqli-labs21</h3><p>1、输入账户密码，登陆成功，获得信息。发现uname=后面的用户名被转义了。<br><img src="21~22.md/1.png"><br>2、查看源码，发现原来cookie内容被base64加密了，所以输入的用户名也被加密了，加密后信息就无法直接读取，在用解密刚刚页面的用户名，得到原来输入的用户名。<br><img src="21~22.md/2.png"><br>3、判断注入点 :<br><img src="21~22.md/3.png">成功<br>使用联合查询注入<br><code>uname=MScpIHVuaW9uIHNlbGVjdCAxLDIsMy0tICM=</code><br><img src="21~22.md/4.png"></p>
+<h3 id="sqli-labs21"><a href="#sqli-labs21" class="headerlink" title="sqli-labs21"></a>sqli-labs21</h3><p>1、输入账户密码，登陆成功，获得信息。发现uname=后面的用户名被转义了。<br><img src="/.com//1.png"><br>2、查看源码，发现原来cookie内容被base64加密了，所以输入的用户名也被加密了，加密后信息就无法直接读取，在用解密刚刚页面的用户名，得到原来输入的用户名。<br><img src="/.com//2.png"><br>3、判断注入点 :<br><img src="/.com//3.png">成功<br>使用联合查询注入<br><code>uname=MScpIHVuaW9uIHNlbGVjdCAxLDIsMy0tICM=</code><br><img src="/.com//4.png"></p>
 <h3 id="sqli-labs22"><a href="#sqli-labs22" class="headerlink" title="sqli-labs22"></a>sqli-labs22</h3><p>改成”即可。</p>
 
     </div>

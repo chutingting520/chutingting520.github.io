@@ -29,19 +29,19 @@
 <meta property="og:site_name" content="WJW&#39;s Blog">
 <meta property="og:description" content="头部注入usename，password被过滤了">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/2020/12/04/sqli-labs/18~19/18~19.md/0.png">
-<meta property="og:image" content="http://example.com/2020/12/04/sqli-labs/18~19/18~19.md/1.png">
-<meta property="og:image" content="http://example.com/2020/12/04/sqli-labs/18~19/18~19.md/2.png">
-<meta property="og:image" content="http://example.com/2020/12/04/sqli-labs/18~19/18~19.md/3.png">
-<meta property="og:image" content="http://example.com/2020/12/04/sqli-labs/18~19/18~19.md/4.png">
-<meta property="og:image" content="http://example.com/2020/12/04/sqli-labs/18~19/18~19.md/5.png">
-<meta property="og:image" content="http://example.com/2020/12/04/sqli-labs/18~19/18~19.md/6.png">
+<meta property="og:image" content="http://example.com/.com//0.png">
+<meta property="og:image" content="http://example.com/.com//1.png">
+<meta property="og:image" content="http://example.com/.com//2.png">
+<meta property="og:image" content="http://example.com/.com//3.png">
+<meta property="og:image" content="http://example.com/.com//4.png">
+<meta property="og:image" content="http://example.com/.com//5.png">
+<meta property="og:image" content="http://example.com/.com//6.png">
 <meta property="article:published_time" content="2020-12-04T12:40:28.000Z">
 <meta property="article:modified_time" content="2021-07-27T01:58:42.958Z">
 <meta property="article:author" content="WJW">
 <meta property="article:tag" content="SQL注入">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/2020/12/04/sqli-labs/18~19/18~19.md/0.png">
+<meta name="twitter:image" content="http://example.com/.com//0.png">
 
 <link rel="canonical" href="http://example.com/2020/12/04/sqli-labs/18~19/">
 
@@ -270,7 +270,7 @@
 
 <pre><code>无法通过注入usename，password获取信息/*对用户名和密码进行过滤 */
 </code></pre>
-<p><img src="18~19.md/0.png"><br>    分析源码发现有insert语句，将uagent，ip，$uname，插入数据库，uname无法注入，从其他两个下手。</p>
+<p><img src="/.com//0.png"><br>    分析源码发现有insert语句，将uagent，ip，$uname，插入数据库，uname无法注入，从其他两个下手。</p>
 <h4 id="SERVER"><a href="#SERVER" class="headerlink" title="$_SERVER"></a>$_SERVER</h4><pre><code>$_SERVER是一个包含头信息、路径以及脚本位置等等信息的数组，由web服务器创建，不能保证每个服务器都提高全部项目。
 注意: PHP 5.4.0 之前，$HTTP_SERVER_VARS 包含着相同的信息，但它不是一个超全局变量。 
 (注意 $HTTP_SERVER_VARS 与 $_SERVER 是不同的变量，PHP处理它们的方式不同)
@@ -286,10 +286,10 @@ Referer:发出请求的页面的URI。
 * 因为在源码sql语句中user-agent处后台已经加了单引号，在报错时记得加and&#39;进行闭合，不然报不出结果。
 </code></pre>
 <h3 id="Less-18"><a href="#Less-18" class="headerlink" title="Less-18"></a>Less-18</h3><p><strong>第一步：登陆，成功登陆。</strong></p>
-<p>在user-agent构造payload<br><img src="18~19.md/1.png"><br>奇怪了为什么报错语句不行？看了大佬博客原因在：源码中语句：<br><img src="18~19.md/2.png"><br>uagent是在IP和uname之前的，如果注释掉后面的语句，会直接导致Insert语句直接异常，达不到我们查询的目的，<br>所以改成<br><img src="18~19.md/3.png"><br>成功。</p>
-<h3 id="Less-19"><a href="#Less-19" class="headerlink" title="Less-19"></a>Less-19</h3><p>改成在referer构造payload。<br><img src="18~19.md/4.png"><br>其他不再赘述。</p>
+<p>在user-agent构造payload<br><img src="/.com//1.png"><br>奇怪了为什么报错语句不行？看了大佬博客原因在：源码中语句：<br><img src="/.com//2.png"><br>uagent是在IP和uname之前的，如果注释掉后面的语句，会直接导致Insert语句直接异常，达不到我们查询的目的，<br>所以改成<br><img src="/.com//3.png"><br>成功。</p>
+<h3 id="Less-19"><a href="#Less-19" class="headerlink" title="Less-19"></a>Less-19</h3><p>改成在referer构造payload。<br><img src="/.com//4.png"><br>其他不再赘述。</p>
 <h3 id="Less-20"><a href="#Less-20" class="headerlink" title="Less-20"></a>Less-20</h3><p>同样uname和passwd都被过滤了，而cookie没有，直接可以获取。我们先了解一下什么是</p>
-<h4 id="Cookie"><a href="#Cookie" class="headerlink" title="Cookie:"></a>Cookie:</h4><p>Cookie，有时也用其复数形式 Cookies。<br>类型为“小型文本文件”，是某些网站为了辨别用户身份，进行Session跟踪而储存在用户本地终端上的数据（通常经过加密），由用户客户端计算机暂时或永久保存的信息。<br>查看为单引号闭合性，使用一下联合查询语句，即可。<br><code>uname=1&#39; union select 1,2,3#</code><br><img src="18~19.md/5.png"><br>爆库<br><code>uname=1&#39; union select 1,2,database()#</code><br><img src="18~19.md/6.png"><br>剩下的可以都可以爆出。</p>
+<h4 id="Cookie"><a href="#Cookie" class="headerlink" title="Cookie:"></a>Cookie:</h4><p>Cookie，有时也用其复数形式 Cookies。<br>类型为“小型文本文件”，是某些网站为了辨别用户身份，进行Session跟踪而储存在用户本地终端上的数据（通常经过加密），由用户客户端计算机暂时或永久保存的信息。<br>查看为单引号闭合性，使用一下联合查询语句，即可。<br><code>uname=1&#39; union select 1,2,3#</code><br><img src="/.com//5.png"><br>爆库<br><code>uname=1&#39; union select 1,2,database()#</code><br><img src="/.com//6.png"><br>剩下的可以都可以爆出。</p>
 
     </div>
 

