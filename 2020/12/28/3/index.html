@@ -19,33 +19,33 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"chutingting520.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="Pass-18(条件竞争)unlink() 函数是删除文件代码审计，文件先上传到服务器再判断是否合法，合法则留下，不合法则删除">
 <meta property="og:type" content="article">
 <meta property="og:title" content="upload-labs18~21">
-<meta property="og:url" content="http://example.com/2020/12/28/3/index.html">
+<meta property="og:url" content="https://chutingting520.github.io/2020/12/28/3/index.html">
 <meta property="og:site_name" content="WJW&#39;s Blog">
 <meta property="og:description" content="Pass-18(条件竞争)unlink() 函数是删除文件代码审计，文件先上传到服务器再判断是否合法，合法则留下，不合法则删除">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/2020/12/28/3/3.md/1.png">
-<meta property="og:image" content="http://example.com/2020/12/28/3/3.md/2.png">
-<meta property="og:image" content="http://example.com/2020/12/28/3/3.md/3.png">
-<meta property="og:image" content="http://example.com/2020/12/28/3/3.md/4.png">
-<meta property="og:image" content="http://example.com/2020/12/28/3/3.md/5.png">
-<meta property="og:image" content="http://example.com/2020/12/28/3/3.md/6.png">
-<meta property="og:image" content="http://example.com/2020/12/28/3/3.md/7.png">
-<meta property="og:image" content="http://example.com/2020/12/28/3/3.md/8.png">
-<meta property="og:image" content="http://example.com/home/cookie/Blog/source/_posts/3/9.png">
+<meta property="og:image" content="https://chutingting520.github.io/2020/12/28/3/1.png">
+<meta property="og:image" content="https://chutingting520.github.io/2020/12/28/3/2.png">
+<meta property="og:image" content="https://chutingting520.github.io/2020/12/28/3/3.png">
+<meta property="og:image" content="https://chutingting520.github.io/2020/12/28/3/4.png">
+<meta property="og:image" content="https://chutingting520.github.io/2020/12/28/3/5.png">
+<meta property="og:image" content="https://chutingting520.github.io/2020/12/28/3/6.png">
+<meta property="og:image" content="https://chutingting520.github.io/2020/12/28/3/7.png">
+<meta property="og:image" content="https://chutingting520.github.io/2020/12/28/3/8.png">
+<meta property="og:image" content="https://chutingting520.github.io/2020/12/28/3/cookie/Blog/source/_posts/3/9.png">
 <meta property="article:published_time" content="2020-12-28T14:28:05.000Z">
 <meta property="article:modified_time" content="2021-07-27T01:46:51.744Z">
 <meta property="article:author" content="WJW">
 <meta property="article:tag" content="文件上传">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/2020/12/28/3/3.md/1.png">
+<meta name="twitter:image" content="https://chutingting520.github.io/2020/12/28/3/1.png">
 
-<link rel="canonical" href="http://example.com/2020/12/28/3/">
+<link rel="canonical" href="https://chutingting520.github.io/2020/12/28/3/">
 
 
 <script id="page-configurations">
@@ -202,7 +202,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/28/3/">
+    <link itemprop="mainEntityOfPage" href="https://chutingting520.github.io/2020/12/28/3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/cat.jpg">
@@ -270,10 +270,10 @@
         <h3 id="Pass-18-条件竞争"><a href="#Pass-18-条件竞争" class="headerlink" title="Pass-18(条件竞争)"></a>Pass-18(条件竞争)</h3><p>unlink() 函数是删除文件<br>代码审计，文件先上传到服务器再判断是否合法，合法则留下，不合法则删除</p>
 <span id="more"></span>
 
-<p><strong>条件竞争漏洞是一种服务器端的漏洞，由于服务器端在处理不同用户的请求时是并发进行的，<br>因此，如果并发处理不当或相关操作逻辑顺序设计的不合理时，将会导致此类问题的发生。</strong><br><strong>跟c语言一样的语法，<br>fputs函数作用：向指定的文件写入一个字符串。<br>fopen：打开一个文件，<br>“w”(写入方式打开，清除文件内容，如果文件不存在则尝试重新创建.)</strong><br>构造php内容：<br><code>&lt;?php fputs(fopen(&#39;test.php&#39;,&#39;w&#39;),&#39;&lt;?php @eval($_POST[&quot;cmd&quot;]);?&gt;&#39;); ?&gt;</code><br>这里注意：<strong>上传的文件名不能和新文件php名字一样，新文件成功生成了，旧文件不断上传，会把它覆盖掉，同样会被删除。</strong><br><strong>还需要双引号”cmd”,尝试单引号一直失败，单引号上传次数也很少，也不知道是为什么？<br>后面发现php单引号和双引号是有区别的，简单地说，单引号内的就直接看成字符串，双引号内的可以被解释。<br>我们通过在线编辑器来试探一下，<br><img src="3.md/1.png">会出现语法错误，因为双引号会解释内容，内容为一句话木马，会导致文件写入出现问题<br>这里还要复习一下一句话木马，@符号的意思是不报错，eval函数表示把括号内的语句字符串当作代码执行，所以在写入文件时<br>只能单纯的把一句话木马当作字符串处理；我们再把cmd换成单引号，语法也是错误的，cmd被分离出来了。<br><img src="3.md/2.png">这里错误就是意外出现字符串cmd，因为我们用来单引号，cmd就被认为字符串执行，我们可以把单引号去掉或加上双引号，发现两者都可以连接。<br>小结：为了区别这个折腾了很久，爆破了七十次，其实还是要找根本，发现php单引号双引号有区别。</strong><br>关于这个区别可以看看这篇文章：<a target="_blank" rel="noopener" href="https://blog.csdn.net/hyy147/article/details/90053272">https://blog.csdn.net/hyy147/article/details/90053272</a><br>下面是操作过程：<br>首先抓好两个包再进行爆破，抓包后，转换到intruder，先把要爆破的参数都去掉，因为这里我们是通过不断发包访问页面，而不是爆破值。<br><img src="3.md/3.png">再到payload修改，这里我标注了几个地方都要特别注意。<br><img src="3.md/4.png">就是设置没有payload，无限期地继续。<br>上面是不断上传php文件，同时我们还需要去打开它，访问它，所以新建一个访问页面<br><img src="3.md/5.png">抓包下来，修改同上面的一样，无需clear参数<br>最后修改一下线程为20，开始爆破。<br><img src="3.md/6.png">一下子就上传上去了，如果一直失败，要好好看看php内容有没有写错了。</p>
-<h3 id="Pass-19"><a href="#Pass-19" class="headerlink" title="Pass-19"></a>Pass-19</h3><p>分析源码，先判断了文件的后缀名，这里就不能直接上传php，考虑上传图片马。<br>然后是检查文件大小，检查文件是否存在，移动文件，重命名文件。<br>上传图片马，再用之前创建好的文件包含漏洞，<br><img src="3.md/7.png">提示我们本来就有一个文件包含，我们需要要它给的，<br>成功解析，<img src="3.md/8.png"><br>这里应该也是考图片马上传条件竞争，但是我的图片马上传没有问题，再解析一下即可，还有这里文件上传的路径也改变了。</p>
+<p><strong>条件竞争漏洞是一种服务器端的漏洞，由于服务器端在处理不同用户的请求时是并发进行的，<br>因此，如果并发处理不当或相关操作逻辑顺序设计的不合理时，将会导致此类问题的发生。</strong><br><strong>跟c语言一样的语法，<br>fputs函数作用：向指定的文件写入一个字符串。<br>fopen：打开一个文件，<br>“w”(写入方式打开，清除文件内容，如果文件不存在则尝试重新创建.)</strong><br>构造php内容：<br><code>&lt;?php fputs(fopen(&#39;test.php&#39;,&#39;w&#39;),&#39;&lt;?php @eval($_POST[&quot;cmd&quot;]);?&gt;&#39;); ?&gt;</code><br>这里注意：<strong>上传的文件名不能和新文件php名字一样，新文件成功生成了，旧文件不断上传，会把它覆盖掉，同样会被删除。</strong><br><strong>还需要双引号”cmd”,尝试单引号一直失败，单引号上传次数也很少，也不知道是为什么？<br>后面发现php单引号和双引号是有区别的，简单地说，单引号内的就直接看成字符串，双引号内的可以被解释。<br>我们通过在线编辑器来试探一下，<br><img src="/2020/12/28/3/1.png">会出现语法错误，因为双引号会解释内容，内容为一句话木马，会导致文件写入出现问题<br>这里还要复习一下一句话木马，@符号的意思是不报错，eval函数表示把括号内的语句字符串当作代码执行，所以在写入文件时<br>只能单纯的把一句话木马当作字符串处理；我们再把cmd换成单引号，语法也是错误的，cmd被分离出来了。<br><img src="/2020/12/28/3/2.png">这里错误就是意外出现字符串cmd，因为我们用来单引号，cmd就被认为字符串执行，我们可以把单引号去掉或加上双引号，发现两者都可以连接。<br>小结：为了区别这个折腾了很久，爆破了七十次，其实还是要找根本，发现php单引号双引号有区别。</strong><br>关于这个区别可以看看这篇文章：<a target="_blank" rel="noopener" href="https://blog.csdn.net/hyy147/article/details/90053272">https://blog.csdn.net/hyy147/article/details/90053272</a><br>下面是操作过程：<br>首先抓好两个包再进行爆破，抓包后，转换到intruder，先把要爆破的参数都去掉，因为这里我们是通过不断发包访问页面，而不是爆破值。<br><img src="/2020/12/28/3/3.png">再到payload修改，这里我标注了几个地方都要特别注意。<br><img src="/2020/12/28/3/4.png">就是设置没有payload，无限期地继续。<br>上面是不断上传php文件，同时我们还需要去打开它，访问它，所以新建一个访问页面<br><img src="/2020/12/28/3/5.png">抓包下来，修改同上面的一样，无需clear参数<br>最后修改一下线程为20，开始爆破。<br><img src="/2020/12/28/3/6.png">一下子就上传上去了，如果一直失败，要好好看看php内容有没有写错了。</p>
+<h3 id="Pass-19"><a href="#Pass-19" class="headerlink" title="Pass-19"></a>Pass-19</h3><p>分析源码，先判断了文件的后缀名，这里就不能直接上传php，考虑上传图片马。<br>然后是检查文件大小，检查文件是否存在，移动文件，重命名文件。<br>上传图片马，再用之前创建好的文件包含漏洞，<br><img src="/2020/12/28/3/7.png">提示我们本来就有一个文件包含，我们需要要它给的，<br>成功解析，<img src="/2020/12/28/3/8.png"><br>这里应该也是考图片马上传条件竞争，但是我的图片马上传没有问题，再解析一下即可，还有这里文件上传的路径也改变了。</p>
 <h3 id="Pass-20"><a href="#Pass-20" class="headerlink" title="Pass-20"></a>Pass-20</h3><p>这里我随便上传一个php都成功了，不知道出什么问题了，大概说一下网上师傅的做法。<br>方法一(0x00截断)：抓包会显示a.php**.jpg在**这加0x00截断，表示十六进制的00，访问的就是php文件了，jpg被截断了。<br>方法二：在php后缀加/.绕过，因为move_uploaded_file底层会调用函数tsrm_realpath，导致递归删除文件名最后的/.成功可以绕过后缀名的检测。<br>方法三：大小写绕过。</p>
-<h3 id="Pass-21-MIME-数组"><a href="#Pass-21-MIME-数组" class="headerlink" title="Pass-21(MIME,数组,/.)"></a>Pass-21(MIME,数组,/.)</h3><p>审计源码，先检查MIME<br>MIME:MIME消息可以包含文本、图像、音频、视频以及其他应用程序专用的数据。<br>再检查文件名，这里同样有的move_uploaded_file函数可以加/.绕过。<br>explode函数(separator,string,limit)把字符串打散成数组。<br>如果file变量不是数组，会将file变量先小写，再通过函数explode变成数组(以点为分隔符)如何取它的后缀名，并重新定义一个运行上穿的后缀名数组。<br>可以看到filename是文件本来的名称，而save_name是传递的参数,我们来构造参数名数组，设置两个元素的数组<br>经过函数处理，后缀就变成file[1],我们构造的有file[0],file[2],file[2]变为file[1]返回为空。<br><img src="/home/cookie/Blog/source/_posts/3/9.png"></p>
+<h3 id="Pass-21-MIME-数组"><a href="#Pass-21-MIME-数组" class="headerlink" title="Pass-21(MIME,数组,/.)"></a>Pass-21(MIME,数组,/.)</h3><p>审计源码，先检查MIME<br>MIME:MIME消息可以包含文本、图像、音频、视频以及其他应用程序专用的数据。<br>再检查文件名，这里同样有的move_uploaded_file函数可以加/.绕过。<br>explode函数(separator,string,limit)把字符串打散成数组。<br>如果file变量不是数组，会将file变量先小写，再通过函数explode变成数组(以点为分隔符)如何取它的后缀名，并重新定义一个运行上穿的后缀名数组。<br>可以看到filename是文件本来的名称，而save_name是传递的参数,我们来构造参数名数组，设置两个元素的数组<br>经过函数处理，后缀就变成file[1],我们构造的有file[0],file[2],file[2]变为file[1]返回为空。<br><img src="/2020/12/28/3/cookie/Blog/source/_posts/3/9.png"></p>
 
     </div>
 
@@ -318,7 +318,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://example.com/2020/12/28/3/" title="upload-labs18~21">http://example.com/2020/12/28/3/</a>
+    <a href="https://chutingting520.github.io/2020/12/28/3/" title="upload-labs18~21">https://chutingting520.github.io/2020/12/28/3/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
