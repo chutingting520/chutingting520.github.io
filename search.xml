@@ -1529,6 +1529,8 @@ EOF;
     <title>buu5</title>
     <url>/2021/08/04/buu5/</url>
     <content><![CDATA[<h2 id="FireshellCTF2020-Caas"><a href="#FireshellCTF2020-Caas" class="headerlink" title="[FireshellCTF2020]Caas"></a>[FireshellCTF2020]Caas</h2><p>这是个c语言编译器，我们随便输入点什么，会出现报错。</p>
+<span id="more"></span>
+
 <p>然后通过c语言预处理包含flag报错输出flag。</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#include &quot;/flag&quot;</span><br></pre></td></tr></table></figure>
 
